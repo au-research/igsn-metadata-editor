@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto text-left">
-    <a href class="btn btn-blue" @click.prevent="loadSampleXML">Load Sample XML</a>
+    <!-- <a href class="btn btn-blue" @click.prevent="loadSampleXML">Load Sample XML</a>
     <a href class="btn btn-blue" @click.prevent="this.loadXML('')">PopulateBlank</a>
 
     <select name="" v-model="vocabulary">
@@ -10,7 +10,7 @@
 
     <LocaleChanger></LocaleChanger>
 
-    <hr class="my-8"/>
+    <hr class="my-8"/> -->
     
     <CSIROv3Editor :xml="xml" :vocabulary="vocabulary"></CSIROv3Editor>
   </div>
@@ -22,7 +22,7 @@ import LocaleChanger from "@/components/LocaleChanger.vue"
 import util from "@/services/util.js";
 
 export default {
-  name: 'Home',
+  name: 'Editor',
   components: {
     CSIROv3Editor, LocaleChanger
   },

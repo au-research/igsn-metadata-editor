@@ -1,29 +1,33 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <div class="w-full h-40 bg-black">
+      <div class="w-full h-32 bg-black flex items-center">
+        <img
+          class="h-16 mx-6"
+          src="https://ardc.edu.au/wp-content/themes/ardc/img/ardc_logo.svg"
+          alt
+        />
+        <h1 class="text-2xl text-white mx-4">ARDC IGSN Editor</h1>
+        <div class="flex-1 text-right p-6 mr-6" id="nav">
+          <router-link to="/">Dashboard</router-link>|
+          <router-link to="/about">About</router-link>|
+          <router-link to="/about">User Settings</router-link>
+        </div>
+      </div>
     </div>
-    <router-view/>
+
+    <div
+      class="container w-10/12 mx-auto p-2 py-4 shadow-lg rounded-lg border-solid border-1 -mt-8 bg-white"
+    >
+      <router-view />
+    </div>
   </div>
 </template>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-}
-
 #nav a {
   font-weight: bold;
-  color: #2c3e50;
+  color: white;
 }
 
 #nav a.router-link-exact-active {

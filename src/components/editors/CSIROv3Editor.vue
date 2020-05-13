@@ -219,7 +219,7 @@
             <a
               class="btn btn-red"
               href
-              @click.prevent="doc.location.splice(index, 1)"
+              @click.prevent="doc.locations.splice(index, 1)"
             >Remove This Location</a>
           </fieldset>
           <a class="btn btn-blue" href @click.prevent="doc.locations.push({})">Add New Location</a>
