@@ -1,0 +1,12 @@
+{
+  "igsn": {
+    "tab": {
+      "primary": "Primary Info",
+      "curation": "Curation Details",
+      "location": "Location",
+      "related_resource": "Related Resource",
+      "contributors": "Contributors",
+      "other_information": "Other Information"
+    }
+  }
+}

@@ -1,4 +1,4 @@
-# dahl
+# IGSN Editor
 
 ## Project setup
 ```
