@@ -7,6 +7,10 @@
       "related_resource": "Related Resource",
       "contributors": "Contributors",
       "other_information": "Other Information"
+    },
+    "help": {
+      "registeredObjectType": "Registered Object Type",
+      "visibility": "The visibility of a geosample or entity metadata. <br/> Use 'true' for public and 'false' for private geosamples or entities"
     }
   }
 }

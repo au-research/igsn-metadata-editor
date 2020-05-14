@@ -73,6 +73,7 @@
             v-model="doc.visibility"
             :vocab="vocab.visibility"
             v-on:change="visibilityUpdated"
+            help="visibility"
             :required="true"
           ></InputGroupVocabSelect>
 

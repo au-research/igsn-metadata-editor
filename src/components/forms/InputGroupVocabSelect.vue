@@ -1,5 +1,5 @@
 <template>
-  <InputGroup :label="label" :class="[errored ? 'error' : '']">
+  <InputGroup :label="label" :help="help" :class="[errored ? 'error' : '']">
     <div class="flex">
       <select
         name
@@ -25,6 +25,7 @@ export default {
   props: {
     label: String,
     value: String,
+    help: String,
     vocab: Array,
     required: {
       type: Boolean,

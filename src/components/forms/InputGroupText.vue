@@ -1,5 +1,5 @@
 <template>
-  <InputGroup :label="label" :class="[errored ? 'error' : '']">
+  <InputGroup :label="label" :help="help" :class="[errored ? 'error' : '']">
     <div class="flex">
       <input
         :value="value"
@@ -22,6 +22,7 @@ export default {
   props: {
     label: String,
     value: String,
+    help: String,
     placeholder: String,
     validationText: String,
     required: {
