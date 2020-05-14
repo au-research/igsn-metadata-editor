@@ -172,57 +172,46 @@
 
         <!-- Location -->
         <div class="tab-content" v-show="tab=='location'">
-          <fieldset
-            v-for="(location, index) in doc.locations"
-            :key="index"
-            class="mb-12 bg-gray-200 p-5 shadow-lg"
-          >
+          
             <div class="flex">
               <InputGroupText
                 class="flex-1 mr-4"
-                v-model="location.locality"
+                v-model="doc.location.locality"
                 label="Locality"
                 placeholder="locality"
               ></InputGroupText>
               <InputGroupText
                 class="flex-1"
-                v-model="location.localityURI"
+                v-model="doc.location.localityURI"
                 label="Locality URI"
                 placeholder="http://"
               ></InputGroupText>
             </div>
 
-            <InputGroupText v-model="location.geometry" label="Geometry"></InputGroupText>
+            <InputGroupText v-model="doc.location.geometry" label="Geometry"></InputGroupText>
             <div class="flex">
               <InputGroupVocabSelect
                 class="flex-1 mr-4"
                 label="Geometry Vertical Datum"
-                v-model="location.geometryVerticalDatum"
+                v-model="doc.location.geometryVerticalDatum"
                 :vocab="vocab.ePSG"
               ></InputGroupVocabSelect>
 
               <InputGroupVocabSelect
                 class="flex-1 mr-4"
                 label="Geometry SRID"
-                v-model="location.geometrySRID"
+                v-model="doc.location.geometrySRID"
                 :vocab="vocab.ePSG"
               ></InputGroupVocabSelect>
 
               <InputGroupText
                 class="flex-1"
-                v-model="location.geometryURI"
+                v-model="doc.location.geometryURI"
                 label="Geometry URI"
                 placeholder="http://"
               ></InputGroupText>
             </div>
 
-            <a
-              class="btn btn-red"
-              href
-              @click.prevent="doc.locations.splice(index, 1)"
-            >Remove This Location</a>
-          </fieldset>
-          <a class="btn btn-blue" href @click.prevent="doc.locations.push({})">Add New Location</a>
         </div>
 
         <!-- Related Resource -->

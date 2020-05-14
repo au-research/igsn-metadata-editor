@@ -34,6 +34,14 @@ const user = {
                 // axios.defaults.headers.common['Authorization'] = token
             })
         },
+        aaf({commit}) {
+            // do something here?
+            return new Promise((resolve, reject) => {
+                let token = "aaf_jwt"
+                commit('auth_success', token)
+                resolve()
+            })
+        },
         logout({ commit }) {
             return new Promise((resolve, reject) => {
                 commit('logout')

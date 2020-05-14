@@ -9,9 +9,11 @@
         />
         <h1 class="text-2xl text-white mx-4">ARDC IGSN Editor</h1>
         <div class="flex-1 text-right p-6 mr-6" id="nav">
-          <router-link to="/">Dashboard</router-link>|
+          <router-link to="/" v-if="isLoggedIn">Dashboard</router-link>|
+          <router-link to="/login" v-if="!isLoggedIn">Login</router-link>|
+          <router-link to="/settings" v-if="isLoggedIn">Settings</router-link>|
+          <a href="" @click.prevent="logout" v-if="isLoggedIn">Logout</a>|
           <router-link to="/about">About</router-link>|
-          <router-link to="/about">User Settings</router-link>
         </div>
       </div>
     </div>
@@ -23,6 +25,23 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  methods: {
+    logout() {
+      this.$store.dispatch("auth/logout")
+        .then(this.$router.push("/login"))
+    }
+  },
+  computed: {
+    isLoggedIn() {
+      return this.$store.getters['auth/isLoggedIn']
+    }
+  }
+}
+</script>
+
 
 <style>
 #nav a {

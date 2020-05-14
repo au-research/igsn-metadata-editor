@@ -18,16 +18,18 @@
 
 <script>
 import CSIROv3Editor from "@/components/editors/CSIROv3Editor.vue";
-import LocaleChanger from "@/components/LocaleChanger.vue"
+//import LocaleChanger from "@/components/LocaleChanger.vue"
 import util from "@/services/util.js";
 
 export default {
   name: 'Editor',
   components: {
-    CSIROv3Editor, LocaleChanger
+    CSIROv3Editor
   },
   data() {
     return {
+      schema: '',
+      documentID: '',
       vocabulary: 'csiro-igsn-codelist',
       xml: ''
     };
@@ -45,6 +47,19 @@ export default {
   mounted() {
     // debug
     this.loadSampleXML()
+    console.log(this.$route.params)
+    this.schema = this.$route.params.schema
+    this.documentID = this.$route.params.docID
+
+    // check schema
+
+    if (this.documentID == "CSTSTDOCO1"){
+      this.loadSampleXML()
+    } else {
+      this.loadXML("")
+    }
+
+    // check documentID based on schema
   }
 }
 </script>

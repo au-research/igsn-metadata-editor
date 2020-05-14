@@ -8,23 +8,6 @@ function optArr(thing) {
   return opt(thing, [])
 }
 
-function extractLocation(resource) {
-  let source = resource.location instanceof Array
-    ? resource.location
-    : [(resource.location != undefined ? resource.location : {})]
-
-  return source.map((loc) => {
-    return {
-      locality: loc.locality?._text,
-      localityURI: loc.locality?._attributes?.localityURI,
-      geometrySRID: loc.geometry?._attributes?.srid,
-      geometryVerticalDatum: loc.geometry?._attributes?.verticalDatum,
-      geometryURI: loc.geometry?._attributes?.geometryURI,
-      geometry: loc.geometry?._text
-    }
-  });
-}
-
 export default {
 
   getBlankIGSNv3() {
@@ -106,24 +89,22 @@ export default {
             })
           },
 
-          location: doc.locations?.map((loc) => {
-            return {
-              locality: {
-                _attributes: {
-                  localityURI: loc.localityURI
-                },
-                _text: loc.locality
+          location: {
+            locality: {
+              _attributes: {
+                localityURI: doc.location.localityURI
               },
-              geometry: {
-                _attributes: {
-                  srid: loc.geometrySRID,
-                  verticalDatum: loc.geometryVerticalDatum,
-                  geometryURI: loc.geometryURI
-                },
-                _text: loc.geometry
-              }
+              _text: doc.location.locality
+            },
+            geometry: {
+              _attributes: {
+                srid: doc.location.geometrySRID,
+                verticalDatum: doc.location.geometryVerticalDatum,
+                geometryURI: doc.location.geometryURI
+              },
+              _text: doc.location.geometry
             }
-          }),
+          },
 
           //date
           method: {
@@ -224,7 +205,14 @@ export default {
       landingPage: opt(resource.landingPage?._text),
 
       // resource.location can be an object, (single) or an array, multiple
-      locations: extractLocation(resource),
+      location: {
+        locality: resource.location?.locality?._text,
+        localityURI: resource.location?.locality?._attributes?.localityURI,
+        geometrySRID: resource.location?.geometry?._attributes?.srid,
+        geometryVerticalDatum: resource.location?.geometry?._attributes?.verticalDatum,
+        geometryURI: resource.location?.geometry?._attributes?.geometryURI,
+        geometry: resource.location?.geometry?._text
+      },
 
       logDate: opt(resource.logDate?._text),
       logDateEventType: opt(resource.logDate?._attributes?.eventType),
