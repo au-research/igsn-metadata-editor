@@ -171,7 +171,7 @@
         </div>
 
         <!-- Location -->
-        <div class="tab-content" v-show="tab=='location'">
+        <div class="tab-content" v-show="tab=='location'" v-if="doc.location">
           
             <div class="flex">
               <InputGroupText

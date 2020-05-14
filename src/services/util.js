@@ -92,17 +92,17 @@ export default {
           location: {
             locality: {
               _attributes: {
-                localityURI: doc.location.localityURI
+                localityURI: doc.location?.localityURI
               },
-              _text: doc.location.locality
+              _text: doc.location?.locality
             },
             geometry: {
               _attributes: {
-                srid: doc.location.geometrySRID,
-                verticalDatum: doc.location.geometryVerticalDatum,
-                geometryURI: doc.location.geometryURI
+                srid: doc.location?.geometrySRID,
+                verticalDatum: doc.location?.geometryVerticalDatum,
+                geometryURI: doc.location?.geometryURI
               },
-              _text: doc.location.geometry
+              _text: doc.location?.geometry
             }
           },
 
