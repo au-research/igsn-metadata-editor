@@ -1,17 +1,32 @@
+import Keycloak from 'keycloak-js'
+
+let initOptions = {
+    url: 'https://test.auth.ardc.edu.au/auth', realm: 'ARDC', clientId: 'igsn-editor', onLoad: 'login-required'
+}
+
+let keycloak = Keycloak(initOptions);
+
 const user = {
     namespaced: true,
     state: {
         status: '',
-        token: '',
+        token: keycloak.token,
+        refreshToken: keycloak.refreshToken,
         user: {}
     },
     mutations: {
         auth_request(state) {
             state.status = 'loading'
         },
-        auth_success(state, token, user) {
+        auth_success(state, { token, refreshToken }) {
             state.status = 'success'
             state.token = token
+            state.refreshToken = refreshToken
+        },
+        auth_userInfo(state, info) {
+            state.user = info
+        },
+        auth(state, user) {
             state.user = user
         },
         auth_error(state) {
@@ -20,9 +35,67 @@ const user = {
         logout(state) {
             state.status = ''
             state.token = ''
+            state.user = ''
         },
     },
     actions: {
+        initSSO({ commit }) {
+
+            keycloak.init({ onLoad: initOptions.onLoad }).success((auth) => {
+                if (!auth) {
+                    window.location.reload();
+                } else {
+                    console.log("Authenticated");
+                }
+
+                commit("auth_success", { token: keycloak.token, refreshToken: keycloak.refreshToken })
+
+                // get user
+                // keycloak.loadUserProfile()
+                //     .success((profile) => commit("auth_userInfo", profile))
+            
+                keycloak.loadUserInfo()
+                    .success((user) => commit("auth_userInfo", user))
+
+                // localStorage.setItem("vue-token", keycloak.token);
+                // localStorage.setItem("vue-refresh-token", keycloak.refreshToken);
+
+            }).error(() => {
+                console.error("Authenticated Failed");
+            });
+        },
+        refresh({ commit }) {
+            return keycloak.updateToken(1)
+                .success((refreshed) => {
+                    if (refreshed) {
+                        console.log("Refreshed")
+                    } else {
+                        console.log("Token not refreshed");
+                    }
+                })
+                .error((err) => console.error(err))
+
+            // return new Promise((resolve, reject) => {
+            //     keycloak.updateToken(70)
+            //         .success((refreshed) => {
+            //             if (refreshed) {
+            //                 console.debug('Token refreshed' + refreshed);
+            //             } else {
+            //                 console.warn('Token not refreshed, valid for '
+            //                     + Math.round(keycloak.tokenParsed.exp + keycloak.timeSkew - new Date().getTime() / 1000) + ' seconds');
+            //             }
+            //             console.log('refreshed')
+            //             resolve()
+            //         })
+            //         .error(() => {
+            //             console.error('Failed to refresh token');
+            //             reject()
+            //         })
+            //         .then(() => {
+            //             console.log('here')
+            //         })
+            // })
+        },
         login({ commit }, { username, password }) {
             commit('auth_request')
             return new Promise((resolve, reject) => {
@@ -34,20 +107,14 @@ const user = {
                 // axios.defaults.headers.common['Authorization'] = token
             })
         },
-        aaf({commit}) {
-            // do something here?
-            return new Promise((resolve, reject) => {
-                let token = "aaf_jwt"
-                commit('auth_success', token)
-                resolve()
-            })
-        },
         logout({ commit }) {
+
             return new Promise((resolve, reject) => {
                 commit('logout')
+                keycloak.logout()
                 // delete axios.defaults.headers.common['Authorization']
                 resolve()
-              })
+            })
         }
     },
     getters: {

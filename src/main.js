@@ -4,6 +4,7 @@ import '@/assets/css/tw.css'
 import i18n from './i18n'
 import router from './router'
 import store from './store'
+import Keycloak from 'keycloak-js'
 
 Vue.config.productionTip = false
 

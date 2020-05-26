@@ -38,7 +38,10 @@ export default {
     isLoggedIn() {
       return this.$store.getters['auth/isLoggedIn']
     }
-  }
+  },
+  mounted() {
+    this.$store.dispatch("auth/initSSO")
+  },
 }
 </script>
 

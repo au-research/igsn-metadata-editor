@@ -1,4 +1,7 @@
 module.exports = {
+  devServer: {
+    port: 8888
+  },
   pages: {
     index: {
       entry: 'src/main.js',
