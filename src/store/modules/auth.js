@@ -1,10 +1,13 @@
 import Keycloak from 'keycloak-js'
 
-let initOptions = {
-    url: 'https://test.auth.ardc.edu.au/auth', realm: 'ARDC', clientId: 'igsn-editor', onLoad: 'login-required'
+let keycloakOptions = {
+    url: process.env.VUE_APP_KEYCLOAK_URL || 'https://test.auth.ardc.edu.au/auth', 
+    realm: process.env.VUE_APP_KEYCLOAK_REALM || 'ARDC', 
+    clientId: process.env.VUE_APP_KEYCLOAK_CLIENT_ID || 'igsn-editor', 
+    onLoad: 'login-required'
 }
 
-let keycloak = Keycloak(initOptions);
+let keycloak = Keycloak(keycloakOptions);
 
 const user = {
     namespaced: true,
@@ -41,7 +44,7 @@ const user = {
     actions: {
         initSSO({ commit }) {
 
-            keycloak.init({ onLoad: initOptions.onLoad }).success((auth) => {
+            keycloak.init({ onLoad: keycloakOptions.onLoad }).success((auth) => {
                 if (!auth) {
                     window.location.reload();
                 } else {

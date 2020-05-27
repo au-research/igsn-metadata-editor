@@ -1,7 +1,8 @@
 module.exports = {
   devServer: {
-    port: 8888
+    port: process.env.PORT || 8888
   },
+  publicPath: process.env.BASE_URL || "/",
   pages: {
     index: {
       entry: 'src/main.js',
@@ -18,5 +19,8 @@ module.exports = {
       localeDir: 'locales',
       enableInSFC: true
     }
+  },
+  configureWebpack: {
+    performance: { hints: false }
   }
 }

@@ -22,7 +22,8 @@ export default {
     },
     methods: {
         refreshToken() {
-            this.$store.dispatch('auth/refresh')
+            this.$store.dispatch("auth/initSSO");
+            // this.$store.dispatch('auth/refresh')
         }
     },
     filters: {
