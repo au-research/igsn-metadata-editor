@@ -1,88 +1,44 @@
-import Keycloak from 'keycloak-js'
-import Vue from 'vue'
-
-let keycloakOptions = {
-    url: process.env.VUE_APP_KEYCLOAK_URL,
-    realm: process.env.VUE_APP_KEYCLOAK_REALM,
-    clientId: process.env.VUE_APP_KEYCLOAK_CLIENT_ID,
-    onLoad: 'login-required'
-}
-
-let keycloak = Keycloak(keycloakOptions);
-window.keycloak = keycloak;
-
 const user = {
     namespaced: true,
     state: {
-        status: '',
-        token: keycloak.token,
-        refreshToken: keycloak.refreshToken,
-        user: {},
-        options: keycloakOptions
+        token: null,
+        user: null,
+        refreshToken: null
     },
     mutations: {
-        auth_request(state) {
-            state.status = 'loading'
-        },
-        auth_success(state, { token, refreshToken }) {
-            state.status = 'success'
+        token(state, { token, refreshToken }) {
             state.token = token
             state.refreshToken = refreshToken
         },
-        auth_userInfo(state, info) {
-            state.user = info
+        destroy(state) {
+            state.token = ""
+            state.refreshToken = ""
+            state.user = {}
         },
-        auth(state, user) {
+        user(state, user) {
             state.user = user
-        },
-        auth_error(state) {
-            state.status = 'error'
-        },
-        logout(state) {
-            state.status = ''
-            state.token = ''
-            state.user = ''
-        },
+        }
     },
     actions: {
-        initSSO({ commit }) {
-            return new Promise((resolve, reject) => {
-                keycloak.init({ onLoad: keycloakOptions.onLoad }).success((auth) => {
-                    commit("auth_success", { token: keycloak.token, refreshToken: keycloak.refreshToken })
-                    keycloak.loadUserInfo()
-                        .success((user) => commit("auth_userInfo", user))
-                    resolve()
-                    window.keycloak = keycloak
-                }).error(() => {
-                    console.error("Authenticated Failed");
-                });
+        storeToken({ state, commit }, access) {
+            commit('token', {
+                token: access.token,
+                refreshToken: access.refreshToken
             })
         },
-        refresh({ commit }) {
-            return keycloak.updateToken(1)
-                .success((refreshed) => {
-                    if (refreshed) {
-                        console.log("Refreshed")
-                    } else {
-                        console.log("Token not refreshed");
-                    }
-                })
-                .error((err) => console.error(err))
-        },
-        login({ commit }, { username, password }) {
-            commit('auth_request')
-            return new Promise((resolve, reject) => {
-                let token = "asdf"
-                commit('auth_success', token)
-                resolve()
-            })
-        },
-        logout({ commit }) {
 
-            if (keycloak && keycloak.logout == 'function') {
-                window.keycloak.logout()
-            }
-            commit('logout')
+        destroyToken({ commit }) {
+            commit('destroy')
+        },
+
+        setUser({ commit }, user) {
+            commit('user', {
+                id: user.id,
+                name: user.name ? user.name : user.email,
+                email: user.email,
+                allocations: user.allocations,
+                dataCenters: user.dataCenters
+            })
         }
     },
     getters: {

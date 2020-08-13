@@ -15,10 +15,10 @@
 
         <div class="flex-1 text-right p-6 mr-6" id="nav">
           <router-link to="/" v-if="isLoggedIn">Dashboard</router-link>|
-          <router-link to="/login" v-if="!isLoggedIn">Login</router-link>|
-          <router-link to="/settings" v-if="isLoggedIn">Settings</router-link>|
-          <router-link to="/logout" v-if="isLoggedIn">Logout</router-link>|
+          <!-- <router-link to="/login" v-if="!isLoggedIn">Login</router-link>| -->
+          <!-- <router-link to="/settings" v-if="isLoggedIn">Settings</router-link>| -->
           <router-link to="/about">About</router-link>|
+          <a href @click.prevent="logout()">Logout</a>|
         </div>
       </div>
     </div>
@@ -32,25 +32,73 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   computed: {
     isLoggedIn() {
       return this.$store.getters["auth/isLoggedIn"];
     },
+    token() {
+      return this.$store.getters['auth/token'];
+    }
+  },
+  data() {
+    return {
+      refreshInterval: null,
+    };
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch("auth/destroyToken");
+      this.$keycloak.logout();
+    },
+
+    startRefreshTokenInterval() {
+      this.refreshInterval = setInterval(() => {
+        this.$keycloak
+          .updateToken(70)
+          .success((refreshed) => {
+            if (refreshed) {
+              console.debug("Token refreshed" + refreshed);
+            } else {
+              console.warn(
+                "Token not refreshed, valid for " +
+                  Math.round(
+                    this.$keycloak.tokenParsed.exp +
+                      this.$keycloak.timeSkew -
+                      new Date().getTime() / 1000
+                  ) +
+                  " seconds"
+              );
+            }
+          })
+          .error(() => {
+            console.error("Failed to refresh token");
+          });
+      }, 60000);
+    },
+
+    obtainUserInfo() {
+      axios.get("http://localhost:8085/igsn-registry/api/me/", {
+        headers: {
+          'Authorization': `Bearer ${this.token}`
+        }
+      }).then(({ data }) => {
+        this.$store.dispatch('auth/setUser', data)
+      }).catch((error) => {
+        console.error(error)
+      })
+    }
+
   },
   mounted() {
-    let currentPath = this.$router.currentRoute.path;
-    // console.log(currentPath)
-    if (
-      !this.isLoggedIn &&
-      currentPath != "/login" &&
-      currentPath != "/logout"
-    ) {
-      this.$router.push({
-        path: "/login",
-        query: { redirectTo: this.$router.currentRoute.path },
-      });
-    }
+    this.$store.dispatch("auth/storeToken", {
+      token: this.$keycloak.token,
+      refreshToken: this.$keycloak.refreshToken,
+    });
+    this.startRefreshTokenInterval();
+    this.obtainUserInfo()
   },
 };
 </script>
