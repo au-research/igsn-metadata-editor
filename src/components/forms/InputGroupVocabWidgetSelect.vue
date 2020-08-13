@@ -12,9 +12,9 @@ export default {
   mounted() {
     window.$(this.$el).vocab_widget({
       mode: "collection",
-      endpoint: "https://vocabs.ands.org.au/apps/vocab_widget/proxy/",
-      mode_params: "http://pid.geoscience.gov.au/def/voc/ga/igsncode/identifierType",
-      repository: "http://vocabs.ands.org.au/repository/api/lda/ga/igsn-codelist/v1-0",
+      endpoint: "https://demo.vocabs.ardc.edu.au/apps/vocab_widget/proxy/",
+      mode_params: "http://pid.geoscience.gov.au/def/voc/ga/igsncode/materialType",
+      repository: "https://demo.vocabs.ardc.edu.au/repository/api/lda/ands/csiro-igsn-geo-sample-schema-vocabulary/version-1",
       cache: false,
       target_field: "about",
       fields: ["label"]

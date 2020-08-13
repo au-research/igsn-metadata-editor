@@ -1,13 +1,14 @@
 import Keycloak from 'keycloak-js'
 
 let keycloakOptions = {
-    url: process.env.VUE_APP_KEYCLOAK_URL || 'https://test.auth.ardc.edu.au/auth', 
-    realm: process.env.VUE_APP_KEYCLOAK_REALM || 'ARDC', 
-    clientId: process.env.VUE_APP_KEYCLOAK_CLIENT_ID || 'igsn-editor', 
+    url: process.env.VUE_APP_KEYCLOAK_URL || 'https://test.auth.ardc.edu.au/auth',
+    realm: process.env.VUE_APP_KEYCLOAK_REALM || 'ARDC',
+    clientId: process.env.VUE_APP_KEYCLOAK_CLIENT_ID || 'igsn-editor',
     onLoad: 'login-required'
 }
 
 let keycloak = Keycloak(keycloakOptions);
+window.keycloak = keycloak;
 
 const user = {
     namespaced: true,
@@ -43,29 +44,17 @@ const user = {
     },
     actions: {
         initSSO({ commit }) {
-
-            keycloak.init({ onLoad: keycloakOptions.onLoad }).success((auth) => {
-                if (!auth) {
-                    window.location.reload();
-                } else {
-                    console.log("Authenticated");
-                }
-
-                commit("auth_success", { token: keycloak.token, refreshToken: keycloak.refreshToken })
-
-                // get user
-                // keycloak.loadUserProfile()
-                //     .success((profile) => commit("auth_userInfo", profile))
-            
-                keycloak.loadUserInfo()
-                    .success((user) => commit("auth_userInfo", user))
-
-                // localStorage.setItem("vue-token", keycloak.token);
-                // localStorage.setItem("vue-refresh-token", keycloak.refreshToken);
-
-            }).error(() => {
-                console.error("Authenticated Failed");
-            });
+            return new Promise((resolve, reject) => {
+                keycloak.init({ onLoad: keycloakOptions.onLoad }).success((auth) => {
+                    commit("auth_success", { token: keycloak.token, refreshToken: keycloak.refreshToken })
+                    keycloak.loadUserInfo()
+                        .success((user) => commit("auth_userInfo", user))
+                    resolve()
+                    window.keycloak = keycloak
+                }).error(() => {
+                    console.error("Authenticated Failed");
+                });
+            })
         },
         refresh({ commit }) {
             return keycloak.updateToken(1)
@@ -111,13 +100,26 @@ const user = {
             })
         },
         logout({ commit }) {
-
-            return new Promise((resolve, reject) => {
-                commit('logout')
-                keycloak.logout()
-                // delete axios.defaults.headers.common['Authorization']
-                resolve()
-            })
+            // let keycloak = Keycloak(keycloakOptions);
+            // keycloak.init().then(() => {
+            if (keycloak && keycloak.logout == 'function') {
+                window.keycloak.logout()
+            }
+            commit('logout')
+            // })
+            
+            // console.log('here')
+            // Keycloak.logout()
+            // keycloak.logout().then((auth) => {
+            //     console.log(auth)
+            //     commit('logout')
+            // })
+            // return new Promise((resolve, reject) => {
+            //     commit('logout')
+            //     keycloak.logout().then(resolve())
+            //     // delete axios.defaults.headers.common['Authorization']
+            //     // resolve()
+            // })
         }
     },
     getters: {

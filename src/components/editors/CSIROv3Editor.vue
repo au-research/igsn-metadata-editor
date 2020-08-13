@@ -50,6 +50,7 @@
               class="mr-4"
               label="Log Event Type"
               v-model="doc.logDateEventType"
+              help="logDate"
               :vocab="vocab.eventType"
               :required="true"
             ></InputGroupVocabSelect>
@@ -66,7 +67,13 @@
             v-model="doc.registeredObjectType"
             :vocab="vocab.registeredObjectType"
             :required="true"
+            help="registeredObjectType"
           ></InputGroupVocabSelect>
+
+          <InputGroupVocabWidgetSelect
+          label="Registered Object Type 2"
+          v-model="doc.registeredObjectType">
+          </InputGroupVocabWidgetSelect>
 
           <InputGroupVocabSelect
             label="Metadata Visibility"
@@ -88,6 +95,7 @@
             label="Sample or Item Title"
             placeholder="Zircons from fraser range amphibolite on expoxy SHRIMP mount sample number 175423"
             :required="true"
+            help="resourceTitle"
             validation-text="Provide a title for the sample or item"
           ></InputGroupText>
 
@@ -250,7 +258,7 @@
           <a
             class="btn btn-blue"
             href
-            @click.prevent="doc.related_resource.push({})"
+            @click.prevent="doc.relatedResources.push({})"
           >Add New Related Resource</a>
         </div>
 
@@ -418,7 +426,6 @@ export default {
   data() {
     return {
       tab: "primary",
-      errors: {},
       doc: {}
     };
   },

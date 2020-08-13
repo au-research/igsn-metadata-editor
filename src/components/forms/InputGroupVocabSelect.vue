@@ -1,5 +1,5 @@
 <template>
-  <InputGroup :label="label" :help="help" :class="[errored ? 'error' : '']">
+  <InputGroup :label="label" :help="help" :error="errored">
     <div class="flex">
       <select
         name
@@ -11,8 +11,6 @@
       </select>
       <button v-if="removable" class="btn btn-red ml-2 text-xs" @click.prevent="remove">Remove</button>
     </div>
-
-    <span v-if="errored">Provide a title for the sample or item</span>
   </InputGroup>
 </template>
 
@@ -47,13 +45,6 @@ export default {
     },
     remove() {
       this.$emit("remove");
-    },
-    validate() {
-      if (this.errored) {
-        this.$emit("error");
-      } else {
-        this.$emit("fixed");
-      }
     }
   },
   computed: {
@@ -62,12 +53,6 @@ export default {
         this.required === true && (this.value == undefined || this.value == "")
       );
     }
-  },
-  watch: {
-    errored() { this.validate() }
-  },
-  mounted() {
-      this.validate();
   }
 };
 </script>

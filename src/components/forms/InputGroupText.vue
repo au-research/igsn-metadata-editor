@@ -1,5 +1,5 @@
 <template>
-  <InputGroup :label="label" :help="help" :class="[errored ? 'error' : '']">
+  <InputGroup :label="label" :help="help" :error="error">
     <div class="flex">
       <input
         :value="value"
@@ -9,7 +9,6 @@
       />
       <button v-if="removable" class="btn btn-red text-xs ml-2" @click.prevent="remove">Remove</button>
     </div>
-    <span v-if="errored" v-text="validationTextValue"></span>
   </InputGroup>
 </template>
 
@@ -51,7 +50,7 @@ export default {
         ? this.validationText
         : "This field is required";
     },
-    errored() {
+    error() {
       return this.required && (this.value == undefined || this.value == "");
     }
   }

@@ -4,9 +4,9 @@
           <div class="p-2 text-left" v-html="helpText"></div>
         </div>
 
-        <button slot="reference" class="focus:outline-none">
+        <a slot="reference" class="focus:outline-none">
           <i class="fas fa-question-circle text-blue-500 mr-2 cursor-pointer"></i>
-        </button>
+        </a>
       </popper>
 </template>
 

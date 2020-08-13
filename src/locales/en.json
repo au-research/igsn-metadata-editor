@@ -9,8 +9,10 @@
       "other_information": "Other Information"
     },
     "help": {
-      "registeredObjectType": "Registered Object Type",
-      "visibility": "The visibility of a geosample or entity metadata. <br/> Use 'true' for public and 'false' for private geosamples or entities"
+      "registeredObjectType": "Registered Object Type - Select the links below for definition: <ul><li><a target='_blank' href='http://pid.geoscience.gov.au/def/voc/igsn-codelists/PhysicalSample'>Physical sample</a></li><li><a target='_blank' href='http://pid.geoscience.gov.au/def/voc/igsn-codelists/SampleCollection'>Sample collection</a></li><li><a target='_blank' href='http://pid.geoscience.gov.au/def/voc/igsn-codelists/SamplingFeature'>Sampling feature</a></li></ul>",
+      "visibility": "The visibility of a geosample or entity metadata. <br/> Use 'true' for public and 'false' for private geosamples or entities",
+      "resourceTitle": "Short title or description of the sample, e.g. Zircons from fraser range amphibolite on expoxy SHRIMP mount sample number 175423",
+      "logDate": "Use this element to indicate an event (the status of a resource or its registration) and its timestamp"
     }
   }
 }

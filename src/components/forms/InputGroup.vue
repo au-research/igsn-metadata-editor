@@ -1,10 +1,11 @@
 <template>
-  <div class="input-group">
+  <div class="input-group" :class="[error ? 'error' : '']">
     <div class="flex">
       <HelpIcon :help="help" v-if="label && help"></HelpIcon>
       <label v-text="label"></label>
     </div>
     <slot></slot>
+    <span v-if="error">This field is required</span>
   </div>
 </template>
 
@@ -13,7 +14,7 @@ import HelpIcon from "@/components/forms/HelpIcon";
 
 export default {
   name: "InputGroup",
-  props: ["label", "help"],
+  props: ["label", "help", "error"],
   components: { HelpIcon },
   computed: {
     helpText() {
