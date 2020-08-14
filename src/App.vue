@@ -15,8 +15,6 @@
 
         <div class="flex-1 text-right p-6 mr-6" id="nav">
           <router-link to="/" v-if="isLoggedIn">Dashboard</router-link>|
-          <!-- <router-link to="/login" v-if="!isLoggedIn">Login</router-link>| -->
-          <!-- <router-link to="/settings" v-if="isLoggedIn">Settings</router-link>| -->
           <router-link to="/about">About</router-link>|
           <a href @click.prevent="logout()">Logout</a>|
         </div>
@@ -33,6 +31,7 @@
 
 <script>
 import axios from 'axios'
+import RegistryService from './services/registry'
 
 export default {
   computed: {
@@ -60,6 +59,7 @@ export default {
           .updateToken(70)
           .success((refreshed) => {
             if (refreshed) {
+              this.$registryService.setToken(this.$keycloak.token)
               console.debug("Token refreshed" + refreshed);
             } else {
               console.warn(
@@ -80,14 +80,8 @@ export default {
     },
 
     obtainUserInfo() {
-      axios.get("http://localhost:8085/igsn-registry/api/me/", {
-        headers: {
-          'Authorization': `Bearer ${this.token}`
-        }
-      }).then(({ data }) => {
+      this.$registryService.getUserInfo().then((data) => {
         this.$store.dispatch('auth/setUser', data)
-      }).catch((error) => {
-        console.error(error)
       })
     }
 
