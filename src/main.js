@@ -20,7 +20,7 @@ let keycloak = Keycloak(keycloakOptions);
 let registryService = new RegistryService(process.env.VUE_APP_REGISTRY_URL)
 
 keycloak
-  .init({ onLoad: keycloakOptions.onLoad })
+  .init({ onLoad: keycloakOptions.onLoad, checkLoginIframe: false })
   .success((auth) =>{
 
     if(!auth) {
@@ -42,7 +42,7 @@ keycloak
 
   })
   .error((ex) => {
-    console.error("Error")
+    console.error("Error", ex)
   })
 
 
