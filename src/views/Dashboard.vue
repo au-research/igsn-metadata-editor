@@ -1,10 +1,7 @@
 <template>
   <div>
-    <div v-if="!isLoggedIn">
-      <h1>You are not Logged In. Click here to login</h1>
-    </div>
 
-    <div class="flex flex-col" v-if="result">
+    <div class="flex flex-col">
       <div class="flex items-center mb-6">
         <div class="pt-2 relative lg:w-1/4 md:w-1/2 sm:w-full text-gray-600">
           <input
@@ -42,7 +39,11 @@
         </div>
       </div>
 
-      <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+      <div v-if="result && result.totalElements === 0">
+          There are no records to be displayed! 
+      </div>
+
+      <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8" v-if="result && result.totalElements > 0">
         <div
           class="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200"
         >
@@ -251,7 +252,7 @@ export default {
       this.getRecords();
     },
     onQueryChange() {
-      if (this.page == "") {
+      if (this.query === "") {
         this.search();
       }
     },
