@@ -16,7 +16,7 @@
             >{{ $t('igsn.tab.curationDetails') }}</a>
             <a
                 :class="[tab === 'location' ? 'tab tab-active' : 'tab']"
-                @click.prevent="tab='location'"
+                @click.prevent="tabTo('location')"
             >{{ $t('igsn.tab.location') }}</a>
             <a
                 :class="[tab === 'related_resource' ? 'tab tab-active' : 'tab']"
@@ -39,6 +39,7 @@
 
         <!-- Primary Info -->
         <div class="tab-content" v-show="tab === 'primary'">
+
           <InputGroupText
               v-model="doc.resourceIdentifier"
               :label="$t('igsn.label.resourceIdentifier')"
@@ -222,6 +223,7 @@
             ></InputGroupText>
           </div>
 
+          <LocationPicker v-model="doc.location.geometry"></LocationPicker>
           <InputGroupText v-model="doc.location.geometry" label="Geometry"></InputGroupText>
           <div class="flex">
             <InputGroupVocabSelect
@@ -434,14 +436,17 @@
 import InputGroupText from "@/components/forms/InputGroupText";
 import InputGroupVocabSelect from "@/components/forms/InputGroupVocabSelect";
 import InputGroupDatePicker from "@/components/forms/InputGroupDatePicker";
+import LocationPicker from "@/components/forms/LocationPicker"
 import ardcv1 from "@/services/schema/ardcv1";
+import { EventBus } from "@/services/event-bus"
 
 export default {
   name: "ARDCv1Editor",
   components: {
     InputGroupText,
     InputGroupVocabSelect,
-    InputGroupDatePicker
+    InputGroupDatePicker,
+    LocationPicker
   },
   props: {
     xml: {
@@ -452,7 +457,8 @@ export default {
   data() {
     return {
       tab: "primary",
-      doc: {}
+      doc: {},
+      testWkt: 'POLYGON((-13.783086520522398 53.85252660044951,4.140377554451567 53.85252660044951,4.140377554451567 47.989921667414194,-13.783086520522398 47.989921667414194,-13.783086520522398 53.85252660044951))'
     };
   },
   computed: {
@@ -466,6 +472,11 @@ export default {
     }
   },
   methods: {
+
+    tabTo(tab) {
+      this.tab = tab
+      EventBus.$emit('tab', this.tab);
+    },
 
     // the resource is now not under embargo due to
     visibilityUpdated() {
