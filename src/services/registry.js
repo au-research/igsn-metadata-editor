@@ -22,12 +22,12 @@ export default class RegistryService {
     }
 
     async getUserInfo() {
-        const { data } = await this.http.get('/api/me/');
+        const {data} = await this.http.get('/api/me/');
         return data;
     }
 
     async getUserRecords(page, size) {
-        const { data } = await this.http.get('/api/resources/records/', {
+        const {data} = await this.http.get('/api/resources/records/', {
             params: {
                 page: page, size: size
             }
@@ -35,18 +35,52 @@ export default class RegistryService {
         return data;
     }
 
+    async getIdentifierByValue(value) {
+        const {data} = await this.http.get('/api/resources/identifiers', {
+            params: {
+                value
+            }
+        })
+        return data;
+    }
+
+    async getVersions(record, schema) {
+        const {data} = await this.http.get(`/api/resources/records/${record}/versions/`, {
+            params: {schema}
+        })
+        return data
+    }
+
+    async getVersionContent(versionID) {
+        const {data} = await this.http.get(`/api/resources/versions/${versionID}/content/`)
+
+        return data
+    }
+
+    async getContentByIdentifierValue(identifierValue) {
+        let idResult = await this.getIdentifierByValue(identifierValue)
+        let recordID = idResult.content[0].record
+        let identifierID = idResult.content[0].id
+
+        let verResult = await this.getVersions(recordID, "ardc-igsn-desc-1.0")
+        let versionID = verResult.content[0].id
+
+        let versionContent = await this.getVersionContent(versionID)
+
+        return {
+            recordID, identifierID, versionID, versionContent
+        }
+    }
+
     async getUserIGSNRecords(page, size, title) {
         let params = {
-            page: page, 
-            size: size, 
-            include: "igsn"
+            page: page,
+            size: size
         }
-
         if (title) {
             params.title = title
         }
-        
-        const { data } = await this.http.get('/api/resources/records/', {
+        const {data} = await this.http.get('/api/resources/records/', {
             params
         })
         return data;

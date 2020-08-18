@@ -9,7 +9,7 @@ Vue.use(VueRouter)
 const routes = [
   { path: '/', name: 'Dashboard', component: Dashboard },
   { path: '/editor/:schema?/:docID?', name: 'Editor', component: Editor },
-  { path: '/edit', name: 'edit', component: Editor },
+  { path: '/edit/:schema/:versionID?', name: 'edit', component: Editor },
   { path: '/about*', name: 'About', component: About },
 ]
 

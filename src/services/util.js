@@ -165,6 +165,26 @@ export default {
     };
   },
 
+  makeArray(stuff) {
+    if (! stuff) {
+      return []
+    }
+    return Array.isArray(stuff) ? stuff : [stuff]
+  },
+
+  getCurationDetails(curation) {
+    // console.log("getCurationDetails", curation)
+    return this.makeArray(curation).map((curation) => {
+      return {
+        curator: curation.curator?._text,
+        curationDate: curation.curationDate?._text,
+        curationLocation: curation.curationLocation?._text,
+        curatingInstitution: curation.curatingInstitution?._text,
+        institutionURI: curation.curatingInstitution?._attributes?.institutionURI
+      }
+    })
+  },
+
   convertJSONDocToDOMDoc(jsondoc) {
     let resource = 'resources' in jsondoc && 'resource' in jsondoc.resources ? jsondoc.resources.resource : {};
     return {
@@ -191,7 +211,7 @@ export default {
         }
       })),
       //curationDetails
-      curationDetails: optArr(resource.curationDetails?.curation?.map((curation) => {
+      curationDetails: this.makeArray(optArr(resource.curationDetails?.curation)).map((curation) => {
         return {
           curator: curation.curator?._text,
           curationDate: curation.curationDate?._text,
@@ -199,7 +219,8 @@ export default {
           curatingInstitution: curation.curatingInstitution?._text,
           institutionURI: curation.curatingInstitution?._attributes?.institutionURI
         }
-      })),
+      }),
+
       //date
       visibility: opt(resource.isPublic?._text),
       landingPage: opt(resource.landingPage?._text),
@@ -217,23 +238,29 @@ export default {
       logDate: opt(resource.logDate?._text),
       logDateEventType: opt(resource.logDate?._attributes?.eventType),
 
-      materialTypes: opt(resource.materialTypes?.materialType?.map((type) => {
+      materialTypes: opt(this.makeArray(resource.materialTypes?.materialType)?.map((type) => {
         return type._text
       }), ['']),
 
       method: opt(resource.method?._text),
       methodURI: opt(resource.method?._attributes?.methodURI),
       purpose: opt(resource.purpose?._text),
-      relatedResources: optArr(resource.relatedResources?.relatedResource?.map((related) => {
+      relatedResources: this.makeArray(resource.relatedResources?.relatedResource).map((related) => {
         return {
-          resource: related._text,
-          relatedResourceIdentifierType: related._attributes?.relatedResourceIdentifierType,
+          relatedResourceIdentifiers: this.makeArray(related.relatedResourceIdentifiers)
+              .map((identifier) => {
+                return {
+                  value: identifier._text,
+                  type: identifier._attributes?.relatedResourceIdentifierType
+                }
+              }),
+          relatedResourceTitle: related.relatedResourceTitle._text,
           relationType: related._attributes?.relationType
         }
-      })),
+      }),
       resourceIdentifier: opt(resource.resourceIdentifier?._text),
       resourceTitle: opt(resource.resourceTitle?._text),
-      resourceTypes: opt(resource.resourceTypes?.resourceType?.map((resourceType) => {
+      resourceTypes: opt(this.makeArray(resource.resourceTypes?.resourceType).map((resourceType) => {
         return resourceType._text
       }), ['']),
 
@@ -249,13 +276,14 @@ export default {
   convertJSONDocToXML(doc) {
     return convert.json2xml(doc, {
       compact: true,
+      trim: true,
       spaces: 2,
       fullTagEmptyElement: true
     });
   },
 
   convertXMLTOJSONDoc(xml) {
-    return JSON.parse(convert.xml2json(xml, { compact: true }))
+    return JSON.parse(convert.xml2json(xml, { compact: true, trim: true }))
   },
 
   getSampleXML() {

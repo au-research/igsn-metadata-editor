@@ -6,11 +6,11 @@
         <div class="bg-white mb-8">
           <nav class="flex flex-col">
             <a
-              :class="[tab=='primary' ? 'tab tab-active' : 'tab']"
+              :class="[tab==='primary' ? 'tab tab-active' : 'tab']"
               @click.prevent="tab='primary'"
             >{{ $t('igsn.tab.primary') }}</a>
             <a
-              :class="[tab=='curation_details' ? 'tab tab-active' : 'tab']"
+              :class="[tab==='curation_details' ? 'tab tab-active' : 'tab']"
               @click.prevent="tab='curation_details'"
             >Curation Details</a>
             <a
@@ -69,11 +69,6 @@
             :required="true"
             help="registeredObjectType"
           ></InputGroupVocabSelect>
-
-          <InputGroupVocabWidgetSelect
-          label="Registered Object Type 2"
-          v-model="doc.registeredObjectType">
-          </InputGroupVocabWidgetSelect>
 
           <InputGroupVocabSelect
             label="Metadata Visibility"
@@ -420,8 +415,7 @@ export default {
     xml: {
       type: String,
       required: true
-    },
-    vocabulary: String
+    }
   },
   data() {
     return {

@@ -11,27 +11,27 @@
     <LocaleChanger></LocaleChanger>
 
     <hr class="my-8"/> -->
-    
-    <CSIROv3Editor :xml="xml" :vocabulary="vocabulary"></CSIROv3Editor>
+
+    <ARDCv1Editor :xml="xml"></ARDCv1Editor>
   </div>
 </template>
 
 <script>
-import CSIROv3Editor from "@/components/editors/CSIROv3Editor.vue";
+import ARDCv1Editor from "@/components/editors/ARDCv1Editor.vue";
 //import LocaleChanger from "@/components/LocaleChanger.vue"
 import util from "@/services/util.js";
 
 export default {
   name: 'Editor',
   components: {
-    CSIROv3Editor
+    ARDCv1Editor
   },
+
   data() {
     return {
-      schema: '',
-      documentID: '',
-      vocabulary: 'csiro-igsn-codelist',
-      xml: ''
+      schema: null,
+      versionID: null,
+      xml: null
     };
   },
 
@@ -45,21 +45,12 @@ export default {
   },
 
   mounted() {
-    // debug
-    this.loadSampleXML()
-    console.log(this.$route.params)
-    this.schema = this.$route.params.schema
-    this.documentID = this.$route.params.docID
-
-    // check schema
-
-    if (this.documentID == "CSTSTDOCO1"){
-      this.loadSampleXML()
-    } else {
-      this.loadXML("")
-    }
-
-    // check documentID based on schema
+    this.schema = this.$route.params.schema;
+    this.versionID = this.$route.params.versionID;
+    this.$registryService.getVersionContent(this.versionID)
+        .then((data) => {
+          this.loadXML(data)
+        })
   }
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
   <InputGroup :label="label" :class="[errored ? 'error' : '']">
-    <date-pick v-model="date"></date-pick>
+    <date-pick v-model="date" :pickTime="true" :displayFormat="'YYYY-MM-DD'"></date-pick>
   </InputGroup>
 </template>
 
@@ -25,6 +25,16 @@ export default {
     date() {
        this.$emit("input", this.date);
     }
+  },
+  methods: {
+    parseDate(dateString) {
+        return Date.parse(dateString)
+    }
+  },
+  mounted() {
+    setTimeout(() => {
+      this.date = this.value
+    }, 100)
   }
 };
 </script>
