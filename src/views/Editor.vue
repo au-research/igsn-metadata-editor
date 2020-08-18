@@ -19,7 +19,6 @@
 <script>
 import ARDCv1Editor from "@/components/editors/ARDCv1Editor.vue";
 //import LocaleChanger from "@/components/LocaleChanger.vue"
-import util from "@/services/util.js";
 
 export default {
   name: 'Editor',
@@ -31,16 +30,13 @@ export default {
     return {
       schema: null,
       versionID: null,
-      xml: null
+      xml: ''
     };
   },
 
   methods: {
     loadXML(xml) {
       this.xml = xml
-    },
-    loadSampleXML() {
-      this.loadXML(util.getSampleXML())
     }
   },
 

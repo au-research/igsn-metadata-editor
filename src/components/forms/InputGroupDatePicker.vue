@@ -1,6 +1,6 @@
 <template>
   <InputGroup :label="label" :class="[errored ? 'error' : '']">
-    <date-pick v-model="date" :pickTime="true" :displayFormat="'YYYY-MM-DD'"></date-pick>
+    <date-pick v-model="date"></date-pick>
   </InputGroup>
 </template>
 

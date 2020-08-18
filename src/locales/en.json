@@ -1,12 +1,17 @@
 {
   "igsn": {
     "tab": {
-      "primary": "Primary Info",
-      "curation": "Curation Details",
+      "primary": "Primary Information",
+      "curationDetails": "Curation Details",
       "location": "Location",
-      "related_resource": "Related Resource",
+      "relatedResources": "Related Resources",
       "contributors": "Contributors",
-      "other_information": "Other Information"
+      "otherInformation": "Other Information",
+      "previewXML": "Preview XML"
+    },
+    "label": {
+      "resourceIdentifier": "Resource Identifier",
+      "logEventType": "Log Event Type"
     },
     "help": {
       "registeredObjectType": "Registered Object Type - Select the links below for definition: <ul><li><a target='_blank' href='http://pid.geoscience.gov.au/def/voc/igsn-codelists/PhysicalSample'>Physical sample</a></li><li><a target='_blank' href='http://pid.geoscience.gov.au/def/voc/igsn-codelists/SampleCollection'>Sample collection</a></li><li><a target='_blank' href='http://pid.geoscience.gov.au/def/voc/igsn-codelists/SamplingFeature'>Sampling feature</a></li></ul>",

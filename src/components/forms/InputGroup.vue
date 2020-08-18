@@ -18,8 +18,7 @@ export default {
   components: { HelpIcon },
   computed: {
     helpText() {
-      let index = "igsn.help." + this.help;
-      return this.$t(index);
+      return this.help;
     },
     popOverOptions() {
       return {
