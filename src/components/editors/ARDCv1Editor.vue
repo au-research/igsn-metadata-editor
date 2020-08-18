@@ -149,32 +149,36 @@
                 :required="true"
             ></InputGroupText>
 
-            <div class="flex items-center"
-                 v-for="(identifier, index) in curation.curatorIdentifiers" :key="index">
-              <InputGroupVocabSelect
-                  label="Type"
-                  class="mr-4"
-                  v-model="curation.curatorIdentifiers[index].type"
-                  :vocab="vocab.identifierTypes"
-                  :required="true"
-              ></InputGroupVocabSelect>
-              <InputGroupText
-                  v-model="identifier.value"
-                  label="Value"
-                  :required="true"
-              ></InputGroupText>
-              <button
-                  class="btn btn-red text-xs"
-                  @click.prevent="curation.curatorIdentifiers.splice(index, 1)"
-              >Remove Identifier
-              </button>
+            <div class="my-4 border-b-2 border-t-2 py-5">
+              <label>Curator Identifiers</label>
+              <div class="flex items-start"
+                   v-for="(identifier, index) in curation.curatorIdentifiers" :key="index">
+                <InputGroupVocabSelect
+                    class="mr-4 w-32"
+                    v-model="curation.curatorIdentifiers[index].type"
+                    :vocab="vocab.identifierTypes"
+                    :required="true"
+                ></InputGroupVocabSelect>
+                <InputGroupText
+                    v-model="identifier.value"
+                    class="w-64"
+                    :required="true"
+                ></InputGroupText>
+                <a
+                    href=""
+                    class="btn btn-red ml-2 text-xs mt-3"
+                    @click.prevent="curation.curatorIdentifiers.splice(index, 1)"
+                ><i class="fas fa-trash-alt"></i>
+                </a>
+              </div>
+              <a
+                  href=""
+                  class="btn text-xs btn-blue"
+                  @click.prevent="curation.curatorIdentifiers.push({type: '', value: ''})"
+              ><i class="fas fa-plus-square"></i> Identifier
+              </a>
             </div>
-            <a
-                href=""
-                class="btn btn-blue"
-                @click.prevent="curation.curatorIdentifiers.push({type: '', value: ''})"
-            >Add New Identifier
-            </a>
+
 
             <InputGroupDatePicker
                 v-if="curation.curationDate !== undefined"
