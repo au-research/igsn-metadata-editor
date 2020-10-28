@@ -43,10 +43,13 @@ export default {
   mounted() {
     this.schema = this.$route.params.schema;
     this.versionID = this.$route.params.versionID;
-    this.$registryService.getVersionContent(this.versionID)
-        .then((data) => {
-          this.loadXML(data)
-        })
+    if (this.versionID) {
+      this.$registryService.getVersionContent(this.versionID)
+          .then((data) => {
+            this.loadXML(data)
+          })
+    }
+
   }
 }
 </script>

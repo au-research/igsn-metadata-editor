@@ -66,11 +66,11 @@ export default {
 
                     resourceTitle: dom.resourceTitle,
 
-                    alternateIdentifiers: {
-                        alternateIdentifier: dom.alternateIdentifiers?.map((identifier) => {
-                            return identifier
-                        })
-                    },
+                    // alternateIdentifiers: {
+                    //     alternateIdentifier: dom.alternateIdentifiers?.map((identifier) => {
+                    //         return identifier
+                    //     })
+                    // },
 
                     resourceTypes: {
                         resourceType: dom.resourceTypes?.map((type) => {
@@ -195,12 +195,16 @@ export default {
 
     json2dom(json) {
         let resource = 'resources' in json && 'resource' in json.resources ? json.resources.resource : {};
+
         return {
             registeredObjectType: opt(resource._attributes?.registeredObjectType),
 
-            alternateIdentifiers: optArr(resource.alternateIdentifiers?.alternateIdentifier?.map((identifier) => {
-                return identifier._text
-            })),
+            alternateIdentifiers: makeArray(resource.alternateIdentifiers).map((identifier) => {
+                return {
+                    value: identifier.alternateIdentifier?._text,
+                    type: identifier.alternateIdentifier?._attributes.alternateIdentifierType
+                }
+            }),
 
             campaign: opt(resource.campaign?._text),
             classifications: optArr(resource.classifications?.classification?.map((classification) => {

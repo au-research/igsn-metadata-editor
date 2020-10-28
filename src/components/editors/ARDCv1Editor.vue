@@ -338,7 +338,7 @@
           <div class="bg-gray-200 p-5 mb-4">
             <div v-for="(identifier, index) in doc.alternateIdentifiers" :key="index">
               <InputGroupText
-                  v-model="doc.alternateIdentifiers[index]"
+                  v-model="doc.alternateIdentifiers[index].value"
                   label="Alternate Identifier"
                   :removable="true"
                   @remove="doc.alternateIdentifiers.splice(index, 1)"
@@ -457,8 +457,7 @@ export default {
   data() {
     return {
       tab: "primary",
-      doc: {},
-      testWkt: 'POLYGON((-13.783086520522398 53.85252660044951,4.140377554451567 53.85252660044951,4.140377554451567 47.989921667414194,-13.783086520522398 47.989921667414194,-13.783086520522398 53.85252660044951))'
+      doc: {}
     };
   },
   computed: {
