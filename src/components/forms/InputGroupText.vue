@@ -2,11 +2,12 @@
   <InputGroup :label="label" :help="help" :error="error">
     <div class="flex">
       <input
-        :value="value"
-        :placeholder="placeholderValue"
-        v-on:input="updateValue($event.target.value)"
-        :required="required"
-        :disabled="disabled"
+          type="text"
+          :value="value"
+          :placeholder="placeholderValue"
+          v-on:input="updateValue($event.target.value)"
+          :required="required"
+          :disabled="disabled"
       />
       <button v-if="removable" class="btn btn-red text-xs ml-2" @click.prevent="remove">Remove</button>
     </div>
@@ -18,7 +19,7 @@ import InputGroup from "@/components/forms/InputGroup";
 
 export default {
   name: "InputGroupText",
-  components: { InputGroup },
+  components: {InputGroup},
   props: {
     label: String,
     value: String,
@@ -52,8 +53,8 @@ export default {
     },
     validationTextValue() {
       return this.validationText
-        ? this.validationText
-        : "This field is required";
+          ? this.validationText
+          : "This field is required";
     },
     error() {
       return this.required && (this.value == undefined || this.value == "");

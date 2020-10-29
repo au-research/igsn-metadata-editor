@@ -423,8 +423,18 @@
         </div>
       </div>
       <hr/>
-      <div class="mt-8">
-        <button type="submit" class="btn btn-blue">Register</button>
+      <div class="mt-8 flex items-center space-x-2 justify-end">
+        <div v-if="mode === 'edit'">
+          <input type="radio" v-model="eventType" v-bind:value="'destroyed'"> Destroy
+        </div>
+        <div v-if="mode === 'edit'">
+          <input type="radio" v-model="eventType" v-bind:value="'deprecated'"> Deprecate
+        </div>
+        <div v-if="mode === 'edit'">
+          <input type="radio" v-model="eventType" v-bind:value="'updated'"> Update
+        </div>
+        <button type="submit" class="btn btn-blue" v-if="mode === 'create'">Register</button>
+        <button type="submit" class="btn btn-blue" v-if="mode === 'edit'">Update</button>
       </div>
     </form>
   </div>
@@ -458,7 +468,8 @@ export default {
   data() {
     return {
       tab: "primary",
-      doc: {}
+      doc: {},
+      eventType: 'updated'
     };
   },
   computed: {
@@ -467,7 +478,7 @@ export default {
     },
     result_xml() {
       // dom -> json -> xml
-      let json = ardcv1.dom2json(this.doc);
+      let json = ardcv1.dom2json(this.doc, this.eventType);
       return ardcv1.json2xml(json);
     }
   },
@@ -496,7 +507,7 @@ export default {
 
     // generate IGSN value if mode is create
     if (this.mode === "create") {
-
+      this.eventType = 'registered';
       // todo generate IGSN Value
       this.$registryService.generateIGSNIdentifier().then((data) => {
         this.doc.resourceIdentifier = "10273/XXAB001AG"

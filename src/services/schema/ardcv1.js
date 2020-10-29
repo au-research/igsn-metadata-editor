@@ -38,7 +38,7 @@ export default {
         }
     },
 
-    dom2json(dom) {
+    dom2json(dom, eventType) {
 
         return {
             _declaration: {
@@ -194,7 +194,7 @@ export default {
                     comments: dom.comments,
                     logDate: {
                         _attributes: {
-                              eventType: "registered"
+                            eventType: eventType
                         },
                         _text: new Date().toISOString()
                     },
