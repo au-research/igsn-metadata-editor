@@ -86,5 +86,12 @@ export default class RegistryService {
         return data;
     }
 
+    // todo update endpoint when it's available
+    async generateIGSNIdentifier() {
+        const {data} = await this.http.get('/api/me/');
+
+        return data;
+    }
+
 
 }

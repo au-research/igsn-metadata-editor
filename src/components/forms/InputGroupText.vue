@@ -6,6 +6,7 @@
         :placeholder="placeholderValue"
         v-on:input="updateValue($event.target.value)"
         :required="required"
+        :disabled="disabled"
       />
       <button v-if="removable" class="btn btn-red text-xs ml-2" @click.prevent="remove">Remove</button>
     </div>
@@ -29,6 +30,10 @@ export default {
       default: false
     },
     removable: {
+      type: Boolean,
+      default: false
+    },
+    disabled: {
       type: Boolean,
       default: false
     }

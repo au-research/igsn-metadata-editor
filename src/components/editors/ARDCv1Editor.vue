@@ -43,15 +43,12 @@
           <InputGroupText
               v-model="doc.resourceIdentifier"
               :label="$t('igsn.label.resourceIdentifier')"
-              v-show="doc.resourceIdentifier"
-              disabled="true"
+              :disabled="true"
           ></InputGroupText>
 
           <InputGroupText
               v-model="doc.landingPage"
               :label="$t('igsn.label.landingPage')"
-              v-show="doc.landingPage"
-              disabled="true"
           ></InputGroupText>
 
           <InputGroupVocabSelect
@@ -439,7 +436,7 @@ import InputGroupVocabSelect from "@/components/forms/InputGroupVocabSelect";
 import InputGroupDatePicker from "@/components/forms/InputGroupDatePicker";
 import LocationPicker from "@/components/forms/LocationPicker"
 import ardcv1 from "@/services/schema/ardcv1";
-import { EventBus } from "@/services/event-bus"
+import {EventBus} from "@/services/event-bus"
 
 export default {
   name: "ARDCv1Editor",
@@ -453,6 +450,9 @@ export default {
     xml: {
       type: String,
       required: true
+    },
+    mode: {
+      type: String, required: false, default: "create"
     }
   },
   data() {
@@ -493,6 +493,16 @@ export default {
   },
   mounted() {
     this.initDoc();
+
+    // generate IGSN value if mode is create
+    if (this.mode === "create") {
+      // todo generate IGSN Value
+      this.$registryService.generateIGSNIdentifier().then((data) => {
+        this.doc.resourceIdentifier = "10273/XXAB001AG"
+        this.doc.landingPage = "https://test.identifiers.ardc.edu.au/igsn-portal/view/" + this.doc.resourceIdentifier
+      })
+    }
+
   },
   watch: {
     // if xml from the parent change (load new XML into form)

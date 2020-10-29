@@ -1,12 +1,12 @@
 <template>
   <div class="flex flex-col">
     <div id="map" class="w-full" style="height:310px"></div>
-<!--    <input-->
-<!--        class="mt-3"-->
-<!--        :value="value"-->
-<!--        v-on:input="updateValue($event.target.value)"-->
-<!--        @keyup="draw()"-->
-<!--    />-->
+    <!--    <input-->
+    <!--        class="mt-3"-->
+    <!--        :value="value"-->
+    <!--        v-on:input="updateValue($event.target.value)"-->
+    <!--        @keyup="draw()"-->
+    <!--    />-->
   </div>
 </template>
 
@@ -90,6 +90,9 @@ export default {
       return wkt
     },
     draw() {
+      if (!this.value || this.value.trim() === '') {
+        return;
+      }
       let wkt = this.getWKTFromString(this.value)
       if (wkt === null) {
         return;

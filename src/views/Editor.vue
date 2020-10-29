@@ -12,7 +12,7 @@
 
     <hr class="my-8"/> -->
 
-    <ARDCv1Editor :xml="xml"></ARDCv1Editor>
+    <ARDCv1Editor :xml="xml" :mode="mode"></ARDCv1Editor>
   </div>
 </template>
 
@@ -30,7 +30,8 @@ export default {
     return {
       schema: null,
       versionID: null,
-      xml: ''
+      xml: '',
+      mode: 'create'
     };
   },
 
@@ -41,9 +42,11 @@ export default {
   },
 
   mounted() {
-    this.schema = this.$route.params.schema;
-    this.versionID = this.$route.params.versionID;
+    this.schema = this.$route.params.schema
+    this.versionID = this.$route.params.versionID
+    this.mode = "create"
     if (this.versionID) {
+      this.mode = "edit"
       this.$registryService.getVersionContent(this.versionID)
           .then((data) => {
             this.loadXML(data)
