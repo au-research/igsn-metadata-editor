@@ -47,6 +47,13 @@
               disabled="true"
           ></InputGroupText>
 
+          <InputGroupText
+              v-model="doc.landingPage"
+              :label="$t('igsn.label.landingPage')"
+              v-show="doc.landingPage"
+              disabled="true"
+          ></InputGroupText>
+
           <InputGroupVocabSelect
               label="Registered Object Type"
               v-model="doc.registeredObjectType"

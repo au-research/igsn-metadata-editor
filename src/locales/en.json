@@ -11,6 +11,7 @@
     },
     "label": {
       "resourceIdentifier": "Resource Identifier",
+      "landingPage": "Landing Page",
       "logEventType": "Log Event Type"
     },
     "help": {
