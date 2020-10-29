@@ -423,6 +423,11 @@
         </div>
       </div>
       <hr/>
+
+      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert" v-if="errorMsg">
+        <span class="block sm:inline">{{ errorMsg }}</span>
+      </div>
+
       <div class="mt-8 flex items-center space-x-2 justify-end">
         <div v-if="mode === 'edit'">
           <input type="radio" v-model="eventType" v-bind:value="'destroyed'"> Destroy
@@ -433,8 +438,9 @@
         <div v-if="mode === 'edit'">
           <input type="radio" v-model="eventType" v-bind:value="'updated'"> Update
         </div>
-        <button type="submit" class="btn btn-blue" v-if="mode === 'create'">Register</button>
-        <button type="submit" class="btn btn-blue" v-if="mode === 'edit'">Update</button>
+
+        <button @click.prevent="mint" type="submit" class="btn btn-blue" v-if="mode === 'create'">Register</button>
+        <button @click.prevent="update" type="submit" class="btn btn-blue" v-if="mode === 'edit'">Update</button>
       </div>
     </form>
   </div>
@@ -469,7 +475,8 @@ export default {
     return {
       tab: "primary",
       doc: {},
-      eventType: 'updated'
+      eventType: 'updated',
+      errorMsg: null
     };
   },
   computed: {
@@ -500,7 +507,26 @@ export default {
     initDoc() {
       let json = ardcv1.xml2json(this.xml)
       this.doc = ardcv1.json2dom(json)
+    },
+
+    mint() {
+      this.errorMsg = null;
+      this.$registryService.mint(this.result_xml).then(data => {
+        console.log(data)
+      }).catch(error => {
+        this.errorMsg = error.response.data.message
+      })
+    },
+
+    update() {
+      this.errorMsg = null;
+      this.$registryService.update(this.result_xml).then(data => {
+        console.log(data)
+      }).catch(error => {
+        this.errorMsg = error.response.data.message
+      })
     }
+
   },
   mounted() {
     this.initDoc();
@@ -510,7 +536,7 @@ export default {
       this.eventType = 'registered';
       // todo generate IGSN Value
       this.$registryService.generateIGSNIdentifier().then((data) => {
-        this.doc.resourceIdentifier = "10273/XXAB001AG"
+        this.doc.resourceIdentifier = data
         this.doc.landingPage = this.doc.landingPage ? this.doc.landingPage : "https://test.identifiers.ardc.edu.au/igsn-portal/view/" + this.doc.resourceIdentifier
       })
     }

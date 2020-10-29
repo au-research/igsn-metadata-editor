@@ -42,13 +42,13 @@ export default {
 
         return {
             _declaration: {
-                _attributes: {version: "1.0", encoding: "utf-8"}
+                _attributes: {'version': "1.0", encoding: "utf-8"}
             },
             resources: {
                 _attributes: {
-                    xmlns: 'https://identifiers.ardc.edu.au/igsn-schema/descriptive/1.0/',
+                    xmlns: 'https://identifiers.ardc.edu.au/schemas/ardc-igsn-desc',
                     'xmlns:xsi': `http://www.w3.org/2001/XMLSchema-instance`,
-                    'xsi:schemaLocation': `https://identifiers.ardc.edu.au/igsn-schema/descriptive/1.0/resource.xsd`
+                    'xsi:schemaLocation': `https://identifiers.ardc.edu.au/schemas/ardc-igsn-desc`
                 },
                 resource: {
                     _attributes: {

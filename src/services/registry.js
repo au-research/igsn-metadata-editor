@@ -88,7 +88,27 @@ export default class RegistryService {
 
     // todo update endpoint when it's available
     async generateIGSNIdentifier() {
-        const {data} = await this.http.get('/api/me/');
+        const {data} = await this.http.get('/api/services/igsn/generate-igsn');
+
+        return data;
+    }
+
+    async mint(xml) {
+        const {data} = await this.http.post('/api/services/igsn/mint', xml, {
+            headers: {
+                'Content-Type' : 'application/xml+ardcv1'
+            }
+        });
+
+        return data;
+    }
+
+    async update(xml) {
+        const {data} = await this.http.post('/api/services/igsn/update', xml, {
+            headers: {
+                'Content-Type' : 'application/xml+ardcv1'
+            }
+        });
 
         return data;
     }
