@@ -337,12 +337,23 @@
         <div class="tab-content" v-show="tab === 'other_information'">
           <div class="bg-gray-200 p-5 mb-4">
             <div v-for="(identifier, index) in doc.alternateIdentifiers" :key="index">
-              <InputGroupText
-                  v-model="doc.alternateIdentifiers[index].value"
-                  label="Alternate Identifier"
-                  :removable="true"
-                  @remove="doc.alternateIdentifiers.splice(index, 1)"
-              ></InputGroupText>
+              <div class="flex">
+                <InputGroupVocabSelect
+                    class="mr-4 w-32"
+                    label="Type"
+                    v-model="doc.alternateIdentifiers[index].type"
+                    :vocab="vocab.identifierTypes"
+                    :required="true"
+                ></InputGroupVocabSelect>
+                <InputGroupText
+                    class="flex-1"
+                    v-model="doc.alternateIdentifiers[index].value"
+                    label="Alternate Identifier"
+                    :removable="true"
+                    @remove="doc.alternateIdentifiers.splice(index, 1)"
+                ></InputGroupText>
+              </div>
+
             </div>
             <button
                 class="btn btn-blue text-xs"

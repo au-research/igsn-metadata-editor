@@ -66,11 +66,16 @@ export default {
 
                     resourceTitle: dom.resourceTitle,
 
-                    // alternateIdentifiers: {
-                    //     alternateIdentifier: dom.alternateIdentifiers?.map((identifier) => {
-                    //         return identifier
-                    //     })
-                    // },
+                    alternateIdentifiers: {
+                        alternateIdentifier: dom.alternateIdentifiers?.map((identifier) => {
+                            return {
+                                _attributes: {
+                                    alternateIdentifierType: identifier.type,
+                                },
+                                _text: identifier.value
+                            }
+                        })
+                    },
 
                     resourceTypes: {
                         resourceType: dom.resourceTypes?.map((type) => {
@@ -196,6 +201,10 @@ export default {
     json2dom(json) {
         let resource = 'resources' in json && 'resource' in json.resources ? json.resources.resource : {};
 
+        if (resource === {}) {
+            return {}
+        }
+
         return {
             registeredObjectType: opt(resource._attributes?.registeredObjectType),
 
@@ -226,12 +235,12 @@ export default {
             curationDetails: makeArray(optArr(resource.curationDetails?.curation)).map((curation) => {
                 return {
                     curatorIdentifiers: makeArray(curation.curator?.curatorIdentifier)
-                            .map((identifier) => {
-                                return {
-                                    value: identifier._text,
-                                    type: identifier._attributes?.curatorIdentifierType
-                                }
-                            }),
+                        .map((identifier) => {
+                            return {
+                                value: identifier._text,
+                                type: identifier._attributes?.curatorIdentifierType
+                            }
+                        }),
                     curatorName: curation.curator?.curatorName?._text,
                     curationDate: curation.curationDate?._text,
                     curationLocation: curation.curationLocation?._text,

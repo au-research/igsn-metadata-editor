@@ -21,6 +21,7 @@ module.exports = {
     }
   },
   configureWebpack: {
-    performance: { hints: false }
+    performance: { hints: false },
+    devtool: 'source-map'
   }
 }

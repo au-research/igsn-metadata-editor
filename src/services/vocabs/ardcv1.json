@@ -377,6 +377,10 @@
     {
       "label": "VIAF",
       "value": "http://pid.geoscience.gov.au/def/voc/ga/igsncode/VIAF"
+    },
+    {
+      "label": "Local",
+      "value": "local"
     }
   ],
   "relationTypes": [
