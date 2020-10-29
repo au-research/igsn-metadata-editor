@@ -496,10 +496,11 @@ export default {
 
     // generate IGSN value if mode is create
     if (this.mode === "create") {
+
       // todo generate IGSN Value
       this.$registryService.generateIGSNIdentifier().then((data) => {
         this.doc.resourceIdentifier = "10273/XXAB001AG"
-        this.doc.landingPage = "https://test.identifiers.ardc.edu.au/igsn-portal/view/" + this.doc.resourceIdentifier
+        this.doc.landingPage = this.doc.landingPage ? this.doc.landingPage : "https://test.identifiers.ardc.edu.au/igsn-portal/view/" + this.doc.resourceIdentifier
       })
     }
 

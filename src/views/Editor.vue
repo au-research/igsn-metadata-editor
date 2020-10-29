@@ -12,7 +12,7 @@
 
     <hr class="my-8"/> -->
 
-    <ARDCv1Editor :xml="xml" :mode="mode"></ARDCv1Editor>
+    <ARDCv1Editor v-if="mode" :xml="xml" :mode="mode"></ARDCv1Editor>
   </div>
 </template>
 
@@ -31,7 +31,7 @@ export default {
       schema: null,
       versionID: null,
       xml: '',
-      mode: 'create'
+      mode: null
     };
   },
 
