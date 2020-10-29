@@ -47,23 +47,6 @@
               disabled="true"
           ></InputGroupText>
 
-          <div class="flex">
-            <InputGroupVocabSelect
-                class="mr-4"
-                :label="$t('igsn.label.logEventType')"
-                v-model="doc.logDateEventType"
-                help="logDate"
-                :vocab="vocab.eventType"
-                :required="true"
-            ></InputGroupVocabSelect>
-            <InputGroupDatePicker
-                v-if="doc.logDate !== undefined"
-                class="flex-1"
-                v-model="doc.logDate"
-                label="Log Date"
-            ></InputGroupDatePicker>
-          </div>
-
           <InputGroupVocabSelect
               label="Registered Object Type"
               v-model="doc.registeredObjectType"

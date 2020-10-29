@@ -192,7 +192,12 @@ export default {
                         })
                     },
                     comments: dom.comments,
-                    logDate: dom.logDate,
+                    logDate: {
+                        _attributes: {
+                              eventType: "registered"
+                        },
+                        _text: new Date().toISOString()
+                    },
                 }
             }
         };
