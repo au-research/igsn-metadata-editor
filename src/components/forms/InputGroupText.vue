@@ -1,12 +1,11 @@
 <template>
-  <InputGroup :label="label" :help="help" :error="error">
+  <InputGroup :label="label" :help="help" :error="errors[0]">
     <div class="flex">
       <input
           type="text"
           :value="value"
           :placeholder="placeholderValue"
           v-on:input="updateValue($event.target.value)"
-          :required="required"
           :disabled="disabled"
       />
       <button v-if="removable" class="btn btn-red text-xs ml-2" @click.prevent="remove">Remove</button>
@@ -37,6 +36,12 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    errors: {
+      type: Array,
+      default: () => {
+        return []
+      }
     }
   },
   methods: {
@@ -50,14 +55,6 @@ export default {
   computed: {
     placeholderValue() {
       return this.placeholder ? this.placeholder : this.label;
-    },
-    validationTextValue() {
-      return this.validationText
-          ? this.validationText
-          : "This field is required";
-    },
-    error() {
-      return this.required && (this.value == undefined || this.value == "");
     }
   }
 };
