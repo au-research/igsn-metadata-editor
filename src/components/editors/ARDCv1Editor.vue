@@ -138,37 +138,23 @@
             ></InputGroupText>
 
             <div class="my-4 border-b-2 border-t-2 py-5">
-              <label>Curator Identifiers</label>
-              <div class="flex items-start"
-                   v-for="(identifier, index) in curation.curatorIdentifiers" :key="index">
+              <label>Curator Identifier</label>
+              <div class="flex items-start">
                 <InputGroupVocabSelect
                     class="mr-4 w-32"
-                    v-model="curation.curatorIdentifiers[index].type"
+                    v-model="curation.curatorIdentifierType"
                     :vocab="vocab.identifierTypes"
                     :required="true"
                 ></InputGroupVocabSelect>
                 <InputGroupText
-                    v-model="identifier.value"
-                    class="w-64"
+                    v-model="curation.curatorIdentifier"
+                    class="flex-1"
                     :required="true"
                 ></InputGroupText>
-                <a
-                    href=""
-                    class="btn btn-red ml-2 text-xs mt-3"
-                    @click.prevent="curation.curatorIdentifiers.splice(index, 1)"
-                ><i class="fas fa-trash-alt"></i>
-                </a>
               </div>
-              <a
-                  href=""
-                  class="btn text-xs btn-blue"
-                  @click.prevent="curation.curatorIdentifiers.push({type: '', value: ''})"
-              ><i class="fas fa-plus-square"></i> Identifier
-              </a>
             </div>
 
             <InputGroupDatePicker
-                v-if="curation.curationDate !== undefined"
                 v-model="curation.curationDate"
                 label="Curation Date"
             ></InputGroupDatePicker>
@@ -186,7 +172,7 @@
 
           <button
               class="btn btn-blue"
-              @click.prevent="doc.curationDetails.push({curationDate: ''})"
+              @click.prevent="doc.curationDetails.push({})"
           >Add New Curation
           </button>
         </div>
@@ -482,7 +468,7 @@ export default {
   },
   data() {
     return {
-      tab: "primary",
+      tab: "preview_xml",
       doc: {},
       eventType: 'updated',
       successMsg: null,
@@ -494,9 +480,9 @@ export default {
       return ardcv1.vocab();
     },
     result_xml() {
-      // dom -> json -> xml
-      let json = ardcv1.dom2json(this.doc, this.eventType);
-      return ardcv1.json2xml(json);
+        // dom -> json -> xml
+        let json = ardcv1.dom2json(this.doc, this.eventType);
+        return ardcv1.json2xml(json);
     }
   },
   methods: {
@@ -515,8 +501,8 @@ export default {
 
     // convert xml -> json -> dom doc for form functionality
     initDoc() {
-      let json = ardcv1.xml2json(this.xml)
-      this.doc = ardcv1.json2dom(json)
+        let json = ardcv1.xml2json(this.xml)
+        this.doc = ardcv1.json2dom(json)
     },
 
     mint() {

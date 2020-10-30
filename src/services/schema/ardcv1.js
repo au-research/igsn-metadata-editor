@@ -1,6 +1,6 @@
 import convert from "xml-js";
 import ardcv1Vocab from "@/services/vocabs/ardcv1.json"
-import {opt, optArr, makeArray} from "@/services/util"
+import {opt, optArr, makeArray, clearEmpties, initEmptyArrayWithSingleObj} from "@/services/util"
 
 /**
  * ARDC Descriptive v1 service
@@ -21,21 +21,6 @@ export default {
 
     vocab() {
         return ardcv1Vocab;
-    },
-
-    /**
-     * provide a blank document
-     *
-     * @returns {{resourceTypes: [string], location: [], materialTypes: [string], contributors: [], relatedResources: []}}
-     */
-    blank() {
-        return {
-            resourceTypes: [""],
-            materialTypes: [""],
-            location: [],
-            relatedResources: [],
-            contributors: []
-        }
     },
 
     dom2json(dom, eventType) {
@@ -117,7 +102,7 @@ export default {
                             _attributes: {
                                 localityURI: dom.location?.localityURI
                             },
-                            _text: dom.location?.locality
+                            _text: opt(dom.location?.locality)
                         },
                         geometry: {
                             _attributes: {
@@ -125,7 +110,7 @@ export default {
                                 verticalDatum: dom.location?.geometryVerticalDatum,
                                 geometryURI: dom.location?.geometryURI
                             },
-                            _text: dom.location?.geometry
+                            _text: opt(dom.location?.geometry)
                         }
                     },
 
@@ -143,14 +128,12 @@ export default {
                             return {
                                 curator: {
                                     curatorName: cur.curatorName,
-                                    curatorIdentifier: cur.curatorIdentifiers.map((identifier) => {
-                                        return {
-                                            _attributes: {
-                                                curatorIdentifierType: identifier.type
-                                            },
-                                            _text: identifier.value
-                                        }
-                                    })
+                                    curatorIdentifier: {
+                                        _attributes: {
+                                            curatorIdentifierType: cur.curatorIdentifierType
+                                        },
+                                        _text: opt(cur.curatorIdentifier)
+                                    },
                                 },
                                 curationDate: cur.curationDate,
                                 curationLocation: cur.curationLocation,
@@ -158,7 +141,7 @@ export default {
                                     _attributes: {
                                         institutionURI: cur.institutionURI
                                     },
-                                    _text: cur.curatingInstitution
+                                    _text: opt(cur.curatingInstitution)
                                 }
                             }
                         })
@@ -249,22 +232,17 @@ export default {
                 }
             })),
             //curationDetails
-            curationDetails: makeArray(optArr(resource.curationDetails?.curation)).map((curation) => {
+            curationDetails: initEmptyArrayWithSingleObj(makeArray(optArr(resource.curationDetails?.curation)).map((curation) => {
                 return {
-                    curatorIdentifiers: makeArray(curation.curator?.curatorIdentifier)
-                        .map((identifier) => {
-                            return {
-                                value: identifier._text,
-                                type: identifier._attributes?.curatorIdentifierType
-                            }
-                        }),
+                    curatorIdentifier: curation.curator?.curatorIdentifier?._text,
+                    curatorIdentifierType: curation.curator?.curatorIdentifier?._attributes?.curatorIdentifierType,
                     curatorName: curation.curator?.curatorName?._text,
                     curationDate: curation.curationDate?._text,
                     curationLocation: curation.curationLocation?._text,
                     curatingInstitution: curation.curatingInstitution?._text,
                     institutionURI: curation.curatingInstitution?._attributes?.institutionURI
                 }
-            }),
+            })),
 
             //date
             visibility: opt(resource.isPublic?._text),
@@ -316,12 +294,17 @@ export default {
     },
 
     json2xml(doc) {
-        return convert.json2xml(doc, {
+        // convert to xml
+        let xml =  convert.json2xml(doc, {
             compact: true,
             trim: true,
             spaces: 2,
             fullTagEmptyElement: true
         });
+
+        // remove empty tags with regex
+        xml = xml.replaceAll(/<[^/>][^>]*>\s*<\/[^>]+>\s*/gi, "");
+        return xml;
     },
 
     xml2json(xml) {
