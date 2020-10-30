@@ -166,31 +166,43 @@ export default {
 
                     contributors: {
                         contributor: dom.contributors?.map((contributor) => {
-                            return {
+                            let con = {
                                 _attributes: {
                                     contributorType: contributor.contributorType,
                                 },
-                                contributorName: contributor.contributorName,
-                                contributorIdentifier: {
+                                contributorName: contributor.contributorName
+                            }
+
+                            if (contributor.contributorIdentifier) {
+                                con.contributorIdentifier = {
                                     _attributes: {
                                         contributorIdentifierType: contributor.contributorIdentifierType,
                                     },
                                     _text: contributor.contributorIdentifier
                                 }
                             }
+
+                            return con;
                         })
                     },
+
                     relatedResources: {
-                        relatedResource: dom.relatedResources?.map((related) => {
+                        relatedResource: dom.relatedResources?.map(related => {
                             return {
-                                _text: related.resource,
+                                relatedResourceTitle: related.relatedResourceTitle,
+                                relatedResourceIdentifier: {
+                                    _text: related.relatedResourceIdentifier,
+                                    _attributes: {
+                                        relatedResourceIdentifierType: related.relatedResourceIdentifierType
+                                    }
+                                },
                                 _attributes: {
-                                    relatedResourceIdentifierType: related.relatedResourceIdentifierType,
                                     relationType: related.relationType
                                 }
                             }
                         })
                     },
+
                     comments: dom.comments,
                     logDate: {
                         _attributes: {
@@ -278,19 +290,16 @@ export default {
             method: opt(resource.method?._text),
             methodURI: opt(resource.method?._attributes?.methodURI),
             purpose: opt(resource.purpose?._text),
+
             relatedResources: makeArray(resource.relatedResources?.relatedResource).map((related) => {
                 return {
-                    relatedResourceIdentifiers: makeArray(related.relatedResourceIdentifiers)
-                        .map((identifier) => {
-                            return {
-                                value: identifier._text,
-                                type: identifier._attributes?.relatedResourceIdentifierType
-                            }
-                        }),
+                    relatedResourceIdentifier: opt(related.relatedResourceIdentifier._text),
+                    relatedResourceIdentifierType: opt(related.relatedResourceIdentifier._attributes.relatedResourceIdentifierType),
                     relatedResourceTitle: related.relatedResourceTitle._text,
                     relationType: related._attributes?.relationType
                 }
             }),
+
             resourceIdentifier: opt(resource.resourceIdentifier?._text),
             resourceTitle: opt(resource.resourceTitle?._text),
             resourceTypes: opt(makeArray(resource.resourceTypes?.resourceType).map((resourceType) => {

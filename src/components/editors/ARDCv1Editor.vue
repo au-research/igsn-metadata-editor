@@ -167,7 +167,6 @@
               </a>
             </div>
 
-
             <InputGroupDatePicker
                 v-if="curation.curationDate !== undefined"
                 v-model="curation.curationDate"
@@ -240,32 +239,37 @@
         <!-- Related Resource -->
         <div class="tab-content" v-show="tab==='related_resource'">
           <fieldset
-              v-for="(resource, index) in doc.relatedResources"
+              v-for="(related, index) in doc.relatedResources"
               :key="index"
               class="mb-12 bg-gray-200 p-5 shadow-lg"
           >
             <InputGroupText
-                v-model="resource.resource"
+                v-model="related.relatedResourceTitle"
+                label="Related Resource"
+            ></InputGroupText>
+
+            <InputGroupText
+                v-model="related.relatedResourceIdentifier"
                 label="Related Resource Identifier"
                 placeholder="Grant Search"
             ></InputGroupText>
 
             <InputGroupVocabSelect
                 label="Related Identifier Type"
-                v-model="resource.relatedResourceIdentifierType"
+                v-model="related.relatedResourceIdentifierType"
                 :vocab="vocab.identifierTypes"
             ></InputGroupVocabSelect>
 
             <InputGroupVocabSelect
                 label="Relation Type"
-                v-model="resource.relationType"
+                v-model="related.relationType"
                 :vocab="vocab.relationTypes"
             ></InputGroupVocabSelect>
 
             <a
                 class="btn btn-red"
                 href
-                @click.prevent="doc.related_resource.splice(index, 1)"
+                @click.prevent="doc.relatedResources.splice(index, 1)"
             >Remove Related Resource</a>
           </fieldset>
 
@@ -424,6 +428,11 @@
       </div>
       <hr/>
 
+      <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert" v-if="successMsg">
+        <span class="font-bold">SUCCESS!</span>
+        <span class="block sm:inline">{{ successMsg }}</span>
+      </div>
+
       <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert" v-if="errorMsg">
         <span class="block sm:inline">{{ errorMsg }}</span>
       </div>
@@ -476,6 +485,7 @@ export default {
       tab: "primary",
       doc: {},
       eventType: 'updated',
+      successMsg: null,
       errorMsg: null
     };
   },
@@ -511,19 +521,24 @@ export default {
 
     mint() {
       this.errorMsg = null;
+      let that = this
       this.$registryService.mint(this.result_xml).then(data => {
-        console.log(data)
+        that.successMsg = data.response.data.message
       }).catch(error => {
-        this.errorMsg = error.response.data.message
+        that.errorMsg = error.response.data.message
+        that.successMsg = null
       })
     },
 
     update() {
-      this.errorMsg = null;
+      this.errorMsg = null
+      this.successMsg = null
+      let that = this
       this.$registryService.update(this.result_xml).then(data => {
-        console.log(data)
+        // todo update successMsg to the request.message
+        that.successMsg = data.message ? data.message : "Update successful"
       }).catch(error => {
-        this.errorMsg = error.response.data.message
+        that.errorMsg = error.response?.data?.message
       })
     }
 
