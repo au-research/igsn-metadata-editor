@@ -1,7 +1,7 @@
 <template>
   <div class="my-4">
     <ValidationObserver v-slot="{ handleSubmit, valid }" ref="form">
-      <form class="pb-8">
+      <form class="pb-8" @submit.prevent="handleSubmit">
         <div class="flex flex-col">
 
           <!-- Primary Info -->

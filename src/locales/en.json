@@ -28,7 +28,8 @@
       "curationDate": "The date the sample or item was moved to its current location.",
       "curationLocation": "The location (address) where the sample or item is stored. This can be general or specific (room number, building name).",
       "curatingInstitution": "The institution where the sample or item is stored.",
-      "institutionURI": "The URL of the institution where the sample or item is stored."
+      "institutionURI": "The URL of the institution where the sample or item is stored.",
+      "relatedResourceRelationType": "<p>The relationship between the resource being registered and other entity (e.g., event, document, parent sample, etc.)</p><ul><li><strong>Collected as part of</strong> - indicates that the resource was collected as part of an activity or project.</li><li><strong>Has association with</strong> - has an undefined relationship with the related resource.</li><li><strong>Has digital representation</strong> - this relation maybe used to reference ae digitized version of a physical sample;inverse relation of 'isDigitalRepresentationOf'.</li><li><strong>Has reference resource</strong> - indicates the relation between a sample and its reference sample. A physical sample is usually inspected for identity, physical purity and compared with a reference sample.</li><li><strong>Has sampling feature</strong> - this relates a sampling feature (observation well) to a physical sample (water specimen); inverse relation of 'isSamplingFeatureOf'.</li><li>I<strong>s aggregate of</strong> - indicates that the resource is an arbitrary aggregation of the related (target) resource.</li><li><strong>Is derived from</strong> - indicates that the resource is created/obtained from a parent resource.</li><li>I<strong>s digital representation of</strong> - this relation maybe used to indicate the digitized version of a physical sample.</li><li><strong>Is documented by</strong> - indicates the documentation of the resource, including datasets, reports, images, supplementary metadata, etc.</li><li><strong>Is identical to</strong> - a resource that is the same as the registered resource.</li><li><strong>Is member of</strong> - indicates the registered resource is used to compile or create the target resource (related resource); inverse relation of 'isAggregateOf'.</li><li>I<strong>s sampling feature of</strong> - this relates a physical sample (water specimen) to its sampling feature (observation well).</li><li><strong>Is source of</strong> - indicates the resource A is a source upon which the resource B is based); inverse relation of 'derivedFrom'.</li><li><strong>Participates</strong> - A resoure participates in an event.</li></ul>"
     },
     "validation": {
       "url": "Please enter a valid URL. E.g. https://example.com",
@@ -38,7 +39,10 @@
       "curatorName": "Enter the name of the resource curator",
       "curatorIdentifier": "Identifier must must be provided when specifying an identifier for a curator",
       "curatorIdentifierType": "Creator Identifier type must be provided when specifying an identifier for a creator.",
-      "date": "Enter a valid date in the YYYY-MM-DD format"
+      "date": "Enter a valid date in the YYYY-MM-DD format",
+      "relatedResourceIdentifier": "Related Identifier must be provided when specifying a related resource",
+      "relatedResourceIdentifierType": "Identifier type must be provided when specifying an identifier for a related resource",
+      "relatedResourceRelationType": "Relation type must be provided when specifying a related resource"
     }
   }
 }

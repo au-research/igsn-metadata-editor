@@ -273,7 +273,7 @@ export default {
                 return {
                     relatedResourceIdentifier: opt(related.relatedResourceIdentifier._text),
                     relatedResourceIdentifierType: opt(related.relatedResourceIdentifier._attributes.relatedResourceIdentifierType),
-                    relatedResourceTitle: related.relatedResourceTitle._text,
+                    relatedResourceTitle: opt(related.relatedResourceTitle?._text),
                     relationType: related._attributes?.relationType
                 }
             }),

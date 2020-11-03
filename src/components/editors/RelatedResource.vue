@@ -7,30 +7,35 @@
   >
     <InputGroupText
         v-model="related.relatedResourceTitle"
-        label="Related Resource"
+        label="Related Resource Title"
     ></InputGroupText>
 
-    <InputGroupText
-        v-model="related.relatedResourceIdentifier"
-        label="Related Resource Identifier"
-        placeholder="Grant Search"
-    ></InputGroupText>
+    <ValidationProvider name="relatedResourceIdentifier" rules="required" v-slot="v" immediate :customMessages="{required: $t('igsn.validation.relatedResourceIdentifier')}">
+      <InputGroupText
+          v-model="related.relatedResourceIdentifier"
+          label="Related Resource Identifier"
+          placeholder="Grant Search"
+          :errors="v.errors"
+      ></InputGroupText>
+    </ValidationProvider>
 
-    <ValidationProvider name="relatedResourceIdentifierType" rules="required" v-slot="v" immediate>
+    <ValidationProvider name="relatedResourceIdentifierType" rules="required" v-slot="v" immediate :customMessages="{required: $t('igsn.validation.relatedResourceIdentifierType')}">
       <InputGroupVocabSelect
           label="Related Identifier Type"
           v-model="related.relatedResourceIdentifierType"
           :vocab="vocab.identifierTypes"
           :errors="v.errors"
+          help="identifierType"
       ></InputGroupVocabSelect>
     </ValidationProvider>
 
-    <ValidationProvider name="relatedResourceRelationType" rules="required" v-slot="v" immediate>
+    <ValidationProvider name="relatedResourceRelationType" rules="required" v-slot="v" immediate :customMessages="{required: $t('igsn.validation.relatedResourceRelationType')}">
       <InputGroupVocabSelect
           label="Relation Type"
           v-model="related.relationType"
           :vocab="vocab.relationTypes"
           :errors="v.errors"
+          help="relatedResourceRelationType"
       ></InputGroupVocabSelect>
     </ValidationProvider>
 
