@@ -206,7 +206,7 @@ export default {
         }
 
         return {
-            registeredObjectType: opt(resource._attributes?.registeredObjectType),
+            registeredObjectType: opt(resource._attributes?.registeredObjectType, "http://pid.geoscience.gov.au/def/voc/ga/igsncode/PhysicalSample"),
 
             alternateIdentifiers: makeArray(resource.alternateIdentifiers).map((identifier) => {
                 return {
@@ -245,14 +245,14 @@ export default {
             })),
 
             //date
-            visibility: opt(resource.isPublic?._text),
+            visibility: opt(resource.isPublic?._text, "true"),
             landingPage: opt(resource.landingPage?._text),
 
             // resource.location can be an object, (single) or an array, multiple
             location: {
                 locality: resource.location?.locality?._text,
                 localityURI: resource.location?.locality?._attributes?.localityURI,
-                geometrySRID: resource.location?.geometry?._attributes?.srid,
+                geometrySRID: opt(resource.location?.geometry?._attributes?.srid, "https://epsg.io/4326"),
                 geometryVerticalDatum: resource.location?.geometry?._attributes?.verticalDatum,
                 geometryURI: resource.location?.geometry?._attributes?.geometryURI,
                 geometry: resource.location?.geometry?._text
