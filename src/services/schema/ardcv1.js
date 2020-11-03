@@ -1,6 +1,6 @@
 import convert from "xml-js";
 import ardcv1Vocab from "@/services/vocabs/ardcv1.json"
-import {opt, optArr, makeArray, clearEmpties, initEmptyArrayWithSingleObj} from "@/services/util"
+import {opt, optArr, makeArray, clearEmpties, initEmptyArrayWithSingleObj, initEmptyArray} from "@/services/util"
 
 /**
  * ARDC Descriptive v1 service
@@ -261,9 +261,9 @@ export default {
             logDate: opt(resource.logDate?._text),
             logDateEventType: opt(resource.logDate?._attributes?.eventType),
 
-            materialTypes: opt(makeArray(resource.materialTypes?.materialType)?.map((type) => {
+            materialTypes: initEmptyArray(makeArray(resource.materialTypes?.materialType)?.map((type) => {
                 return type._text
-            }), ['']),
+            }), ''),
 
             method: opt(resource.method?._text),
             methodURI: opt(resource.method?._attributes?.methodURI),
@@ -280,9 +280,9 @@ export default {
 
             resourceIdentifier: opt(resource.resourceIdentifier?._text),
             resourceTitle: opt(resource.resourceTitle?._text),
-            resourceTypes: opt(makeArray(resource.resourceTypes?.resourceType).map((resourceType) => {
+            resourceTypes: initEmptyArray(makeArray(resource.resourceTypes?.resourceType).map((resourceType) => {
                 return resourceType._text
-            }), ['']),
+            }), ""),
 
             sampledFeatures: optArr(resource.sampledFeatures?.sampledFeature?.map((sampledFeature) => {
                 return {

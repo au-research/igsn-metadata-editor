@@ -1,6 +1,6 @@
 <template>
   <div class="my-4">
-    <ValidationObserver v-slot="{ handleSubmit }" ref="form">
+    <ValidationObserver v-slot="{ handleSubmit, valid }" ref="form">
       <form class="pb-8">
         <div class="flex flex-row">
 
@@ -10,7 +10,7 @@
               <a
                   :class="[tab === 'primary' ? 'tab tab-active' : 'tab']"
                   @click.prevent="tab='primary'"
-              >{{ $t('igsn.tab.primary') }} .</a>
+              >{{ $t('igsn.tab.primary') }}</a>
               <a
                   :class="[tab === 'curation_details' ? 'tab tab-active' : 'tab']"
                   @click.prevent="tab='curation_details'"
@@ -82,15 +82,13 @@
                   label="Embargo Date"
               ></InputGroupText>
 
-              <ValidationProvider name="resourceTitle" v-slot="v" rules="required" immediate>
+              <ValidationProvider name="resourceTitle" v-slot="v" rules="required" :immediate="true">
                 <InputGroupText
                     v-model="doc.resourceTitle"
                     label="Sample or Item Title"
                     placeholder="Zircons from fraser range amphibolite on expoxy SHRIMP mount sample number 175423"
-                    :required="true"
                     :errors="v.errors"
                     help="resourceTitle"
-                    name="resourceTitle"
                     validation-text="Provide a title for the sample or item"
                 ></InputGroupText>
               </ValidationProvider>
@@ -98,14 +96,15 @@
               <div class="bg-gray-200 p-5 mb-4">
                 <label for>Sample or Item Type</label>
                 <div class="mb-4" v-for="(resourceType, index) in doc.resourceTypes" :key="index">
-                  <InputGroupVocabSelect
-                      v-model="doc.resourceTypes[index]"
-                      :vocab="vocab.resourceTypes"
-                      :required="true"
-                      validation-text="Select a sample or item type"
-                      :removable="true"
-                      @remove="doc.resourceTypes.splice(index, 1)"
-                  ></InputGroupVocabSelect>
+                  <ValidationProvider name="resourceType" rules="required" immediate v-slot="v">
+                    <InputGroupVocabSelect
+                        v-model="doc.resourceTypes[index]"
+                        :vocab="vocab.resourceTypes"
+                        :errors="v.errors"
+                        :removable="index > 0"
+                        @remove="doc.resourceTypes.splice(index, 1)"
+                    ></InputGroupVocabSelect>
+                  </ValidationProvider>
                 </div>
                 <a
                     class="btn text-xs btn-blue"
@@ -117,14 +116,16 @@
 
               <div class="bg-gray-200 p-5">
                 <label for>Material Type</label>
-                <div class="mb-4" v-for="(type, index) in doc.materialTypes" :key="index">
-                  <InputGroupVocabSelect
-                      v-model="doc.materialTypes[index]"
-                      :vocab="vocab.materialTypes"
-                      :required="true"
-                      :removable="true"
-                      @remove="doc.materialTypes.splice(index, 1)"
-                  ></InputGroupVocabSelect>
+                <div class="mb-4" v-for="(materialType, index) in doc.materialTypes" :key="index">
+                  <ValidationProvider name="materialType" rules="required" immediate v-slot="v">
+                    <InputGroupVocabSelect
+                        v-model="doc.materialTypes[index]"
+                        :vocab="vocab.materialTypes"
+                        :errors="v.errors"
+                        :removable="index > 0"
+                        @remove="doc.materialTypes.splice(index, 1)"
+                    ></InputGroupVocabSelect>
+                  </ValidationProvider>
                 </div>
                 <a
                     class="btn text-xs btn-blue"
@@ -143,22 +144,28 @@
                 :key="index"
                 class="mb-12 bg-gray-200 p-5 shadow-lg"
             >
-              <InputGroupText
-                  v-model="curation.curatorName"
-                  label="Curator"
-                  placeholder="Fred Bloggs"
-                  :required="true"
-              ></InputGroupText>
+
+              <ValidationProvider name="curatorName" rules="required" v-slot="v" immediate>
+                <InputGroupText
+                    v-model="curation.curatorName"
+                    label="Curator"
+                    placeholder="Fred Bloggs"
+                    :errors="v.errors"
+                ></InputGroupText>
+              </ValidationProvider>
 
               <div class="my-4 border-b-2 border-t-2 py-5">
                 <label>Curator Identifier</label>
                 <div class="flex items-start">
+                  <ValidationProvider name="curatorIdentifierType" rules="required" v-slot="v" immediate>
                   <InputGroupVocabSelect
-                      class="mr-4 w-32"
+                      class="mr-4 w-64"
                       v-model="curation.curatorIdentifierType"
                       :vocab="vocab.identifierTypes"
                       :required="true"
+                      :errors="v.errors"
                   ></InputGroupVocabSelect>
+                  </ValidationProvider>
                   <InputGroupText
                       v-model="curation.curatorIdentifier"
                       class="flex-1"
@@ -173,11 +180,19 @@
               ></InputGroupDatePicker>
 
               <InputGroupText v-model="curation.curationLocation" label="Curation Location"></InputGroupText>
-              <InputGroupText v-model="curation.curatingInstitution" label="Curating Institution"></InputGroupText>
+
+              <ValidationProvider name="curatingInstitution" rules="required" v-slot="v" immediate>
+                <InputGroupText
+                    v-model="curation.curatingInstitution"
+                    label="Curating Institution"
+                    :errors="v.errors"></InputGroupText>
+              </ValidationProvider>
+
               <InputGroupText v-model="curation.institutionURI" label="Curation Institution URI"></InputGroupText>
 
               <button
                   class="btn btn-red"
+                  v-if="index > 0"
                   @click.prevent="doc.curationDetails.splice(index, 1)"
               >Remove Curation
               </button>
@@ -218,12 +233,15 @@
                   :vocab="vocab.ePSG"
               ></InputGroupVocabSelect>
 
-              <InputGroupVocabSelect
-                  class="flex-1 mr-4"
-                  label="Geometry SRID"
-                  v-model="doc.location.geometrySRID"
-                  :vocab="vocab.ePSG"
-              ></InputGroupVocabSelect>
+              <ValidationProvider name="locationSRID" rules="required" immediate v-slot="v">
+                <InputGroupVocabSelect
+                    class="flex-1 mr-4"
+                    label="Geometry SRID"
+                    v-model="doc.location.geometrySRID"
+                    :vocab="vocab.ePSG"
+                    :errors="v.errors"
+                ></InputGroupVocabSelect>
+              </ValidationProvider>
 
               <InputGroupText
                   class="flex-1"
@@ -253,17 +271,23 @@
                   placeholder="Grant Search"
               ></InputGroupText>
 
-              <InputGroupVocabSelect
-                  label="Related Identifier Type"
-                  v-model="related.relatedResourceIdentifierType"
-                  :vocab="vocab.identifierTypes"
-              ></InputGroupVocabSelect>
+              <ValidationProvider name="relatedResourceIdentifierType" rules="required" v-slot="v" immediate>
+                <InputGroupVocabSelect
+                    label="Related Identifier Type"
+                    v-model="related.relatedResourceIdentifierType"
+                    :vocab="vocab.identifierTypes"
+                    :errors="v.errors"
+                ></InputGroupVocabSelect>
+              </ValidationProvider>
 
-              <InputGroupVocabSelect
-                  label="Relation Type"
-                  v-model="related.relationType"
-                  :vocab="vocab.relationTypes"
-              ></InputGroupVocabSelect>
+              <ValidationProvider name="relatedResourceRelationType" rules="required" v-slot="v" immediate>
+                <InputGroupVocabSelect
+                    label="Relation Type"
+                    v-model="related.relationType"
+                    :vocab="vocab.relationTypes"
+                    :errors="v.errors"
+                ></InputGroupVocabSelect>
+              </ValidationProvider>
 
               <a
                   class="btn btn-red"
@@ -286,11 +310,15 @@
                 :key="index"
                 class="mb-8 bg-gray-200 p-5 shadow-lg"
             >
+
+              <ValidationProvider name="contributorName" rules="required" v-slot="v" immediate>
               <InputGroupText
                   v-model="contributor.contributorName"
                   label="Contributor Name"
                   placeholder="Fredd Bloggs"
+                  :errors="v.errors"
               ></InputGroupText>
+              </ValidationProvider>
 
               <InputGroupVocabSelect
                   label="Contributor Type"
@@ -328,13 +356,16 @@
             <div class="bg-gray-200 p-5 mb-4">
               <div v-for="(identifier, index) in doc.alternateIdentifiers" :key="index">
                 <div class="flex">
-                  <InputGroupVocabSelect
-                      class="mr-4 w-32"
-                      label="Type"
-                      v-model="doc.alternateIdentifiers[index].type"
-                      :vocab="vocab.identifierTypes"
-                      :required="true"
-                  ></InputGroupVocabSelect>
+                  <ValidationProvider name="alternateIdentifierType" rules="required" v-slot="v">
+                    <InputGroupVocabSelect
+                        class="mr-4 w-32"
+                        label="Type"
+                        v-model="doc.alternateIdentifiers[index].type"
+                        :vocab="vocab.identifierTypes"
+                        :required="true"
+                        :errors="v.errors"
+                    ></InputGroupVocabSelect>
+                  </ValidationProvider>
                   <InputGroupText
                       class="flex-1"
                       v-model="doc.alternateIdentifiers[index].value"
@@ -450,6 +481,10 @@
           </div>
           <button @click.prevent="mint" type="submit" class="btn btn-blue" v-if="mode === 'create'">Register</button>
           <button @click.prevent="handleSubmit(update)" type="submit" class="btn btn-blue" v-if="mode === 'edit'">Update</button>
+          <div>
+            <i v-if="valid" class="fa fa-check"></i>
+            <i v-if="!valid" class="fa fa-times"></i>
+          </div>
         </div>
       </form>
     </ValidationObserver>

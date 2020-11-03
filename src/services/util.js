@@ -43,6 +43,13 @@ export function initEmptyArrayWithSingleObj(thing) {
   return thing
 }
 
+export function initEmptyArray(thing, firstItem) {
+  if (thing.length === 0){
+    return [firstItem]
+  }
+  return thing;
+}
+
 export function clearEmpties(o) {
   for (var k in o) {
     if (!o[k] || typeof o[k] !== "object") {
