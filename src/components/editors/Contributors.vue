@@ -6,7 +6,7 @@
       class="mb-8 bg-gray-200 p-5 shadow-lg"
   >
 
-    <ValidationProvider name="contributorName" rules="required" v-slot="v" immediate>
+    <ValidationProvider name="contributorName" rules="required" v-slot="v" immediate :customMessages="{required: $t('igsn.validation.contributorName')}">
       <InputGroupText
           v-model="contributor.contributorName"
           label="Contributor Name"
@@ -15,23 +15,34 @@
       ></InputGroupText>
     </ValidationProvider>
 
+    <ValidationProvider name="contributorType" rules="required" v-slot="v" immediate :customMessages="{required: $t('igsn.validation.contributorType')}">
     <InputGroupVocabSelect
         label="Contributor Type"
         v-model="contributor.contributorType"
         :vocab="vocab.contributorTypes"
+        :errors="v.errors"
+        help="contributorType"
     ></InputGroupVocabSelect>
+    </ValidationProvider>
 
+    <ValidationProvider name="contributorType" rules="required" v-slot="v" immediate :customMessages="{required: $t('igsn.validation.contributorIdentifier')}">
     <InputGroupText
         v-model="contributor.contributorIdentifier"
         label="Contributor Identifier"
         placeholder="Contributor Identifier, eg. ORCID"
+        :errors="v.errors"
     ></InputGroupText>
+    </ValidationProvider>
 
+    <ValidationProvider name="contributorType" rules="required" v-slot="v" immediate :customMessages="{required: $t('igsn.validation.contributorIdentifierType')}">
     <InputGroupVocabSelect
         label="Contributor Identifier Type"
         v-model="contributor.contributorIdentifierType"
         :vocab="vocab.identifierTypes"
+        help="identifierType"
+        :errors="v.errors"
     ></InputGroupVocabSelect>
+    </ValidationProvider>
 
     <a
         class="btn btn-red"
