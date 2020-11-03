@@ -1,0 +1,27 @@
+form {
+    @apply bg-white px-8 pt-6 pb-8 mb-4;
+}
+
+label {
+    @apply block text-gray-700 text-sm font-bold mb-2;
+}
+
+input[type="text"] {
+    @apply w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight h-10;
+}
+
+select {
+    @apply w-full shadow border rounded py-2 px-3 text-gray-700 leading-tight h-10;
+}
+
+.input-group {
+    @apply mb-4
+}
+
+.input-group.error input, .input-group.error select{
+    @apply border-red;
+}
+
+.input-group.error label {
+    @apply text-red font-bold;
+}

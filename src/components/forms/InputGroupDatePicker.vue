@@ -1,5 +1,5 @@
 <template>
-  <InputGroup :label="label" :class="[errored ? 'error' : '']">
+  <InputGroup :label="label" :class="[errored ? 'error' : '']" :help="help">
     <date-pick v-model="date"></date-pick>
   </InputGroup>
 </template>
@@ -13,7 +13,9 @@ export default {
   components: { InputGroup, DatePick },
   props: {
     value: String,
-    label: String
+    label: String,
+    placeholder: String,
+    help: String
   },
   data() {
     return {

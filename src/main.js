@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import App from './App.vue'
 import '@/assets/css/tw.css'
+import '@fortawesome/fontawesome-free/css/all.css'
+import '@fortawesome/fontawesome-free/js/all.js'
 import i18n from './i18n'
 import router from './router'
 import store from './store'

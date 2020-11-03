@@ -94,8 +94,7 @@
             Update
           </button>
           <div>
-            <i v-if="valid" class="fa fa-check"></i>
-            <i v-if="!valid" class="fa fa-times"></i>
+            Valid: {{ valid }}
           </div>
         </div>
       </form>
@@ -105,7 +104,7 @@
 
 <script>
 import {ValidationObserver, extend} from 'vee-validate';
-import {required} from 'vee-validate/dist/rules';
+import {required, regex} from 'vee-validate/dist/rules';
 import ardcv1 from "@/services/schema/ardcv1";
 import {EventBus} from "@/services/event-bus"
 import ARDCv1PrimaryInfo from "@/components/editors/ARDCv1PrimaryInfo";
@@ -118,6 +117,11 @@ import OtherInformation from "@/components/editors/OtherInformation";
 extend('required', {
   ...required,
   message: 'This field is required'
+});
+
+extend('regex', {
+  ...regex,
+  message: 'This failed validation'
 });
 
 export default {

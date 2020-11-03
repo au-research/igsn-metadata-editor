@@ -72,17 +72,11 @@ import InputGroupText from "@/components/forms/InputGroupText";
 import InputGroupVocabSelect from "@/components/forms/InputGroupVocabSelect";
 import InputGroupDatePicker from "@/components/forms/InputGroupDatePicker";
 import {ValidationProvider, ValidationObserver} from 'vee-validate';
-import ardcv1 from "@/services/schema/ardcv1";
 
 export default {
   name: "CurationDetails",
   components: {InputGroupText, ValidationProvider, InputGroupVocabSelect, InputGroupDatePicker},
-  props: ['doc'],
-  computed: {
-    vocab() {
-      return ardcv1.vocab();
-    }
-  },
+  props: ['doc', 'vocab']
 }
 </script>
 
