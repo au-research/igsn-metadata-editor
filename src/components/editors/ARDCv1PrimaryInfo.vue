@@ -10,7 +10,7 @@
       <ValidationProvider
           name="landingPage"
           v-slot="v" immediate
-          :rules="{ regex: /^https?:\/\/.+/ }"
+          :rules="{ required: true, regex: /https?:\/\/.+/ }"
           :customMessages="{regex: $t('igsn.validation.url')}">
         <InputGroupText
             v-model="doc.landingPage"
@@ -115,7 +115,7 @@
 import InputGroupText from "@/components/forms/InputGroupText";
 import InputGroupVocabSelect from "@/components/forms/InputGroupVocabSelect";
 import InputGroupDatePicker from "@/components/forms/InputGroupDatePicker";
-import {ValidationObserver, ValidationProvider} from "vee-validate"
+import {extend, ValidationObserver, ValidationProvider} from "vee-validate"
 
 export default {
   name: "ARDCv1PrimaryInfo",

@@ -11,7 +11,7 @@
               <ARDCv1PrimaryInfo :doc="doc" :vocab="vocab"></ARDCv1PrimaryInfo>
             </div>
             <div class="w-1/2">
-              <h1 class="text-2xl mb-3 font-sans">Curation Details</h1>
+              <h1 class="text-2xl mb-3 font-sans"><HelpIcon :help="$t('curationDetails')"></HelpIcon>Curation Details</h1>
               <CurationDetails :doc="doc" :vocab="vocab"></CurationDetails>
             </div>
           </div>
@@ -113,6 +113,7 @@ import Location from "@/components/editors/Location";
 import RelatedResource from "@/components/editors/RelatedResource";
 import Contributors from "@/components/editors/Contributors";
 import OtherInformation from "@/components/editors/OtherInformation";
+import HelpIcon from "@/components/forms/HelpIcon";
 
 extend('required', {
   ...required,
@@ -127,6 +128,7 @@ extend('regex', {
 export default {
   name: "ARDCv1Editor",
   components: {
+    HelpIcon,
     OtherInformation,
     Contributors,
     RelatedResource,
