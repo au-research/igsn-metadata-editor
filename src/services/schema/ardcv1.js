@@ -98,10 +98,10 @@ export default {
                     },
 
                     date: {
-                        timePeriod: {
+                        timePeriod: dom.dateTimePeriodStart && dom.dateTimePeriodEnd ? {
                             start: dom.dateTimePeriodStart,
                             end: dom.dateTimePeriodEnd
-                        },
+                        }: {},
                         timeInstant: opt(dom.dateTimeInstant, "")
                     },
 

@@ -11,7 +11,10 @@
               <ARDCv1PrimaryInfo :doc="doc" :vocab="vocab"></ARDCv1PrimaryInfo>
             </div>
             <div class="w-1/2">
-              <h1 class="text-2xl mb-3 font-sans"><HelpIcon help="curationDetails"></HelpIcon>Curation Details</h1>
+              <h1 class="text-2xl mb-3 font-sans">
+                <HelpIcon help="curationDetails"></HelpIcon>
+                Curation Details
+              </h1>
               <CurationDetails :doc="doc" :vocab="vocab"></CurationDetails>
             </div>
           </div>
@@ -25,19 +28,19 @@
               >{{ $t('igsn.tab.location') }}</a>
               <a
                   :class="[tab === 'related_resource' ? 'tab tab-active' : 'tab']"
-                  @click.prevent="tab='related_resource'"
+                  @click.prevent="tabTo('related_resource')"
               >{{ $t('igsn.tab.relatedResources') }}</a>
               <a
                   :class="[tab === 'contributors' ? 'tab tab-active' : 'tab']"
-                  @click.prevent="tab='contributors'"
+                  @click.prevent="tabTo('contributors')"
               >{{ $t('igsn.tab.contributors') }}</a>
               <a
                   :class="[tab === 'other_information' ? 'tab tab-active' : 'tab']"
-                  @click.prevent="tab='other_information'"
+                  @click.prevent="tabTo('other_information')"
               >{{ $t('igsn.tab.otherInformation') }}</a>
               <a
                   :class="[tab === 'preview_xml' ? 'tab tab-active' : 'tab']"
-                  @click.prevent="tab='preview_xml'"
+                  @click.prevent="tabTo('preview_xml')"
               >{{ $t('igsn.tab.previewXML') }}</a>
             </nav>
           </div>
@@ -90,7 +93,7 @@
             <input type="radio" v-model="eventType" v-bind:value="'updated'"> Update
           </div>
           <button @click.prevent="mint" type="submit" class="btn btn-blue" v-if="mode === 'create'">Register</button>
-          <button @click.prevent="handleSubmit(update)" type="submit" class="btn btn-blue" v-if="mode === 'edit'">
+          <button @click.prevent="update" type="submit" class="btn btn-blue" v-if="mode === 'edit'">
             Update
           </button>
           <div>
@@ -173,6 +176,7 @@ export default {
     tabTo(tab) {
       this.tab = tab
       EventBus.$emit('tab', this.tab);
+      this.triggerChangeEvent()
     },
 
     // convert xml -> json -> dom doc for form functionality
@@ -182,6 +186,10 @@ export default {
     },
 
     mint() {
+
+      // trigger computed property
+      this.triggerChangeEvent()
+
       this.$refs.form.validateWithInfo().then((result) => {
         console.log('validation', result)
         if (!result.isValid) {
@@ -203,12 +211,25 @@ export default {
       this.errorMsg = null
       this.successMsg = null
       let that = this
+
+      // trigger computed property
+      this.triggerChangeEvent()
+
       this.$registryService.update(this.result_xml).then(data => {
         // todo update successMsg to the request.message
         that.successMsg = data.message ? data.message : "Update successful"
       }).catch(error => {
         that.errorMsg = error.response?.data?.message
       })
+    },
+
+    // a hack to recompute computed property that relies on eventType
+    // ie. result_xml
+    triggerChangeEvent() {
+      console.log('trigger')
+      let exactEventType = this.eventType
+      this.eventType = 'changed'
+      this.eventType = exactEventType
     }
 
   },
@@ -230,7 +251,7 @@ export default {
     // if xml from the parent change (load new XML into form)
     xml() {
       this.initDoc();
-    }
+    },
   }
 };
 </script>
