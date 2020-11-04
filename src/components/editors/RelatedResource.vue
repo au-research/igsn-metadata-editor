@@ -16,6 +16,7 @@
           label="Related Resource Identifier"
           placeholder="Grant Search"
           :errors="v.errors"
+          help="relatedResourceIdentifier"
       ></InputGroupText>
     </ValidationProvider>
 

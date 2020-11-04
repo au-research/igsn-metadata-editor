@@ -5,6 +5,7 @@
           v-model="doc.resourceIdentifier"
           :label="$t('igsn.label.resourceIdentifier')"
           :disabled="true"
+          help="resourceIdentifier"
       ></InputGroupText>
 
       <ValidationProvider
@@ -16,6 +17,7 @@
             v-model="doc.landingPage"
             :label="$t('igsn.label.landingPage')"
             :errors="v.errors"
+            help="landingPage"
         ></InputGroupText>
       </ValidationProvider>
 
@@ -45,7 +47,6 @@
         <div :class="[doc.visibility === 'false' ? 'w-1/2' : '']">
           <InputGroupDatePicker
               v-model="doc.embargoEnd"
-              placeholder="Specify an end date for the embargo"
               v-show="doc.visibility === 'false'"
               label="Embargo Date"
               help="embargoDate"

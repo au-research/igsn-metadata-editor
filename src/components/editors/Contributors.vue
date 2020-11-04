@@ -31,6 +31,7 @@
         label="Contributor Identifier"
         placeholder="Contributor Identifier, eg. ORCID"
         :errors="v.errors"
+        help="contributorIdentifier"
     ></InputGroupText>
     </ValidationProvider>
 

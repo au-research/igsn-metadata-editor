@@ -5,7 +5,8 @@
         :key="index"
         class="mb-12 bg-gray-200 p-5 shadow-lg"
     >
-      <ValidationProvider name="curatorName" rules="required" v-slot="v" immediate :customMessages="{required: $t('igsn.validation.curatorName')}">
+      <ValidationProvider name="curatorName" rules="required" v-slot="v" immediate
+                          :customMessages="{required: $t('igsn.validation.curatorName')}">
         <InputGroupText
             v-model="curation.curatorName"
             label="Curator"
@@ -17,7 +18,8 @@
 
       <div class="my-4">
         <div class="flex items-start">
-          <ValidationProvider name="curatorIdentifierType" rules="required" v-slot="v" immediate :customMessages="{required: $t('igsn.validation.curatorIdentifierType')}">
+          <ValidationProvider name="curatorIdentifierType" rules="required" v-slot="v" immediate
+                              :customMessages="{required: $t('igsn.validation.curatorIdentifierType')}">
             <InputGroupVocabSelect
                 class="mr-4 w-64"
                 v-model="curation.curatorIdentifierType"
@@ -27,18 +29,21 @@
                 help="identifierType"
             ></InputGroupVocabSelect>
           </ValidationProvider>
-          <ValidationProvider name="curatorIdentifier" rules="required" v-slot="v" immediate :customMessages="{required: $t('igsn.validation.curatorIdentifier')}">
-          <InputGroupText
-              v-model="curation.curatorIdentifier"
-              class="flex-1"
-              :errors="v.errors"
-              label="Curator Identifier Value"
-          ></InputGroupText>
+          <ValidationProvider name="curatorIdentifier" rules="required" v-slot="v" immediate
+                              :customMessages="{required: $t('igsn.validation.curatorIdentifier')}">
+            <InputGroupText
+                v-model="curation.curatorIdentifier"
+                class="flex-1"
+                :errors="v.errors"
+                label="Curator Identifier Value"
+                help="curatorIdentifier"
+            ></InputGroupText>
           </ValidationProvider>
         </div>
       </div>
 
-      <ValidationProvider name="curationDate" :rules="{required: true, regex: /\d{4}-\d{2}-\d{2}/}" v-slot="v" immediate :customMessages="{regex: $t('igsn.validation.date')}">
+      <ValidationProvider name="curationDate" :rules="{required: true, regex: /\d{4}-\d{2}-\d{2}/}" v-slot="v" immediate
+                          :customMessages="{regex: $t('igsn.validation.date')}">
         <InputGroupDatePicker
             v-model="curation.curationDate"
             :errors="v.errors"
@@ -47,9 +52,10 @@
         ></InputGroupDatePicker>
       </ValidationProvider>
 
-      <InputGroupText v-model="curation.curationLocation" label="Curation Location" help="curationLocation"></InputGroupText>
+      <InputGroupText v-model="curation.curationLocation" label="Curation Location"
+                      help="curationLocation"></InputGroupText>
 
-      <ValidationProvider name="curatingInstitution" rules="required" v-slot="v" immediate>
+      <ValidationProvider name="curatingInstitution" rules="required" v-slot="v" immediate :customMessages="{required: $t('igsn.validation.curatingInstitution')}">
         <InputGroupText
             v-model="curation.curatingInstitution"
             label="Curating Institution"

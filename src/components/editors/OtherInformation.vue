@@ -111,7 +111,7 @@
       </button>
     </div>
 
-    <label>Collection/Creation Date</label>
+    <label><HelpIcon help="date"></HelpIcon>Collection/Creation Date</label>
     <input name="dateType" type="radio" v-model="dateType" v-bind:value="'timeInstant'"> Single Date
     <input name="dateType" type="radio" v-model="dateType" v-bind:value="'timePeriod'"> Date Range
 
@@ -165,11 +165,12 @@
 import InputGroupText from "@/components/forms/InputGroupText";
 import InputGroupVocabSelect from "@/components/forms/InputGroupVocabSelect";
 import InputGroupDatePicker from "@/components/forms/InputGroupDatePicker";
+import HelpIcon from "@/components/forms/HelpIcon";
 import {ValidationProvider} from 'vee-validate';
 
 export default {
   name: "OtherInformation",
-  components: {InputGroupText, InputGroupVocabSelect, InputGroupDatePicker, ValidationProvider},
+  components: {InputGroupText, InputGroupVocabSelect, InputGroupDatePicker, HelpIcon, ValidationProvider},
   props: ['doc', 'vocab'],
   data() {
     return {
