@@ -25,7 +25,7 @@
     ></InputGroupVocabSelect>
     </ValidationProvider>
 
-    <ValidationProvider name="contributorType" rules="required" v-slot="v" immediate :customMessages="{required: $t('igsn.validation.contributorIdentifier')}">
+    <ValidationProvider name="contributorIdentifier" rules="required" v-slot="v" immediate :customMessages="{required: $t('igsn.validation.contributorIdentifier')}">
     <InputGroupText
         v-model="contributor.contributorIdentifier"
         label="Contributor Identifier"
