@@ -97,6 +97,14 @@ export default {
                         })
                     },
 
+                    date: {
+                        timePeriod: {
+                            start: dom.dateTimePeriodStart,
+                            end: dom.dateTimePeriodEnd
+                        },
+                        timeInstant: opt(dom.dateTimeInstant, "")
+                    },
+
                     location: {
                         locality: {
                             _attributes: {

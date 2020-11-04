@@ -111,6 +111,40 @@
       </button>
     </div>
 
+    <label>Collection/Creation Date</label>
+    <input name="dateType" type="radio" v-model="dateType" v-bind:value="'timeInstant'"> Single Date
+    <input name="dateType" type="radio" v-model="dateType" v-bind:value="'timePeriod'"> Date Range
+
+    <div v-if="dateType === 'timeInstant'">
+      <ValidationProvider name="dateTimeInstant" :rules="{regex: /\d{4}-\d{2}-\d{2}/}" v-slot="v" immediate :customMessages="{regex: $t('igsn.validation.date')}">
+        <InputGroupDatePicker
+            v-model="doc.dateTimeInstant"
+            :errors="v.errors"
+            label="Collection Date"
+        ></InputGroupDatePicker>
+      </ValidationProvider>
+    </div>
+    <div class="flex" v-show="dateType === 'timePeriod'">
+      <div class="w-1/2 mr-4">
+        <ValidationProvider name="dateTimePeriodStart" :rules="{regex: /\d{4}-\d{2}-\d{2}/}" v-slot="v" immediate :customMessages="{regex: $t('igsn.validation.date')}">
+          <InputGroupDatePicker
+              v-model="doc.dateTimePeriodStart"
+              :errors="v.errors"
+              label="Start Date"
+          ></InputGroupDatePicker>
+        </ValidationProvider>
+      </div>
+      <div class="w-1/2">
+        <ValidationProvider name="dateTimePeriodEnd" :rules="{regex: /\d{4}-\d{2}-\d{2}/}" v-slot="v" immediate :customMessages="{regex: $t('igsn.validation.date')}">
+          <InputGroupDatePicker
+              v-model="doc.dateTimePeriodEnd"
+              :errors="v.errors"
+              label="End Date"
+          ></InputGroupDatePicker>
+        </ValidationProvider>
+      </div>
+    </div>
+
     <div class="flex">
       <InputGroupText class="flex-1 mr-4" v-model="doc.method" label="Method" help="method"></InputGroupText>
       <ValidationProvider
@@ -130,12 +164,29 @@
 <script>
 import InputGroupText from "@/components/forms/InputGroupText";
 import InputGroupVocabSelect from "@/components/forms/InputGroupVocabSelect";
+import InputGroupDatePicker from "@/components/forms/InputGroupDatePicker";
 import {ValidationProvider} from 'vee-validate';
 
 export default {
   name: "OtherInformation",
-  components: {InputGroupText, InputGroupVocabSelect, ValidationProvider},
-  props: ['doc', 'vocab']
+  components: {InputGroupText, InputGroupVocabSelect, InputGroupDatePicker, ValidationProvider},
+  props: ['doc', 'vocab'],
+  data() {
+    return {
+      dateType: 'timeInstant'
+    }
+  },
+  watch: {
+    dateType(newVal) {
+      if (newVal === 'timeInstant') {
+        this.doc.TimePeriod = {}
+      } else if (newVal === 'timePeriod') {
+        this.doc.dateTimeInstant = '';
+        this.doc.dateTimePeriodStart = ''
+        this.doc.dateTimePeriodEnd = ''
+      }
+    }
+  }
 }
 </script>
 
