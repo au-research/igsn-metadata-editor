@@ -4,6 +4,20 @@
       <form class="pb-8" @submit.prevent="handleSubmit">
         <div class="flex flex-col">
 
+          <!-- Owner-->
+          <div class="flex">
+            <InputGroup label="Owner">
+              <div class="flex">
+                <select
+                    name
+                    v-model="owner"
+                >
+                  <option v-for="item in ownerValues" :key="item.value" :value="item.value">{{ item.label }}</option>
+                </select>
+              </div>
+            </InputGroup>
+          </div>
+
           <!-- Primary Info -->
           <div class="flex flex-row">
             <div class="w-1/2 pr-8">
@@ -93,9 +107,7 @@
             <input type="radio" v-model="eventType" v-bind:value="'updated'"> Update
           </div>
           <button @click.prevent="mint" type="submit" class="btn btn-blue" v-if="mode === 'create'">Register</button>
-          <button @click.prevent="update" type="submit" class="btn btn-blue" v-if="mode === 'edit'">
-            Update
-          </button>
+          <button @click.prevent="update" type="submit" class="btn btn-blue" v-if="mode === 'edit'">Update</button>
           <div>
             Valid: {{ valid }}
           </div>
@@ -117,6 +129,7 @@ import RelatedResource from "@/components/editors/RelatedResource";
 import Contributors from "@/components/editors/Contributors";
 import OtherInformation from "@/components/editors/OtherInformation";
 import HelpIcon from "@/components/forms/HelpIcon";
+import InputGroup from "@/components/forms/InputGroup";
 
 extend('required', {
   ...required,
@@ -131,6 +144,7 @@ extend('regex', {
 export default {
   name: "ARDCv1Editor",
   components: {
+    InputGroup,
     HelpIcon,
     OtherInformation,
     Contributors,
@@ -157,13 +171,21 @@ export default {
       successMsg: null,
       errorMsg: null,
       isMounted: false,
-      errors: []
+      errors: [],
+      igsn: {},
+      ownerValues: [{value: 'private', label: 'Private'}],
+      owner: 'private',
+      ownerID: null,
+      ownerType: 'User'
     };
   },
 
   computed: {
     vocab() {
       return ardcv1.vocab();
+    },
+    user() {
+      return this.$store.getters["auth/user"];
     },
     result_xml() {
       // dom -> json -> xml
@@ -230,6 +252,30 @@ export default {
       let exactEventType = this.eventType
       this.eventType = 'changed'
       this.eventType = exactEventType
+    },
+
+    obtainIGSN() {
+
+      // obtain allocationID
+      // if the ownerType is DataCenter,
+      // the AllocationID is the ID of the first Allocation that has the DataCenter.id equals to the associated OwnerID
+      let allocationID = null
+      if (this.ownerType === 'DataCenter') {
+        // find allocationID based on ownerID being the dataCenterID
+        let allocation = this.user.allocations.find(alloc => {
+          return alloc.dataCenters.filter(dataCenter => {
+            return dataCenter.id === this.ownerID
+          }).length > 0
+        })
+        if (allocation !== undefined) {
+          allocationID = allocation.id
+        }
+      }
+
+      this.$registryService.generateIGSNIdentifier(allocationID).then((data) => {
+        this.doc.resourceIdentifier = data.igsn
+        this.doc.landingPage = this.doc.landingPage ? this.doc.landingPage : "https://test.identifiers.ardc.edu.au/igsn-portal/view/" + this.doc.resourceIdentifier
+      })
     }
 
   },
@@ -239,15 +285,41 @@ export default {
     // generate IGSN value if mode is create
     if (this.mode === "create") {
       this.eventType = 'registered';
-      // todo generate IGSN Value
-      this.$registryService.generateIGSNIdentifier().then((data) => {
-        this.doc.resourceIdentifier = data
-        this.doc.landingPage = this.doc.landingPage ? this.doc.landingPage : "https://test.identifiers.ardc.edu.au/igsn-portal/view/" + this.doc.resourceIdentifier
+
+
+      // default ownerID to currentUserID and ownerType to User
+      this.ownerID = this.user.id;
+      this.ownerType = 'User'
+
+      this.obtainIGSN()
+
+      // populate ownerValues with user data centers
+      this.user.dataCenters.forEach(dataCenter => {
+        this.ownerValues.push({
+          value: dataCenter.id,
+          label: dataCenter.name
+        })
       })
+
     }
 
   },
   watch: {
+
+    owner(newVal) {
+      if (newVal === 'private') {
+        this.ownerID = this.user.id;
+        this.ownerType = 'User'
+        return;
+      }
+
+      // otherwise it's dataCenter
+      this.ownerType = 'DataCenter'
+      this.ownerID = newVal
+
+      this.obtainIGSN()
+    },
+
     // if xml from the parent change (load new XML into form)
     xml() {
       this.initDoc();

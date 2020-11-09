@@ -86,9 +86,12 @@ export default class RegistryService {
         return data;
     }
 
-    // todo update endpoint when it's available
-    async generateIGSNIdentifier() {
-        const {data} = await this.http.get('/api/services/igsn/generate-igsn');
+    async generateIGSNIdentifier(allocationID) {
+        let params = {}
+        if (allocationID) {
+            params.allocationID = allocationID
+        }
+        const {data} = await this.http.get('/api/services/igsn/generate-igsn', {params});
 
         return data;
     }

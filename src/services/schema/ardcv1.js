@@ -78,9 +78,9 @@ export default {
                         classification: dom.classifications?.map((classification) => {
                             return {
                                 _attributes: {
-                                    classificationURI: classification.classificationURI
+                                    classificationURI: opt(classification.classificationURI)
                                 },
-                                _text: classification.classification
+                                _text: opt(classification.classification)
                             }
                         })
                     },
@@ -90,9 +90,9 @@ export default {
                         sampledFeature: dom.sampledFeatures?.map((sampledFeature) => {
                             return {
                                 _attributes: {
-                                    sampledFeatureURI: sampledFeature.sampledFeatureURI
+                                    sampledFeatureURI: opt(sampledFeature.sampledFeatureURI)
                                 },
-                                _text: sampledFeature.sampledFeature
+                                _text: opt(sampledFeature.sampledFeature)
                             }
                         })
                     },
@@ -226,8 +226,8 @@ export default {
             campaign: opt(resource.campaign?._text),
             classifications: optArr(resource.classifications?.classification?.map((classification) => {
                 return {
-                    classificationURI: classification._attributes?.classificationURI,
-                    classification: classification._text
+                    classificationURI: opt(classification._attributes?.classificationURI),
+                    classification: opt(classification._text)
                 }
             })),
             comments: opt(resource.comments?._text),

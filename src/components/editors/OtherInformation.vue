@@ -26,11 +26,11 @@
         </div>
 
       </div>
-      <button
+      <a
           class="btn btn-blue text-xs"
           @click.prevent="doc.alternateIdentifiers.push({})"
       >Add Alternate Identifier
-      </button>
+      </a>
     </div>
 
     <div class="bg-gray-200 p-5 mb-4">
@@ -58,17 +58,17 @@
               help="classificationURI"
           ></InputGroupText>
         </ValidationProvider>
-        <button
+        <a
             class="btn btn-red text-xs flex-none mt-3"
             @click.prevent="doc.classifications.splice(index, 1)"
         >Remove
-        </button>
+        </a>
       </div>
-      <button
+      <a
           class="btn btn-blue text-xs"
           @click.prevent="doc.classifications.push({})"
       >Add Classification
-      </button>
+      </a>
     </div>
 
     <InputGroupText v-model="doc.purpose" label="Purpose" help="purpose"></InputGroupText>
@@ -98,17 +98,17 @@
               :errors="v.errors"
           ></InputGroupText>
         </ValidationProvider>
-        <button
+        <a
             class="btn btn-red text-xs flex-none mt-3"
             @click.prevent="doc.sampledFeatures.splice(index, 1)"
         >Remove
-        </button>
+        </a>
       </div>
-      <button
+      <a
           class="btn btn-blue text-xs"
           @click.prevent="doc.sampledFeatures.push({})"
       >Add Sampled Feature
-      </button>
+      </a>
     </div>
 
     <label><HelpIcon help="date"></HelpIcon>Collection/Creation Date</label>

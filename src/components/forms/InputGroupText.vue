@@ -8,7 +8,7 @@
           v-on:input="updateValue($event.target.value)"
           :disabled="disabled"
       />
-      <button v-if="removable" class="btn btn-red text-xs ml-2" @click.prevent="remove">Remove</button>
+      <a v-if="removable" class="btn btn-red text-xs ml-2" @click.prevent="remove">Remove</a>
     </div>
   </InputGroup>
 </template>

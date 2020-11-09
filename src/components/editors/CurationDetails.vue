@@ -77,19 +77,19 @@
         ></InputGroupText>
       </ValidationProvider>
 
-      <button
+      <a
           class="btn btn-red"
           v-if="index > 0"
           @click.prevent="doc.curationDetails.splice(index, 1)"
       >Remove Curation
-      </button>
+      </a>
     </fieldset>
 
-    <button
+    <a
         class="btn btn-blue"
         @click.prevent="doc.curationDetails.push({})"
     >Add New Curation
-    </button>
+    </a>
   </div>
 </template>
 

@@ -9,7 +9,7 @@
       >
         <option v-for="item in vocab" :key="item.value" :value="item.value">{{ item.label }}</option>
       </select>
-      <button v-if="removable" class="btn btn-red ml-2 text-xs" @click.prevent="remove">Remove</button>
+      <a v-if="removable" class="btn btn-red ml-2 text-xs" @click.prevent="remove">Remove</a>
     </div>
   </InputGroup>
 </template>
