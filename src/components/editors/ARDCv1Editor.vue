@@ -165,6 +165,10 @@ export default {
       return ardcv1.vocab();
     },
 
+    user() {
+      return this.$store.getters["auth/user"];
+    },
+
     result_xml() {
       // dom -> json -> xml
       let json = ardcv1.dom2json(this.doc, this.eventType);
@@ -191,19 +195,20 @@ export default {
       this.triggerChangeEvent()
 
       this.$refs.form.validateWithInfo().then((result) => {
-        console.log('validation', result)
         if (!result.isValid) {
           return;
         }
 
         this.errorMsg = null;
         let that = this
-        this.$registryService.mint(this.result_xml).then(data => {
+
+        this.$registryService.mint(this.result_xml, this.doc.ownerType, this.doc.ownerID).then(data => {
           that.successMsg = data.response.data.message
         }).catch(error => {
           that.errorMsg = error.response.data.message
           that.successMsg = null
         })
+
       })
     },
 
@@ -238,6 +243,10 @@ export default {
     // generate IGSN value if mode is create
     if (this.mode === "create") {
       this.eventType = 'registered';
+
+      // default ownerID to currentUserID and ownerType to User
+      this.doc.ownerID = this.user.id;
+      this.doc.ownerType = 'User'
     }
 
   },

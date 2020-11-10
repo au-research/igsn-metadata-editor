@@ -96,10 +96,14 @@ export default class RegistryService {
         return data;
     }
 
-    async mint(xml) {
+    async mint(xml, ownerType, ownerID) {
         const {data} = await this.http.post('/api/services/igsn/mint', xml, {
             headers: {
                 'Content-Type' : 'application/xml+ardcv1'
+            },
+            params: {
+                'ownerID': ownerID,
+                'ownerType': ownerType
             }
         });
 

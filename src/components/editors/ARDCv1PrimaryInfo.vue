@@ -193,7 +193,7 @@ export default {
       // if the ownerType is DataCenter,
       // the AllocationID is the ID of the first Allocation that has the DataCenter.id equals to the associated OwnerID
       let allocationID = null
-      if (this.ownerType === 'DataCenter') {
+      if (this.doc.ownerType === 'DataCenter') {
         // find allocationID based on ownerID being the dataCenterID
         let allocation = this.user.allocations.find(alloc => {
           return alloc.dataCenters.filter(dataCenter => {
@@ -217,10 +217,6 @@ export default {
     if (this.mode === 'edit') {
       return;
     }
-
-    // default ownerID to currentUserID and ownerType to User
-    this.ownerID = this.user.id;
-    this.ownerType = 'User'
 
     this.obtainIGSN()
 
@@ -254,14 +250,14 @@ export default {
       }
 
       if (newVal === 'private') {
-        this.ownerID = this.user.id;
-        this.ownerType = 'User'
+        this.doc.ownerID = this.user.id;
+        this.doc.ownerType = 'User'
         return;
       }
 
       // otherwise it's dataCenter
-      this.ownerType = 'DataCenter'
-      this.ownerID = newVal
+      this.doc.ownerType = 'DataCenter'
+      this.doc.ownerID = newVal
 
       this.obtainIGSN()
     },
