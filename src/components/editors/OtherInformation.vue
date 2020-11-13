@@ -48,7 +48,7 @@
         <ValidationProvider
             name="classificationURI"
             v-slot="v" immediate
-            :rules="{ required: true, regex: /https?:\/\/.+/ }"
+            :rules="{ regex: /https?:\/\/.+/ }"
             :customMessages="{regex: $t('igsn.validation.url')}">
           <InputGroupText
               class="flex-1 mr-2"

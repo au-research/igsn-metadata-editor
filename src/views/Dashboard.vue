@@ -4,7 +4,7 @@
     <div class="flex flex-col">
       <div class="flex items-center mb-6">
         <div class="flex w-full justify-between">
-          <div class="pt-2 relative lg:w-1/4 md:w-1/2 sm:w-full text-gray-600">
+          <div class="pt-2 relative text-gray-600">
             <input
                 class="border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none"
                 v-model="query"
@@ -45,9 +45,21 @@
                 <th
                   class="w-3/4 px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
                 >Title</th>
-                <th
-                  class="w-1/8 px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
-                >Public</th>
+                <th class="w-3/4 px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                  Identifier
+                </th>
+                <th class="w-3/4 px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                  Status
+                </th>
+                <th class="w-3/4 px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                  Updated
+                </th>
+                <th class="w-3/4 px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                  Visibility
+                </th>
+                <th class="w-3/4 px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                  Owner
+                </th>
                 <th class="w-1/8 px-6 py-3 border-b border-gray-200 bg-gray-50"></th>
               </tr>
             </thead>
@@ -61,7 +73,15 @@
                       v-bind:href="record.portalUrl"
                     >{{ record.title }}</a>
                   </div>
-                  <div class="text-sm leading-5 text-gray-500">{{ record.identifiers | igsn }}</div>
+                </td>
+                <td class="px-6 py-4 border-b border-gray-200">
+                  {{ record.identifiers | igsn }}
+                </td>
+                <td>
+                  Registered
+                </td>
+                <td>
+                  {{ record.modifiedAt }}
                 </td>
                 <td class="px-6 py-4 border-b border-gray-200">
                   <span
@@ -72,6 +92,10 @@
                     v-if="!record.public"
                     class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800"
                   >Private</span>
+                </td>
+                <td>
+                  <span v-if="record.ownerType === 'User'">Me</span>
+                  <span v-if="record.ownerType === 'DataCenter'">DataCenter:{{ record.ownerID }}</span>
                 </td>
                 <td
                   class="px-6 py-4 text-right border-b border-gray-200 text-sm leading-5 font-medium"

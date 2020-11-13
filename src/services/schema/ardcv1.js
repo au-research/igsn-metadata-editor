@@ -224,14 +224,14 @@ export default {
             }),
 
             campaign: opt(resource.campaign?._text),
-            classifications: optArr(resource.classifications?.classification?.map((classification) => {
+            classifications: optArr(makeArray(resource.classifications?.classification).map((classification) => {
                 return {
                     classificationURI: opt(classification._attributes?.classificationURI),
                     classification: opt(classification._text)
                 }
             })),
             comments: opt(resource.comments?._text),
-            contributors: optArr(resource.contributors?.contributor?.map((contributor) => {
+            contributors: optArr(makeArray(resource.contributors?.contributor).map((contributor) => {
                 return {
                     contributorName: contributor.contributorName?._text,
                     contributorType: contributor._attributes?.contributorType,
@@ -292,7 +292,7 @@ export default {
                 return resourceType._text
             }), ""),
 
-            sampledFeatures: optArr(resource.sampledFeatures?.sampledFeature?.map((sampledFeature) => {
+            sampledFeatures: optArr(makeArray(resource.sampledFeatures?.sampledFeature).map((sampledFeature) => {
                 return {
                     sampledFeatureURI: sampledFeature._attributes?.sampledFeatureURI,
                     sampledFeature: sampledFeature._text
