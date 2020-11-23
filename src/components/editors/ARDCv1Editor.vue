@@ -25,7 +25,7 @@
               <a
                   :class="[tab === 'location' ? 'tab tab-active' : 'tab']"
                   @click.prevent="tabTo('location')"
-              >{{ $t('igsn.tab.location') }}</a>
+              >{{ $t('igsn.tab.location') }} <HelpIcon help="location"></HelpIcon></a>
               <a
                   :class="[tab === 'related_resource' ? 'tab tab-active' : 'tab']"
                   @click.prevent="tabTo('related_resource')"
