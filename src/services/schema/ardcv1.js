@@ -44,9 +44,9 @@ export default {
 
                     isPublic: {
                         _attributes: {
-                            emBargoDate: dom.embargoEnd
+                            embargoEnd: dom.embargoEnd
                         },
-                        _text: dom.visibility
+                        _text: dom.visibility === "true" ? "true" : "false"
                     },
 
                     resourceTitle: dom.resourceTitle,
@@ -253,7 +253,8 @@ export default {
             })),
 
             //date
-            visibility: opt(resource.isPublic?._text, "true"),
+            visibility: opt(resource.isPublic?._text, "true") === "true" ? "true" : "false",
+            embargoDate: opt(resource.isPublic?._attributes?.embargoEnd, ""),
             landingPage: opt(resource.landingPage?._text),
 
             // resource.location can be an object, (single) or an array, multiple
