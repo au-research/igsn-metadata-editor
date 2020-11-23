@@ -153,6 +153,7 @@ import InputGroupText from "@/components/forms/InputGroupText";
 import InputGroupVocabSelect from "@/components/forms/InputGroupVocabSelect";
 import InputGroupDatePicker from "@/components/forms/InputGroupDatePicker";
 import {extend, ValidationObserver, ValidationProvider} from "vee-validate"
+import {removeDuplicates} from "@/services/util";
 
 export default {
   name: "ARDCv1PrimaryInfo",
@@ -179,13 +180,23 @@ export default {
     },
 
     ownerValues() {
+
+      // todo refactor to _.pluck with underscore.js
+      let validDataCenters = []
+      this.user.allocations.forEach(allocation => {
+        allocation.dataCenters.forEach(dataCenter => {
+          validDataCenters.push({
+            value: dataCenter.id,
+            label: dataCenter.name
+          })
+        })
+      })
+
+      // unique
+      validDataCenters = removeDuplicates(validDataCenters, 'value')
+
       return [{value: 'private', label: 'Private'}]
-          .concat(this.user.dataCenters.map(dataCenter => {
-            return {
-              value: dataCenter.id,
-              label: dataCenter.name
-            }
-          }))
+          .concat(validDataCenters)
     }
   },
   methods: {
