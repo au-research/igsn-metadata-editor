@@ -42,7 +42,7 @@
         </div>
       </div>
 
-      <ValidationProvider name="curationDate" :rules="{required: true, regex: /\d{4}-\d{2}-\d{2}/}" v-slot="v" immediate
+      <ValidationProvider name="curationDate" :rules="{ regex: /\d{4}-\d{2}-\d{2}/}" v-slot="v" immediate
                           :customMessages="{regex: $t('igsn.validation.date')}">
         <InputGroupDatePicker
             v-model="curation.curationDate"
