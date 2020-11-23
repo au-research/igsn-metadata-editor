@@ -43,24 +43,24 @@
             <thead>
               <tr>
                 <th
-                  class="w-3/4 px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
+                  class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
                 >Title</th>
-                <th class="w-3/4 px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                   Identifier
                 </th>
-                <th class="w-3/4 px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                   Status
                 </th>
-                <th class="w-3/4 px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                   Updated
                 </th>
-                <th class="w-3/4 px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                   Visibility
                 </th>
-                <th class="w-3/4 px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                   Owner
                 </th>
-                <th class="w-1/8 px-6 py-3 border-b border-gray-200 bg-gray-50"></th>
+                <th class="px-6 py-3 border-b border-gray-200 bg-gray-50"></th>
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
@@ -75,25 +75,29 @@
                   </div>
                 </td>
                 <td class="px-6 py-4 border-b border-gray-200">
-                  {{ record.identifiers | igsn }}
+                  {{ record.igsn.value }}
                 </td>
-                <td>
-                  Registered
+                <td class="px-6 py-4 border-b border-gray-200">
+                  {{ record.status }}
                 </td>
-                <td>
+                <td class="px-6 py-4 border-b border-gray-200">
                   {{ record.modifiedAt }}
                 </td>
                 <td class="px-6 py-4 border-b border-gray-200">
+                  <span v-if="record.embargoDate"
+                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                    <i class="fa fa-calendar-alt"></i> Under Embargo
+                  </span>
                   <span
-                    v-if="record.public"
-                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+                      v-if="record.visible"
+                      class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
                   >Public</span>
                   <span
-                    v-if="!record.public"
+                    v-if="!record.visible && !record.embargoDate"
                     class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800"
                   >Private</span>
                 </td>
-                <td>
+                <td class="px-6 py-4 border-b border-gray-200">
                   <span v-if="record.ownerType === 'User'">Me</span>
                   <span v-if="record.ownerType === 'DataCenter'">DataCenter:{{ record.ownerID }}</span>
                 </td>

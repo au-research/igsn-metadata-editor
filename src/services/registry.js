@@ -80,7 +80,7 @@ export default class RegistryService {
         if (title) {
             params.title = title
         }
-        const {data} = await this.http.get('/api/resources/records/', {
+        const {data} = await this.http.get('/api/resources/igsn-records/', {
             params
         })
         return data;
