@@ -12,14 +12,12 @@ body {
 }
 
 a {
-    @apply .text-blue-dark;
-}
-
-a:hover {
     @apply .text-blue;
 }
 
-
+a:hover {
+    @apply .text-blue-dark .underline;
+}
 
 .tab {
     @apply text-gray-600 py-4 px-6 block text-right cursor-pointer;

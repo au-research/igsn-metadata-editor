@@ -2,16 +2,20 @@
     @apply font-bold py-2 px-4 rounded;
 }
 
+.btn:hover {
+    @apply no-underline;
+}
+
 .btn-sm {
     @apply text-sm;
 }
 
 .btn-blue {
-    @apply .bg-blue-dark .text-white;
+    @apply .bg-blue .text-white;
 }
 
 .btn-blue:hover {
-    @apply .bg-blue .text-white;
+    @apply .bg-blue-dark .text-gray-200;
 }
 
 .btn-red {
