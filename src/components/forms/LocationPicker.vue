@@ -43,7 +43,10 @@ export default {
       this.$emit("input", value)
     },
     initMap() {
-      this.map = L.map('map').setView([130, -25], 3)
+      this.map = L.map('map', {
+        center: [-25, 130],
+        zoom: 3
+      });
 
       L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
