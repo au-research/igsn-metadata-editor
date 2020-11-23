@@ -168,7 +168,6 @@ export default {
   data() {
     return {
       igsn: {},
-      ownerValues: [{value: 'private', label: 'Private'}],
       owner: 'private',
       ownerID: null,
       ownerType: 'User'
@@ -178,6 +177,16 @@ export default {
     user() {
       return this.$store.getters["auth/user"];
     },
+
+    ownerValues() {
+      return [{value: 'private', label: 'Private'}]
+          .concat(this.user.dataCenters.map(dataCenter => {
+            return {
+              value: dataCenter.id,
+              label: dataCenter.name
+            }
+          }))
+    }
   },
   methods: {
     // the resource is now not under embargo due to
@@ -219,14 +228,6 @@ export default {
     }
 
     this.obtainIGSN()
-
-    // populate ownerValues with user data centers
-    this.user.dataCenters.forEach(dataCenter => {
-      this.ownerValues.push({
-        value: dataCenter.id,
-        label: dataCenter.name
-      })
-    })
   },
   watch: {
 
