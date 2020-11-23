@@ -55,7 +55,8 @@
       <InputGroupText v-model="curation.curationLocation" label="Curation Location"
                       help="curationLocation"></InputGroupText>
 
-      <ValidationProvider name="curatingInstitution" rules="required" v-slot="v" immediate :customMessages="{required: $t('igsn.validation.curatingInstitution')}">
+      <ValidationProvider name="curatingInstitution" rules="required" v-slot="v" immediate
+                          :customMessages="{required: $t('igsn.validation.curatingInstitution')}">
         <InputGroupText
             v-model="curation.curatingInstitution"
             label="Curating Institution"
@@ -66,8 +67,8 @@
 
       <ValidationProvider
           name="institutionURI"
-          :rules="{ required: true, regex: /https?:\/\/.+/ }"
-          :customMessages="{regex: $t('igsn.validation.url'), required: $t('igsn.validation.url')}"
+          :rules="{ regex: /https?:\/\/.+/ }"
+          :customMessages="{regex: $t('igsn.validation.url')}"
           v-slot="v" immediate>
         <InputGroupText
             v-model="curation.institutionURI"
