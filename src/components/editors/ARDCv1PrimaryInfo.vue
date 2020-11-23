@@ -21,6 +21,7 @@
           :rules="{ required: true, regex: /([A-Za-z0-9\-.]+)/ }"
           :customMessages="{regex: 'IGSN Failed Regex', required: 'Please provide an identifier'}">
         <InputGroup :label="$t('igsn.label.resourceIdentifier')"
+                    v-show="igsn.prefix && igsn.namespace"
                     help="resourceIdentifier"
                     :error="v.valid ? '' : v.errors[0]">
           <div class="flex flex-rows items-center">
