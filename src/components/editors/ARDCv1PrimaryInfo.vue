@@ -78,12 +78,16 @@
           </ValidationProvider>
         </div>
         <div :class="[doc.visibility === 'false' ? 'w-1/2' : '']">
+          <ValidationProvider name="curationDate" :rules="{ regex: /\d{4}-\d{2}-\d{2}/}" v-slot="v" immediate :customMessages="{regex: $t('igsn.validation.date')}">
           <InputGroupDatePicker
               v-model="doc.embargoEnd"
               v-show="doc.visibility === 'false'"
               label="Embargo Date"
+              :errors="v.errors"
               help="embargoDate"
           ></InputGroupDatePicker>
+          </ValidationProvider>
+
         </div>
       </div>
 
