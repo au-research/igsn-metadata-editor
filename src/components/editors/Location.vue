@@ -2,7 +2,7 @@
   <div>
     <div class="flex">
       <InputGroupText
-          class="flex-1 mr-4"
+          class="w-1/2 mr-4"
           v-model="doc.location.locality"
           label="Locality"
           placeholder="locality"
@@ -10,12 +10,12 @@
       ></InputGroupText>
 
       <ValidationProvider
+          class="w-1/2"
           name="localityURL"
           v-slot="v" immediate
           :rules="{ regex: /https?:\/\/.+/ }"
           :customMessages="{regex: $t('igsn.validation.url')}">
         <InputGroupText
-            class="flex-1"
             v-model="doc.location.localityURI"
             :errors="v.errors"
             label="Locality URI"
@@ -26,19 +26,20 @@
     </div>
 
     <LocationPicker v-model="doc.location.geometry"></LocationPicker>
+
     <InputGroupText v-model="doc.location.geometry" label="Geometry" help="wkt"></InputGroupText>
     <div class="flex">
       <InputGroupVocabSelect
-          class="flex-1 mr-4"
+          class="w-1/2 mr-4"
           label="Geometry Vertical Datum"
           v-model="doc.location.geometryVerticalDatum"
           :vocab="vocab.ePSG"
           help="verticalDatum"
       ></InputGroupVocabSelect>
 
-      <ValidationProvider name="locationSRID" rules="required" immediate v-slot="v">
+      <ValidationProvider class="w-1/2" name="locationSRID" rules="required" immediate v-slot="v">
         <InputGroupVocabSelect
-            class="flex-1 mr-4"
+            class="mr-4"
             label="Geometry SRID"
             v-model="doc.location.geometrySRID"
             :vocab="vocab.ePSG"
@@ -46,22 +47,21 @@
             help="srid"
         ></InputGroupVocabSelect>
       </ValidationProvider>
-
-      <ValidationProvider
-          name="geometryURI"
-          v-slot="v" immediate
-          :rules="{ regex: /https?:\/\/.+/ }"
-          :customMessages="{regex: $t('igsn.validation.url')}">
-        <InputGroupText
-            class="flex-1"
-            v-model="doc.location.geometryURI"
-            label="Geometry URI"
-            :errors="v.errors"
-            placeholder="http://"
-            help="geometryURL"
-        ></InputGroupText>
-      </ValidationProvider>
     </div>
+    <ValidationProvider
+        name="geometryURI"
+        v-slot="v" immediate
+        :rules="{ regex: /https?:\/\/.+/ }"
+        :customMessages="{regex: $t('igsn.validation.url')}">
+      <InputGroupText
+          class="flex-1"
+          v-model="doc.location.geometryURI"
+          label="Geometry URI"
+          :errors="v.errors"
+          placeholder="http://"
+          help="geometryURL"
+      ></InputGroupText>
+    </ValidationProvider>
   </div>
 </template>
 

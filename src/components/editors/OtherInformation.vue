@@ -40,18 +40,19 @@
           :key="index"
       >
         <InputGroupText
-            class="flex-1 mr-2"
+            class="w-1/2 mr-2"
             v-model="classification.classification"
             label="Classification"
             help="classification"
         ></InputGroupText>
         <ValidationProvider
             name="classificationURI"
+            class="w-1/2"
             v-slot="v" immediate
             :rules="{ regex: /https?:\/\/.+/ }"
             :customMessages="{regex: $t('igsn.validation.url')}">
           <InputGroupText
-              class="flex-1 mr-2"
+              class="mr-2"
               v-model="classification.classificationURI"
               label="Classification URI"
               :errors="v.errors"
@@ -80,18 +81,19 @@
           :key="index"
       >
         <InputGroupText
-            class="flex-1 mr-2"
+            class="w-1/2 mr-2"
             v-model="sampledFeature.sampledFeature"
             label="Sampled Feature"
             help="sampledFeature"
         ></InputGroupText>
         <ValidationProvider
+            class="w-1/2"
             name="sampledFeatureURI"
             v-slot="v" immediate
             :rules="{ regex: /https?:\/\/.+/ }"
             :customMessages="{regex: $t('igsn.validation.url')}">
           <InputGroupText
-              class="flex-1 mr-2"
+              class="mr-2"
               v-model="sampledFeature.sampledFeatureURI"
               label="Sampled Feature URI"
               help="sampledFeatureURI"
@@ -146,13 +148,14 @@
     </div>
 
     <div class="flex">
-      <InputGroupText class="flex-1 mr-4" v-model="doc.method" label="Method" help="method"></InputGroupText>
+      <InputGroupText class="w-1/2 mr-4" v-model="doc.method" label="Method" help="method"></InputGroupText>
       <ValidationProvider
+          class="w-1/2"
           name="methodURI"
           v-slot="v" immediate
           :rules="{ regex: /https?:\/\/.+/ }"
           :customMessages="{regex: $t('igsn.validation.url')}">
-      <InputGroupText class="flex-1" v-model="doc.methodURI" label="Method URI" help="methodURL" :errors="v.errors"></InputGroupText>
+      <InputGroupText v-model="doc.methodURI" label="Method URI" help="methodURL" :errors="v.errors"></InputGroupText>
       </ValidationProvider>
     </div>
 
