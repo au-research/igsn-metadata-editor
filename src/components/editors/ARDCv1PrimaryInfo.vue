@@ -18,7 +18,7 @@
           v-if="mode === 'create' "
           name="resourceIdentifier"
           v-slot="v" immediate
-          :rules="{ required: true, regex: /([A-Za-z0-9\-.]+)/ }"
+          :rules="{ required: true, regex: /^([A-Za-z0-9\-.]+)$/ }"
           :customMessages="{regex: 'IGSN Failed Regex', required: 'Please provide an identifier'}">
         <InputGroup :label="$t('igsn.label.resourceIdentifier')"
                     v-show="igsn.prefix && igsn.namespace"
