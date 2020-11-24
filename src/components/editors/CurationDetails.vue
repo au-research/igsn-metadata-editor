@@ -18,10 +18,12 @@
 
       <div class="my-4">
         <div class="flex items-start">
-          <ValidationProvider name="curatorIdentifierType" rules="required" v-slot="v" immediate
+
+          <ValidationProvider class="w-1/2 mr-4"
+                              name="curatorIdentifierType"
+                              :rules=" curation.curatorIdentifier ? 'required': ''" v-slot="v" immediate
                               :customMessages="{required: $t('igsn.validation.curatorIdentifierType')}">
             <InputGroupVocabSelect
-                class="mr-4 w-64"
                 v-model="curation.curatorIdentifierType"
                 :vocab="vocab.identifierTypes"
                 :errors="v.errors"
@@ -29,7 +31,9 @@
                 help="identifierType"
             ></InputGroupVocabSelect>
           </ValidationProvider>
-          <ValidationProvider name="curatorIdentifier" rules="required" v-slot="v" immediate
+          <ValidationProvider class="w-1/2"
+                              name="curatorIdentifier"
+                              :rules="curation.curatorIdentifierType ? 'required' : ''" v-slot="v" immediate
                               :customMessages="{required: $t('igsn.validation.curatorIdentifier')}">
             <InputGroupText
                 v-model="curation.curatorIdentifier"
@@ -39,6 +43,7 @@
                 help="curatorIdentifier"
             ></InputGroupText>
           </ValidationProvider>
+
         </div>
       </div>
 
@@ -98,7 +103,7 @@
 import InputGroupText from "@/components/forms/InputGroupText";
 import InputGroupVocabSelect from "@/components/forms/InputGroupVocabSelect";
 import InputGroupDatePicker from "@/components/forms/InputGroupDatePicker";
-import {ValidationProvider, ValidationObserver} from 'vee-validate';
+import {ValidationProvider} from 'vee-validate';
 
 export default {
   name: "CurationDetails",
