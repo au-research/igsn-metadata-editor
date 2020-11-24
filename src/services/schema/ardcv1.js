@@ -315,6 +315,9 @@ export default {
         for (let i = 0; i < 4; i++) {
             xml = xml.replaceAll(/<[^/>][^>]*>\s*<\/[^>]+>\s*/gi, "");
         }
+
+        // remove empty attributes
+        xml = xml.replaceAll(/\s+\w*=\s*"\s*"/gi, "");
         return xml;
     },
 
