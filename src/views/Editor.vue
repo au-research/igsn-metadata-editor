@@ -1,4 +1,6 @@
 <template>
+
+
   <div class="container mx-auto text-left">
     <!-- <a href class="btn btn-blue" @click.prevent="loadSampleXML">Load Sample XML</a>
     <a href class="btn btn-blue" @click.prevent="this.loadXML('')">PopulateBlank</a>
@@ -35,6 +37,13 @@ export default {
     };
   },
 
+  computed: {
+
+    user() {
+      return this.$store.getters["auth/user"];
+    }
+  },
+
   methods: {
     loadXML(xml) {
       this.xml = xml
@@ -42,6 +51,7 @@ export default {
   },
 
   mounted() {
+    console.log(this.isLoggedIn)
     this.schema = this.$route.params.schema
     this.versionID = this.$route.params.versionID
     this.mode = "create"

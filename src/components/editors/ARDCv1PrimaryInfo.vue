@@ -254,7 +254,6 @@ export default {
           return;
         }
 
-
         this.doc.resourceIdentifier = `${this.igsn.prefix}/${this.igsn.namespace}${this.igsn.value}`
         this.doc.landingPage = `https://test.identifiers.ardc.edu.au/igsn-portal/view/${this.doc.resourceIdentifier}`
       }

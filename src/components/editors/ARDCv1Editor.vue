@@ -1,7 +1,7 @@
 <template>
   <div class="my-4">
     <ValidationObserver v-slot="{ handleSubmit, valid }" ref="form">
-      <span class="px-8" v-if="!doc">
+      <span class="px-8" v-if="!doc || !user.allocations">
         <i class="fas fa-spinner fa-spin"></i> Loading, please wait...
       </span>
       <form class="pb-8" @submit.prevent="handleSubmit" v-if="doc">
@@ -11,7 +11,7 @@
           <div class="flex flex-row">
             <div class="w-1/2 pr-8">
               <h1 class="text-2xl mb-3 font-sans">Primary Information</h1>
-              <ARDCv1PrimaryInfo :doc="doc" :vocab="vocab" :mode="mode"></ARDCv1PrimaryInfo>
+              <ARDCv1PrimaryInfo v-if="user.allocations" :doc="doc" :vocab="vocab" :mode="mode"></ARDCv1PrimaryInfo>
             </div>
             <div class="w-1/2">
               <h1 class="text-2xl mb-3 font-sans">
