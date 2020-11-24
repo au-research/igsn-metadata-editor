@@ -311,13 +311,13 @@ export default {
             fullTagEmptyElement: true
         });
 
-        // remove empty tags with regex, do it 4 times because regex can't do recursive
-        for (let i = 0; i < 4; i++) {
-            xml = xml.replaceAll(/<[^/>][^>]*>\s*<\/[^>]+>\s*/gi, "");
-        }
-
         // remove empty attributes
         xml = xml.replaceAll(/\s+\w*=\s*"\s*"/gi, "");
+
+        // remove empty tags with regex, do it 4 times because regex can't do recursive
+        for (let i = 0; i < 4; i++) {
+            xml = xml.replaceAll(/<([^</>]*)>([\s]*?|)<\/\1>\s*/gi, "");
+        }
         return xml;
     },
 
