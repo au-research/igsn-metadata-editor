@@ -51,7 +51,6 @@ export default {
   },
 
   mounted() {
-    console.log(this.isLoggedIn)
     this.schema = this.$route.params.schema
     this.versionID = this.$route.params.versionID
     this.mode = "create"

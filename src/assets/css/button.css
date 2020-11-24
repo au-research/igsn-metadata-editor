@@ -3,7 +3,7 @@
 }
 
 .btn:hover {
-    @apply no-underline;
+    @apply no-underline cursor-pointer;
 }
 
 .btn-sm {

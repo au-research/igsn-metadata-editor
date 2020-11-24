@@ -6,7 +6,9 @@
         class="mb-8 bg-gray-200 p-5 shadow-lg"
     >
 
-      <ValidationProvider name="contributorName" rules="required" v-slot="v" immediate
+      <ValidationProvider name="contributorName"
+                          :rules="contributor.contributorType || contributor.contributorIdentifier || contributor.contributorIdentifierType ? 'required' : ''"
+                          v-slot="v" immediate
                           :customMessages="{required: $t('igsn.validation.contributorName')}">
         <InputGroupText
             v-model="contributor.contributorName"
@@ -16,7 +18,9 @@
         ></InputGroupText>
       </ValidationProvider>
 
-      <ValidationProvider name="contributorType" rules="required" v-slot="v" immediate
+      <ValidationProvider name="contributorType"
+                          :rules="contributor.contributorName || contributor.contributorIdentifier || contributor.contributorIdentifierType ? 'required' : ''"
+                          v-slot="v" immediate
                           :customMessages="{required: $t('igsn.validation.contributorType')}">
         <InputGroupVocabSelect
             label="Contributor Type"
@@ -57,7 +61,7 @@
       </div>
 
       <a
-          class="btn btn-red"
+          class="btn btn-red btn-sm"
           href
           @click.prevent="doc.contributors.splice(index, 1)"
       >Remove Contributor</a>

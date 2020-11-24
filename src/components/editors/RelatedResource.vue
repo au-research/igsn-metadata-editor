@@ -10,27 +10,42 @@
         label="Related Resource Title"
     ></InputGroupText>
 
-    <ValidationProvider name="relatedResourceIdentifier" rules="required" v-slot="v" immediate :customMessages="{required: $t('igsn.validation.relatedResourceIdentifier')}">
-      <InputGroupText
-          v-model="related.relatedResourceIdentifier"
-          label="Related Resource Identifier"
-          placeholder="Grant Search"
-          :errors="v.errors"
-          help="relatedResourceIdentifier"
-      ></InputGroupText>
-    </ValidationProvider>
+    <div class="flex items-start">
+      <ValidationProvider
+          name="relatedResourceIdentifierType"
+          class="w-1/2 mr-4"
+          :rules="related.relatedResourceTitle || related.relatedResourceIdentifier ? 'required' : ''"
+          v-slot="v" immediate
+          :customMessages="{required: $t('igsn.validation.relatedResourceIdentifierType')}">
+        <InputGroupVocabSelect
+            label="Related Identifier Type"
+            v-model="related.relatedResourceIdentifierType"
+            :vocab="vocab.identifierTypes"
+            :errors="v.errors"
+            help="identifierType"
+        ></InputGroupVocabSelect>
+      </ValidationProvider>
+      <ValidationProvider
+          name="relatedResourceIdentifier"
+          class="w-1/2"
+          :rules="related.relatedResourceTitle || related.relatedResourceIdentifierType ? 'required' : ''"
+          v-slot="v" immediate
+          :customMessages="{required: $t('igsn.validation.relatedResourceIdentifier')}">
+        <InputGroupText
+            v-model="related.relatedResourceIdentifier"
+            label="Related Resource Identifier"
+            placeholder="Related Resource Identifier"
+            :errors="v.errors"
+            help="relatedResourceIdentifier"
+        ></InputGroupText>
+      </ValidationProvider>
+    </div>
 
-    <ValidationProvider name="relatedResourceIdentifierType" rules="required" v-slot="v" immediate :customMessages="{required: $t('igsn.validation.relatedResourceIdentifierType')}">
-      <InputGroupVocabSelect
-          label="Related Identifier Type"
-          v-model="related.relatedResourceIdentifierType"
-          :vocab="vocab.identifierTypes"
-          :errors="v.errors"
-          help="identifierType"
-      ></InputGroupVocabSelect>
-    </ValidationProvider>
-
-    <ValidationProvider name="relatedResourceRelationType" rules="required" v-slot="v" immediate :customMessages="{required: $t('igsn.validation.relatedResourceRelationType')}">
+    <ValidationProvider
+        name="relatedResourceRelationType"
+        :rules="related.relatedResourceTitle || related.relatedResourceIdentifierType || related.relatedResourceIdentifier? 'required' : ''"
+        v-slot="v" immediate
+        :customMessages="{required: $t('igsn.validation.relatedResourceRelationType')}">
       <InputGroupVocabSelect
           label="Relation Type"
           v-model="related.relationType"
@@ -41,7 +56,7 @@
     </ValidationProvider>
 
     <a
-        class="btn btn-red"
+        class="btn btn-sm btn-red"
         href
         @click.prevent="doc.relatedResources.splice(index, 1)"
     >Remove Related Resource</a>

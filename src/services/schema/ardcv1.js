@@ -180,15 +180,15 @@ export default {
                     relatedResources: {
                         relatedResource: dom.relatedResources?.map(related => {
                             return {
-                                relatedResourceTitle: related.relatedResourceTitle,
+                                relatedResourceTitle: opt(related.relatedResourceTitle),
                                 relatedResourceIdentifier: {
-                                    _text: related.relatedResourceIdentifier,
+                                    _text: opt(related.relatedResourceIdentifier),
                                     _attributes: {
-                                        relatedResourceIdentifierType: related.relatedResourceIdentifierType
+                                        relatedResourceIdentifierType: opt(related.relatedResourceIdentifierType)
                                     }
                                 },
                                 _attributes: {
-                                    relationType: related.relationType
+                                    relationType: opt(related.relationType)
                                 }
                             }
                         })
@@ -231,14 +231,14 @@ export default {
                 }
             })),
             comments: opt(resource.comments?._text),
-            contributors: optArr(makeArray(resource.contributors?.contributor).map((contributor) => {
+            contributors: initEmptyArray(optArr(makeArray(resource.contributors?.contributor).map((contributor) => {
                 return {
                     contributorName: contributor.contributorName?._text,
                     contributorType: contributor._attributes?.contributorType,
                     contributorIdentifier: contributor.contributorIdentifier?._text,
                     contributorIdentifierType: contributor.contributorIdentifier?._attributes?.contributorIdentifierType
                 }
-            })),
+            })), {}),
             //curationDetails
             curationDetails: initEmptyArrayWithSingleObj(makeArray(optArr(resource.curationDetails?.curation)).map((curation) => {
                 return {
@@ -278,14 +278,14 @@ export default {
             methodURI: opt(resource.method?._attributes?.methodURI),
             purpose: opt(resource.purpose?._text),
 
-            relatedResources: makeArray(resource.relatedResources?.relatedResource).map((related) => {
+            relatedResources: initEmptyArray(makeArray(resource.relatedResources?.relatedResource).map((related) => {
                 return {
                     relatedResourceIdentifier: opt(related.relatedResourceIdentifier._text),
                     relatedResourceIdentifierType: opt(related.relatedResourceIdentifier._attributes.relatedResourceIdentifierType),
                     relatedResourceTitle: opt(related.relatedResourceTitle?._text),
                     relationType: related._attributes?.relationType
                 }
-            }),
+            }), {}),
 
             resourceIdentifier: opt(resource.resourceIdentifier?._text),
             resourceTitle: opt(resource.resourceTitle?._text),
