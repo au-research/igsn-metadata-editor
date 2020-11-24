@@ -5,7 +5,7 @@
       <label v-text="label"></label>
     </div>
     <slot></slot>
-    <span v-if="error">{{ error }}</span>
+    <span class="error-message" v-if="error">{{ error }}</span>
   </div>
 </template>
 

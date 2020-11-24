@@ -26,6 +26,6 @@
     @apply bg-red-dark text-white;
 }
 
-.error {
+.error .error-message {
     @apply text-red;
 }
