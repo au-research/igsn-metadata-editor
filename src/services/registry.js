@@ -113,7 +113,7 @@ export default class RegistryService {
     async update(xml) {
         const {data} = await this.http.post('/api/services/igsn/update', xml, {
             headers: {
-                'Content-Type' : 'application/xml+ardcv1'
+                'Content-Type' : 'application/xml'
             }
         });
 
