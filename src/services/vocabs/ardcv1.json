@@ -379,6 +379,10 @@
       "value": "http://pid.geoscience.gov.au/def/voc/ga/igsncode/VIAF"
     },
     {
+      "label": "ROR",
+      "value": "http://pid.geoscience.gov.au/def/voc/ga/igsncode/ROR"
+    },
+    {
       "label": "Local",
       "value": "local"
     }
