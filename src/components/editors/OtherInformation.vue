@@ -180,15 +180,9 @@ export default {
       dateType: 'timeInstant'
     }
   },
-  watch: {
-    dateType(newVal) {
-      if (newVal === 'timeInstant') {
-        this.doc.TimePeriod = {}
-      } else if (newVal === 'timePeriod') {
-        this.doc.dateTimeInstant = '';
-        this.doc.dateTimePeriodStart = ''
-        this.doc.dateTimePeriodEnd = ''
-      }
+  mounted() {
+    if (this.doc.dateTimePeriodStart || this.doc.dateTimePeriodEnd) {
+      this.dateType = 'timePeriod'
     }
   }
 }

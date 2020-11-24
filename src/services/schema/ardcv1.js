@@ -298,7 +298,11 @@ export default {
                     sampledFeatureURI: sampledFeature._attributes?.sampledFeatureURI,
                     sampledFeature: sampledFeature._text
                 }
-            }))
+            })),
+
+            dateTimePeriodStart: opt(resource.date?.timePeriod?.start?._text),
+            dateTimePeriodEnd: opt(resource.date?.timePeriod?.end?._text),
+            dateTimeInstant: opt(resource.date?.timeInstant?._text)
         }
     },
 

@@ -1,7 +1,10 @@
 <template>
   <div class="my-4">
     <ValidationObserver v-slot="{ handleSubmit, valid }" ref="form">
-      <form class="pb-8" @submit.prevent="handleSubmit">
+      <span class="px-8" v-if="!doc">
+        <i class="fas fa-spinner fa-spin"></i> Loading, please wait...
+      </span>
+      <form class="pb-8" @submit.prevent="handleSubmit" v-if="doc">
         <div class="flex flex-col">
 
           <!-- Primary Info -->
@@ -151,7 +154,7 @@ export default {
   data() {
     return {
       tab: "location",
-      doc: {},
+      doc: null,
       eventType: 'updated',
       successMsg: null,
       errorMsg: null,
@@ -185,6 +188,9 @@ export default {
 
     // convert xml -> json -> dom doc for form functionality
     initDoc() {
+      if (this.xml.trim() === "") {
+        return;
+      }
       let json = ardcv1.xml2json(this.xml)
       this.doc = ardcv1.json2dom(json)
     },
