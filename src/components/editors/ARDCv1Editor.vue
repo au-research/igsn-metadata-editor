@@ -250,6 +250,10 @@ export default {
     if (this.mode === "create") {
       this.eventType = 'registered';
 
+      // empty xml
+      let json = ardcv1.xml2json("")
+      this.doc = ardcv1.json2dom(json)
+
       // default ownerID to currentUserID and ownerType to User
       this.doc.ownerID = this.user.id;
       this.doc.ownerType = 'User'
