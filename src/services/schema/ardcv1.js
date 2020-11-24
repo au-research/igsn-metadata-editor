@@ -216,10 +216,10 @@ export default {
         return {
             registeredObjectType: opt(resource._attributes?.registeredObjectType, "http://pid.geoscience.gov.au/def/voc/ga/igsncode/PhysicalSample"),
 
-            alternateIdentifiers: makeArray(resource.alternateIdentifiers).map((identifier) => {
+            alternateIdentifiers: makeArray(resource.alternateIdentifiers?.alternateIdentifier).map((identifier) => {
                 return {
-                    value: identifier.alternateIdentifier?._text,
-                    type: identifier.alternateIdentifier?._attributes.alternateIdentifierType
+                    value: identifier._text,
+                    type: identifier._attributes?.alternateIdentifierType
                 }
             }),
 
