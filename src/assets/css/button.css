@@ -29,3 +29,11 @@
 .error .error-message {
     @apply text-red;
 }
+
+.btn-disabled {
+    @apply bg-gray-700 text-white
+}
+
+.btn-disabled:hover {
+    @apply text-white cursor-wait
+}

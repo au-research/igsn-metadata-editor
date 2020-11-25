@@ -1,6 +1,7 @@
 <template>
   <div class="my-4">
-    <ValidationObserver v-slot="{ handleSubmit, valid }" ref="form">
+
+    <ValidationObserver v-slot="{ handleSubmit, valid, errors }" ref="form">
       <span class="px-8" v-if="!doc || !user.allocations">
         <i class="fas fa-spinner fa-spin"></i> Loading, please wait...
       </span>
@@ -28,7 +29,9 @@
               <a
                   :class="[tab === 'location' ? 'tab tab-active' : 'tab']"
                   @click.prevent="tabTo('location')"
-              >{{ $t('igsn.tab.location') }} <HelpIcon help="location"></HelpIcon></a>
+              >{{ $t('igsn.tab.location') }}
+                <HelpIcon help="location"></HelpIcon>
+              </a>
               <a
                   :class="[tab === 'related_resource' ? 'tab tab-active' : 'tab']"
                   @click.prevent="tabTo('related_resource')"
@@ -74,17 +77,6 @@
         </div>
         <hr/>
 
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert"
-             v-if="successMsg">
-          <span class="font-bold">SUCCESS!</span>
-          <span class="block sm:inline">{{ successMsg }}</span>
-        </div>
-
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert"
-             v-if="errorMsg">
-          <span class="block sm:inline">{{ errorMsg }}</span>
-        </div>
-
         <div class="mt-8 flex items-center space-x-2 justify-end">
           <div v-if="mode === 'edit'">
             <input type="radio" v-model="eventType" v-bind:value="'destroyed'"> Destroy
@@ -95,14 +87,80 @@
           <div v-if="mode === 'edit'">
             <input type="radio" v-model="eventType" v-bind:value="'updated'"> Update
           </div>
-          <button @click.prevent="mint" type="submit" class="btn btn-blue" v-if="mode === 'create'">Register</button>
-          <button @click.prevent="update" type="submit" class="btn btn-blue" v-if="mode === 'edit'">Update</button>
+          <button @click.prevent="mint" type="submit" class="btn btn-blue" v-if="mode === 'create' && !loading">Register</button>
+          <button @click.prevent="update" type="submit" class="btn btn-blue" v-if="mode === 'edit' && !loading">Update</button>
+          <a href class="btn btn-disabled" v-if="loading" @click.prevent=""><i class="fas fa-spinner fa-spin"></i> Loading</a>
+          <a href class="btn btn-blue" @click.prevent="$refs.resultModal.openModal()">Show</a>
           <div>
             Valid: {{ valid }}
           </div>
         </div>
       </form>
+
+      <modal ref="validationModal">
+        <template v-slot:header>
+          <h1>Validation Error</h1>
+        </template>
+
+        <template v-slot:body>
+          Please fix the following validation errors
+          <ul class="list-disc" v-for="(e, key) in errors" v-bind:key="key">
+            <li class="ml-4" v-if="e.length">{{ key }} : {{ e.join(', ') }}</li>
+          </ul>
+        </template>
+
+        <template v-slot:footer>
+          <div class="flex align-items-center justify-between">
+            <a href class="btn btn-blue" @click.prevent="$refs.validationModal.closeModal()"><i class="fa fa-edit"></i>
+              Continue editing</a>
+          </div>
+        </template>
+      </modal>
+
+      <modal ref="successModal" :closable="false">
+        <template v-slot:header>
+          <h1>Success</h1>
+        </template>
+
+        <template v-slot:body>
+          <div v-if="mode === 'create'">
+            <p>IGSN <strong>{{ doc.resourceIdentifier }}</strong> has been minted successfully!</p>
+          </div>
+
+          <div v-if="mode === 'edit'">
+            <p>IGSN <strong>{{ doc.resourceIdentifier }}</strong> has been updated successfully!</p>
+          </div>
+        </template>
+
+        <template v-slot:footer>
+          <div class="flex align-items-center justify-between">
+            <button class="btn btn-blue" @click="$refs.successModal.closeModal();$router.push('/')"><i
+                class="fa fa-home"></i> Return to dashboard
+            </button>
+            <button class="btn btn-blue" @click="openInPortal"><i class="fa fa-globe"></i> View in IGSN Portal</button>
+          </div>
+        </template>
+      </modal>
+
+      <modal ref="errorModal">
+        <template v-slot:header>
+          <h1>Error</h1>
+        </template>
+
+        <template v-slot:body>
+          {{ errorMsg }}
+        </template>
+
+        <template v-slot:footer>
+          <div class="flex align-items-center justify-between">
+            <a href class="btn btn-blue" @click.prevent="$refs.errorModal.closeModal()">
+              <i class="fa fa-edit"></i> Continue editing</a>
+          </div>
+        </template>
+      </modal>
+
     </ValidationObserver>
+
   </div>
 </template>
 
@@ -118,6 +176,7 @@ import RelatedResource from "@/components/editors/RelatedResource";
 import Contributors from "@/components/editors/Contributors";
 import OtherInformation from "@/components/editors/OtherInformation";
 import HelpIcon from "@/components/forms/HelpIcon";
+import Modal from "@/components/forms/Modal"
 import InputGroup from "@/components/forms/InputGroup";
 
 extend('required', {
@@ -134,6 +193,7 @@ export default {
   name: "ARDCv1Editor",
   components: {
     HelpIcon,
+    Modal,
     OtherInformation,
     Contributors,
     RelatedResource,
@@ -159,7 +219,8 @@ export default {
       successMsg: null,
       errorMsg: null,
       isMounted: false,
-      errors: []
+      errors: [],
+      loading: false
     };
   },
 
@@ -196,12 +257,19 @@ export default {
     },
 
     mint() {
+      this.errorMsg = null
+      this.successMsg = null
+      let that = this
 
       // trigger computed property
       this.triggerChangeEvent()
 
+      this.loading = true;
+
       this.$refs.form.validateWithInfo().then((result) => {
         if (!result.isValid) {
+          that.$refs.validationModal.openModal()
+          that.loading = false;
           return;
         }
 
@@ -209,9 +277,15 @@ export default {
         let that = this
 
         this.$registryService.mint(this.result_xml, this.doc.ownerType, this.doc.ownerID).then(data => {
-          that.successMsg = data.response.data.message
+          that.$refs.successModal.openModal()
+          that.loading = false;
+
+          that.successMsg = data.response?.data?.message
         }).catch(error => {
-          that.errorMsg = error.response.data.message
+          that.errorMsg = error.response?.data?.message ? error.response?.data?.message: "An error has occurred";
+          that.$refs.errorModal.openModal();
+          that.loading = false;
+
           that.successMsg = null
         })
 
@@ -226,12 +300,31 @@ export default {
       // trigger computed property
       this.triggerChangeEvent()
 
-      this.$registryService.update(this.result_xml).then(data => {
-        // todo update successMsg to the request.message
-        that.successMsg = data.message ? data.message : "Update successful"
-      }).catch(error => {
-        that.errorMsg = error.response?.data?.message
+      this.loading = true;
+
+      // validate the form
+      this.$refs.form.validateWithInfo().then((result) => {
+        if (!result.isValid) {
+          that.$refs.validationModal.openModal()
+          that.loading = false;
+          return;
+        }
+
+        this.$registryService.update(this.result_xml).then(data => {
+          that.$refs.successModal.openModal()
+          that.loading = false;
+
+          // todo update successMsg to the request.message
+          that.successMsg = data.message ? data.message : "Update successful"
+        }).catch(error => {
+          that.errorMsg = error.response?.data?.message ? error.response?.data?.message: "An error has occurred";
+          that.$refs.errorModal.openModal();
+          that.loading = false;
+        })
+
       })
+
+
     },
 
     // a hack to recompute computed property that relies on eventType
@@ -240,6 +333,10 @@ export default {
       let exactEventType = this.eventType
       this.eventType = 'changed'
       this.eventType = exactEventType
+    },
+
+    openInPortal() {
+      window.open('https://test.identifiers.ardc.edu.au/igsn-portal/' + this.doc.resourceIdentifier)
     }
 
   },
