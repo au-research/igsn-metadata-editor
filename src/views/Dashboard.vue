@@ -4,21 +4,27 @@
     <div class="flex flex-col">
       <div class="flex items-center mb-6">
         <div class="flex w-full justify-between">
-          <div class="pt-2 relative text-gray-600">
-            <input
-                class="border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none"
-                v-model="query"
-                @keyup.enter="search()"
-                @change="onQueryChange()"
-                type="search"
-                name="search"
-                placeholder="Search"
-            />
-            <button type="submit" class="absolute right-0 top-0 mt-4 mr-4" @click.prevent="search()">
-              <i class="fas fa-search"></i>
-            </button>
+          <div class="flex flex-row items-center">
+            <div class="pt-2 relative text-gray-600">
+              <input
+                  class="border-2 w-64 border-gray-300 h-10 bg-white px-2 pl-10 rounded-lg text-sm focus:outline-none"
+                  v-model="query"
+                  @keyup.enter="search()"
+                  @change="onQueryChange()"
+                  type="search"
+                  name="search"
+                  placeholder="Search"
+              />
+              <button type="submit" class="absolute left-0 top-0 mt-4 ml-4" @click.prevent="search()">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+            <div class="pt-2 ml-2" v-if="loading">
+              <i class="text-lg fas fa-spinner fa-spin"></i> Loading...
+            </div>
           </div>
-          <div>
+
+          <div class="pt-2">
             <router-link
                 :to="{ name: 'edit', params: { schema: 'ardc-igsn-desc-1.0' }}"
                 class="btn btn-blue"
@@ -26,9 +32,7 @@
           </div>
         </div>
 
-        <div class="pt-2 ml-2" v-if="loading">
-          <i class="text-lg fas fa-spinner fa-spin"></i>
-        </div>
+
       </div>
 
       <div v-if="result && result.totalElements === 0">
