@@ -118,7 +118,11 @@
     <input name="dateType" type="radio" v-model="dateType" v-bind:value="'timePeriod'"> Date Range
 
     <div v-if="dateType === 'timeInstant'">
-      <ValidationProvider name="dateTimeInstant" :rules="{regex: /\d{4}-\d{2}-\d{2}/}" v-slot="v" immediate :customMessages="{regex: $t('igsn.validation.date')}">
+      <ValidationProvider
+          name="dateTimeInstant"
+          :rules="{w3cdtf: true}"
+          v-slot="v" immediate
+          :customMessages="{w3cdtf: $t('igsn.validation.date')}">
         <InputGroupDatePicker
             v-model="doc.dateTimeInstant"
             :errors="v.errors"
@@ -128,7 +132,11 @@
     </div>
     <div class="flex" v-show="dateType === 'timePeriod'">
       <div class="w-1/2 mr-4">
-        <ValidationProvider name="dateTimePeriodStart" :rules="{regex: /\d{4}-\d{2}-\d{2}/}" v-slot="v" immediate :customMessages="{regex: $t('igsn.validation.date')}">
+        <ValidationProvider
+            name="dateTimePeriodStart"
+            :rules="{w3cdtf: true}"
+            v-slot="v" immediate
+            :customMessages="{w3cdtf: $t('igsn.validation.date')}">
           <InputGroupDatePicker
               v-model="doc.dateTimePeriodStart"
               :errors="v.errors"
@@ -137,7 +145,11 @@
         </ValidationProvider>
       </div>
       <div class="w-1/2">
-        <ValidationProvider name="dateTimePeriodEnd" :rules="{regex: /\d{4}-\d{2}-\d{2}/}" v-slot="v" immediate :customMessages="{regex: $t('igsn.validation.date')}">
+        <ValidationProvider
+            name="dateTimePeriodEnd"
+            :rules="{w3cdtf: true}"
+            v-slot="v" immediate
+            :customMessages="{w3cdtf: $t('igsn.validation.date')}">
           <InputGroupDatePicker
               v-model="doc.dateTimePeriodEnd"
               :errors="v.errors"

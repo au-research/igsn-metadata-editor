@@ -189,6 +189,12 @@ extend('regex', {
   message: 'This failed validation'
 });
 
+extend('w3cdtf', value => {
+  let pattern = /(^\d{4}$)|(^\d{4}-\d{2}$)|(^\d{4}-\d{2}-\d{2}$)|(^\d{4}-\d{2}-\d{2}T\d{2}(:\d{2}){1,2}[-+]\d{2}:\d{2}$)/g
+
+  return new RegExp(pattern).test(value)
+})
+
 export default {
   name: "ARDCv1Editor",
   components: {
