@@ -265,7 +265,6 @@ export default {
     mint() {
       this.errorMsg = null
       this.successMsg = null
-      let that = this
 
       // trigger computed property
       this.triggerChangeEvent()
@@ -274,25 +273,24 @@ export default {
 
       this.$refs.form.validateWithInfo().then((result) => {
         if (!result.isValid) {
-          that.$refs.validationModal.openModal()
-          that.loading = false;
+          this.$refs.validationModal.openModal()
+          this.loading = false;
           return;
         }
 
         this.errorMsg = null;
-        let that = this
 
         this.$registryService.mint(this.result_xml, this.doc.ownerType, this.doc.ownerID).then(data => {
-          that.$refs.successModal.openModal()
-          that.loading = false;
+          this.$refs.successModal.openModal()
+          this.loading = false;
 
-          that.successMsg = data.response?.data?.message
+          this.successMsg = data.response?.data?.message
         }).catch(error => {
-          that.errorMsg = error.response?.data?.message ? error.response?.data?.message: "An error has occurred";
-          that.$refs.errorModal.openModal();
-          that.loading = false;
+          this.errorMsg = error.response?.data?.message ? error.response?.data?.message: "An error has occurred";
+          this.$refs.errorModal.openModal();
+          this.loading = false;
 
-          that.successMsg = null
+          this.successMsg = null
         })
 
       })
@@ -301,7 +299,6 @@ export default {
     update() {
       this.errorMsg = null
       this.successMsg = null
-      let that = this
 
       // trigger computed property
       this.triggerChangeEvent()
@@ -311,21 +308,21 @@ export default {
       // validate the form
       this.$refs.form.validateWithInfo().then((result) => {
         if (!result.isValid) {
-          that.$refs.validationModal.openModal()
-          that.loading = false;
+          this.$refs.validationModal.openModal()
+          this.loading = false;
           return;
         }
 
         this.$registryService.update(this.result_xml).then(data => {
-          that.$refs.successModal.openModal()
-          that.loading = false;
+          this.$refs.successModal.openModal()
+          this.loading = false;
 
           // todo update successMsg to the request.message
-          that.successMsg = data.message ? data.message : "Update successful"
+          this.successMsg = data.message ? data.message : "Update successful"
         }).catch(error => {
-          that.errorMsg = error.response?.data?.message ? error.response?.data?.message: "An error has occurred";
-          that.$refs.errorModal.openModal();
-          that.loading = false;
+          this.errorMsg = error.response?.data?.message ? error.response?.data?.message: "An error has occurred";
+          this.$refs.errorModal.openModal();
+          this.loading = false;
         })
 
       })
