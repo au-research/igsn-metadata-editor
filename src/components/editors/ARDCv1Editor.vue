@@ -219,7 +219,7 @@ export default {
   },
   data() {
     return {
-      tab: "location",
+      tab: "related_resource",
       doc: null,
       eventType: 'updated',
       successMsg: null,

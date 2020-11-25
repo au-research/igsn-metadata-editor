@@ -5,10 +5,14 @@
       :key="index"
       class="mb-12 bg-gray-200 p-5 shadow-lg"
   >
-    <InputGroupText
-        v-model="related.relatedResourceTitle"
-        label="Related Resource Title"
-    ></InputGroupText>
+
+    <InputGroup
+        label="Related Resource Title">
+        <GrantInput
+            placeholder="Related Resource Title"
+            v-model="related.relatedResourceTitle">
+        </GrantInput>
+    </InputGroup>
 
     <div class="flex items-start">
       <ValidationProvider
@@ -73,10 +77,13 @@
 <script>
 import InputGroupText from "@/components/forms/InputGroupText";
 import InputGroupVocabSelect from "@/components/forms/InputGroupVocabSelect";
+import GrantInput from "@/components/forms/GrantInput";
+import InputGroup from "@/components/forms/InputGroup";
+
 import {ValidationProvider, ValidationObserver} from 'vee-validate';
 export default {
 name: "RelatedResource",
-  components: {InputGroupText, InputGroupVocabSelect, ValidationProvider},
+  components: {InputGroupText, InputGroupVocabSelect, InputGroup, GrantInput, ValidationProvider},
   props: ['doc', 'vocab']
 }
 </script>
