@@ -31,7 +31,7 @@ export default {
 
     window.$(this.$el).grant_widget({
       before_html: '',
-      search_text: '<i class="fas fa-search"></i> Search',
+      search_text: '<i class="fas fa-search"></i> Grant Search',
       search_class: 'btn btn-blue btn-sm my-2',
       lookup: false,
       post_lookup_success_handler(data, obj, settings) {

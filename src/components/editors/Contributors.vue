@@ -10,12 +10,14 @@
                           :rules="contributor.contributorType || contributor.contributorIdentifier || contributor.contributorIdentifierType ? 'required' : ''"
                           v-slot="v" immediate
                           :customMessages="{required: $t('igsn.validation.contributorName')}">
-        <InputGroupText
-            v-model="contributor.contributorName"
-            label="Contributor Name"
-            placeholder="Fredd Bloggs"
-            :errors="v.errors"
-        ></InputGroupText>
+        <InputGroup
+            label="ContributorName"
+            :error="v.errors[0]">
+          <ORCIDInput
+              :index="index"
+              v-model="contributor.contributorName"
+              v-on:update="updateContributor"></ORCIDInput>
+        </InputGroup>
       </ValidationProvider>
 
       <ValidationProvider name="contributorType"
@@ -77,12 +79,22 @@
 <script>
 import InputGroupText from "@/components/forms/InputGroupText";
 import InputGroupVocabSelect from "@/components/forms/InputGroupVocabSelect";
+import InputGroup from "@/components/forms/InputGroup";
+import ORCIDInput from "@/components/forms/ORCIDInput";
 import {ValidationProvider} from 'vee-validate';
 
 export default {
   name: "Contributors",
-  components: {InputGroupText, InputGroupVocabSelect, ValidationProvider},
-  props: ['doc', 'vocab']
+  components: {InputGroupText, InputGroup, ORCIDInput, InputGroupVocabSelect, ValidationProvider},
+  props: ['doc', 'vocab'],
+  methods: {
+    updateContributor({ index, name, orcid}) {
+      this.doc.contributors[index].contributorName = name
+      this.doc.contributors[index].contributorIdentifier = orcid
+      this.doc.contributors[index].contributorIdentifierType = 'http://pid.geoscience.gov.au/def/voc/ga/igsncode/ORCID'
+      this.$forceUpdate()
+    }
+  }
 }
 </script>
 

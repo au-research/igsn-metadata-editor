@@ -22,6 +22,10 @@
     @apply bg-red text-white;
 }
 
+.btn-white {
+    @apply bg-white text-black;
+}
+
 .btn-red:hover {
     @apply bg-red-dark text-white;
 }

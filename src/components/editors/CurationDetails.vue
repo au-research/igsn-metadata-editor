@@ -7,13 +7,15 @@
     >
       <ValidationProvider name="curatorName" rules="required" v-slot="v" immediate
                           :customMessages="{required: $t('igsn.validation.curatorName')}">
-        <InputGroupText
-            v-model="curation.curatorName"
+        <InputGroup
             label="Curator"
-            placeholder="Fred Bloggs"
             :errors="v.errors"
-            help="curatorName"
-        ></InputGroupText>
+            help="curatorName">
+          <ORCIDInput
+              :index="index"
+              v-model="curation.curatorName"
+              v-on:update="updateCurator"></ORCIDInput>
+        </InputGroup>
       </ValidationProvider>
 
       <div class="my-4">
@@ -103,12 +105,22 @@
 import InputGroupText from "@/components/forms/InputGroupText";
 import InputGroupVocabSelect from "@/components/forms/InputGroupVocabSelect";
 import InputGroupDatePicker from "@/components/forms/InputGroupDatePicker";
+import InputGroup from "@/components/forms/InputGroup";
+import ORCIDInput from "@/components/forms/ORCIDInput";
 import {ValidationProvider} from 'vee-validate';
 
 export default {
   name: "CurationDetails",
-  components: {InputGroupText, ValidationProvider, InputGroupVocabSelect, InputGroupDatePicker},
-  props: ['doc', 'vocab']
+  components: {InputGroupText, InputGroup, ORCIDInput, ValidationProvider, InputGroupVocabSelect, InputGroupDatePicker},
+  props: ['doc', 'vocab'],
+  methods: {
+    updateCurator({ index, name, orcid}) {
+      this.doc.curationDetails[index].curatorName = name
+      this.doc.curationDetails[index].curatorIdentifier = orcid
+      this.doc.curationDetails[index].curatorIdentifierType = 'http://pid.geoscience.gov.au/def/voc/ga/igsncode/ORCID'
+      this.$forceUpdate()
+    }
+  }
 }
 </script>
 

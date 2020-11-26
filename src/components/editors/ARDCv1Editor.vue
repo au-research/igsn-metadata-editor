@@ -219,7 +219,7 @@ export default {
   },
   data() {
     return {
-      tab: "related_resource",
+      tab: "location",
       doc: null,
       eventType: 'updated',
       successMsg: null,
@@ -336,6 +336,7 @@ export default {
       let exactEventType = this.eventType
       this.eventType = 'changed'
       this.eventType = exactEventType
+      this.$forceUpdate()
     },
 
     openInPortal() {
