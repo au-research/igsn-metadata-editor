@@ -90,10 +90,6 @@
           <button @click.prevent="mint" type="submit" class="btn btn-blue" v-if="mode === 'create' && !loading">Register</button>
           <button @click.prevent="update" type="submit" class="btn btn-blue" v-if="mode === 'edit' && !loading">Update</button>
           <a href class="btn btn-disabled" v-if="loading" @click.prevent=""><i class="fas fa-spinner fa-spin"></i> Loading</a>
-          <a href class="btn btn-blue" @click.prevent="$refs.resultModal.openModal()">Show</a>
-          <div>
-            Valid: {{ valid }}
-          </div>
         </div>
       </form>
 
