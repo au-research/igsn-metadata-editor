@@ -84,7 +84,7 @@
               v-slot="v" immediate
               :customMessages="{ w3cdtf: $t('igsn.validation.date') }">
           <InputGroupDatePicker
-              v-model="doc.embargoEnd"
+              v-model="doc.embargoDate"
               v-show="doc.visibility === 'false'"
               label="Embargo Date"
               :errors="v.errors"
