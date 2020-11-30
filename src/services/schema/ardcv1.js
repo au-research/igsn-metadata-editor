@@ -261,7 +261,7 @@ export default {
             location: {
                 locality: resource.location?.locality?._text,
                 localityURI: resource.location?.locality?._attributes?.localityURI,
-                geometrySRID: opt(resource.location?.geometry?._attributes?.srid, "https://epsg.io/4326"),
+                geometrySRID: resource.location?.geometry?._attributes?.srid,
                 geometryVerticalDatum: resource.location?.geometry?._attributes?.verticalDatum,
                 geometryURI: resource.location?.geometry?._attributes?.geometryURI,
                 geometry: resource.location?.geometry?._text

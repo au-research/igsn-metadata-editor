@@ -19,11 +19,11 @@
       "label": "Publicly Visible"
     },
     {
-      "value": "hidden",
+      "value": "false",
       "label": "Private"
     },
     {
-      "value": "false",
+      "value": "under-embargo",
       "label": "Under Embargo"
     }
   ],

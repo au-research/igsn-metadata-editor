@@ -65,7 +65,7 @@
       </ValidationProvider>
 
       <div class="flex flex-row">
-        <div :class="[doc.visibility === 'false' ? 'w-1/2 mr-4' : 'w-full']">
+        <div :class="[doc.visibility === 'under-embargo' ? 'w-1/2 mr-4' : 'w-full']">
           <ValidationProvider name="visibility" rules="required" v-slot="v" immediate>
             <InputGroupVocabSelect
                 label="Metadata Visibility"
@@ -77,15 +77,15 @@
             ></InputGroupVocabSelect>
           </ValidationProvider>
         </div>
-        <div :class="[doc.visibility === 'false' ? 'w-1/2' : '']">
+        <div :class="[doc.visibility === 'under-embargo' ? 'w-1/2' : '']">
           <ValidationProvider
               name="curationDate"
+              v-show="doc.visibility === 'under-embargo'"
               :rules="{ w3cdtf: true}"
               v-slot="v" immediate
               :customMessages="{ w3cdtf: $t('igsn.validation.date') }">
           <InputGroupDatePicker
               v-model="doc.embargoDate"
-              v-show="doc.visibility === 'false'"
               label="Embargo Date"
               :errors="v.errors"
               help="embargoDate"
@@ -211,8 +211,8 @@ export default {
   methods: {
     // the resource is now not under embargo due to
     visibilityUpdated() {
-      if (this.doc.visibility !== "false") {
-        delete this.doc.embargoEnd;
+      if (this.doc.visibility !== "under-embargo") {
+        delete this.doc.embargoDate;
       }
     },
 
