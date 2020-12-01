@@ -114,8 +114,8 @@
     </div>
 
     <label><HelpIcon help="date"></HelpIcon>Collection/Creation Date</label>
-    <input name="dateType" type="radio" v-model="dateType" v-bind:value="'timeInstant'"> Single Date
-    <input name="dateType" type="radio" v-model="dateType" v-bind:value="'timePeriod'"> Date Range
+    <input name="dateType" type="radio" v-model="dateType" v-bind:value="'timeInstant'" @change="onDateTimeChange"> Single Date
+    <input name="dateType" type="radio" v-model="dateType" v-bind:value="'timePeriod'" @change="onDateTimeChange"> Date Range
 
     <div v-if="dateType === 'timeInstant'">
       <ValidationProvider
@@ -130,7 +130,7 @@
         ></InputGroupDatePicker>
       </ValidationProvider>
     </div>
-    <div class="flex" v-show="dateType === 'timePeriod'">
+    <div class="flex" v-if="dateType === 'timePeriod'">
       <div class="w-1/2 mr-4">
         <ValidationProvider
             name="dateTimePeriodStart"
@@ -195,6 +195,18 @@ export default {
   mounted() {
     if (this.doc.dateTimePeriodStart || this.doc.dateTimePeriodEnd) {
       this.dateType = 'timePeriod'
+    }
+  },
+  methods: {
+    onDateTimeChange() {
+      if (this.dateType === 'timeInstant') {
+        delete this.doc.dateTimePeriodStart
+        delete this.doc.dateTimePeriodEnd
+      } else if (this.dateType === 'timePeriod') {
+        delete this.doc.dateTimeInstant
+      }
+      this.$forceUpdate()
+      console.log(this.dateType)
     }
   }
 }
