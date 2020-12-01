@@ -239,7 +239,12 @@ export default {
       // dom -> json -> xml
       let json = ardcv1.dom2json(this.doc, this.eventType);
       return ardcv1.json2xml(json);
+    },
+
+    portalUrl() {
+      return this.$registryService.getPortalUrl()
     }
+
   },
   methods: {
 
@@ -336,7 +341,7 @@ export default {
     },
 
     openInPortal() {
-      window.open('https://test.identifiers.ardc.edu.au/igsn-portal/' + this.doc.resourceIdentifier)
+      window.open(this.portalUrl + 'view/' + this.doc.resourceIdentifier)
     }
 
   },

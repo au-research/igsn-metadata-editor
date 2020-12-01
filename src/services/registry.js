@@ -2,9 +2,14 @@ import axios from 'axios';
 
 export default class RegistryService {
 
-    constructor(url, token) {
+    constructor(url, portalUrl, token) {
         this.url = url
+        this.portalUrl = portalUrl
         this.token = token
+    }
+
+    getPortalUrl() {
+        return this.portalUrl
     }
 
     setToken(token) {

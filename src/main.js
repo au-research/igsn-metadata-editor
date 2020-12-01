@@ -19,7 +19,7 @@ let keycloakOptions = {
 }
 
 let keycloak = Keycloak(keycloakOptions);
-let registryService = new RegistryService(process.env.VUE_APP_REGISTRY_URL)
+let registryService = new RegistryService(process.env.VUE_APP_REGISTRY_URL, process.env.VUE_APP_PORTAL_URL)
 
 keycloak
   .init({ onLoad: keycloakOptions.onLoad, checkLoginIframe: false })
