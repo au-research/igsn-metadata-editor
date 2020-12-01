@@ -343,6 +343,10 @@
       "value": "http://pid.geoscience.gov.au/def/voc/ga/igsncode/ISTC"
     },
     {
+      "label": "Local",
+      "value": "local"
+    },
+    {
       "label": "LISSN",
       "value": "http://pid.geoscience.gov.au/def/voc/ga/igsncode/LISSN"
     },
@@ -363,6 +367,10 @@
       "value": "http://pid.geoscience.gov.au/def/voc/ga/igsncode/PURL"
     },
     {
+      "label": "ROR",
+      "value": "http://pid.geoscience.gov.au/def/voc/ga/igsncode/ROR"
+    },
+    {
       "label": "UPC",
       "value": "http://pid.geoscience.gov.au/def/voc/ga/igsncode/UPC"
     },
@@ -377,14 +385,6 @@
     {
       "label": "VIAF",
       "value": "http://pid.geoscience.gov.au/def/voc/ga/igsncode/VIAF"
-    },
-    {
-      "label": "ROR",
-      "value": "http://pid.geoscience.gov.au/def/voc/ga/igsncode/ROR"
-    },
-    {
-      "label": "Local",
-      "value": "local"
     }
   ],
   "relationTypes": [
