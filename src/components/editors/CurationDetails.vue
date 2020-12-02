@@ -9,7 +9,7 @@
                           :customMessages="{required: $t('igsn.validation.curatorName')}">
         <InputGroup
             label="Curator"
-            :errors="v.errors"
+            :error="v.errors[0]"
             help="curatorName">
           <ORCIDInput
               :index="index"
