@@ -37,7 +37,11 @@
           help="verticalDatum"
       ></InputGroupVocabSelect>
 
-      <ValidationProvider class="w-1/2" name="locationSRID" rules="required" immediate v-slot="v">
+      <ValidationProvider
+          class="w-1/2"
+          name="locationSRID"
+          :rules="doc.location.geometry || doc.location.geometryVerticalDatum || doc.location.geometryURI ? 'required' : ''"
+          immediate v-slot="v">
         <InputGroupVocabSelect
             class="mr-4"
             label="Geometry SRID"

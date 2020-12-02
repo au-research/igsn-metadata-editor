@@ -448,7 +448,7 @@
   "ePSG": [
     {
       "label": "EPSG:3112 - Projected coordinate system",
-      "value": "https://epsg.io/3112,"
+      "value": "https://epsg.io/3112"
     },
     {
       "label": "EPSG:4283 - Geodetic coordinate system",
