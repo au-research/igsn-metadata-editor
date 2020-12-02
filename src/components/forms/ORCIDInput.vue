@@ -19,6 +19,12 @@ export default {
     };
   },
 
+  computed: {
+      user() {
+        return this.$store.getters['auth/user']
+    }
+  },
+
   methods: {
     updateValue(value) {
       this.$emit("input", value)
@@ -34,6 +40,9 @@ export default {
     window.$(this.$el).orcid_widget({
       before_html: '',
       lookup: false,
+      pre_open_search: true,
+      auto_search: true,
+      auto_search_query: this.user.name,
       search_class: 'btn btn-white btn-sm my-2 border-blue border-solid border',
       search_text: '<i class="fas fa-search"></i> ORCID Search <img class="inline" src="https://researchdata.edu.au/assets/core/images/icons/orcid_icon.png" alt="ORCID Search">',
       post_lookup_success_handler(data, obj, setttings) {
