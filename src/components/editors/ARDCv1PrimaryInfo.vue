@@ -244,6 +244,9 @@ export default {
   mounted() {
 
     if (this.mode === 'edit') {
+      if (this.doc.visibility === 'false' && this.doc.embargoDate) {
+        this.doc.visibility = 'under-embargo'
+      }
       return;
     }
 
