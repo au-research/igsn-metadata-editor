@@ -4,6 +4,7 @@
 
 @import './button.css';
 @import './form.css';
+@import './tag.css';
 
 body {
     @apply .text-gray-900 .font-sans;

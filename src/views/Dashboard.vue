@@ -48,10 +48,7 @@
               <tr>
                 <th
                   class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
-                >Title</th>
-                <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                  Identifier
-                </th>
+                >IGSN</th>
                 <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                   Status
                 </th>
@@ -64,54 +61,57 @@
                 <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                   Owner
                 </th>
-                <th class="px-6 py-3 border-b border-gray-200 bg-gray-50"></th>
+                <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
+            <tbody class="bg-white divide-y divide-gray-500">
               <tr v-for="record in result.content" :key="record.id">
-                <td class="px-6 py-4 border-b border-gray-200">
+                <td class="px-2 py-1 border-b border-gray-200">
                   <div class="text-sm leading-5 font-medium text-gray-900">
                     <a
                       class="hover:text-blue-500"
                       target="_blank"
                       v-bind:href="record.portalUrl"
                     >{{ record.title }}</a>
+                    <p></p>
+                    <span class="text-gray-700 text-sm">{{ record.igsn.value }}</span>
+
                   </div>
                 </td>
-                <td class="px-6 py-4 border-b border-gray-200">
-                  {{ record.igsn.value }}
+                <td class="px-2 py-1 border-b border-gray-200 whitespace-nowrap">
+                  <p>
+                    {{ record.status }}
+                  </p>
                 </td>
-                <td class="px-6 py-4 border-b border-gray-200">
-                  {{ record.status }}
+                <td class="px-2 py-1 border-b border-gray-200">
+                  {{ record.modifiedAt | formatDate }}
                 </td>
-                <td class="px-6 py-4 border-b border-gray-200">
-                  {{ record.modifiedAt }}
-                </td>
-                <td class="px-6 py-4 border-b border-gray-200">
-                  <span v-if="record.embargoDate"
-                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                    <i class="fa fa-calendar-alt"></i> Under Embargo
-                  </span>
+                <td class="px-2 py-1 border-b border-gray-200">
+                  <p class="text-sm whitespace-no-wrap">
+                    <span v-if="record.embargoDate" class="tag tag-yellow">
+                      Under Embargo
+                    </span>
+                  </p>
                   <span
                       v-if="record.visible"
-                      class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+                      class="tag tag-green"
                   >Public</span>
                   <span
                     v-if="!record.visible && !record.embargoDate"
-                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800"
+                    class="tag tag-red"
                   >Private</span>
                 </td>
-                <td class="px-6 py-4 border-b border-gray-200">
+                <td class="px-2 py-1 border-b border-gray-200">
                   <span v-if="record.ownerType === 'User'">Me</span>
                   <span v-if="record.ownerType === 'DataCenter'">DataCenter:{{ record.ownerID }}</span>
                 </td>
                 <td
-                  class="px-6 py-4 text-right border-b border-gray-200 text-sm leading-5 font-medium"
+                  class="px-2 py-1 text-right border-b border-gray-200 text-sm leading-5 font-medium"
                 >
                   <router-link
                       v-if="primaryVersion = getEditableVersion(record)"
                     :to="{ name: 'edit', params: { schema: primaryVersion.schema, versionID:primaryVersion.id }}"
-                    class="text-indigo-600 hover:text-indigo-900"
+                    class="btn btn-blue"
                   ><i class="fas fa-edit"></i> Edit</router-link>
                   <span v-if="!getEditableVersion(record)">
                     No editable version found.
@@ -242,6 +242,11 @@
 </template>
 
 <script>
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime'
+
+dayjs.extend(relativeTime)
+
 export default {
   name: "Dashboard",
   computed: {
@@ -301,6 +306,9 @@ export default {
       return identifiers.filter((identifier) => {
         return identifier.type === "IGSN" && identifier.value !== ""
       }).pop().value
+    },
+    formatDate(date) {
+      return dayjs(date).fromNow()
     }
   },
 };

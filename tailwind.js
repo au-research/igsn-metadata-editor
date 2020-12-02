@@ -31,6 +31,7 @@ module.exports = {
         900: '#1a202c',
       },
       red: {
+        'light': '#FECACA',
         'default': '#e53e3e',
         'dark': '#801111'
       },
@@ -38,10 +39,14 @@ module.exports = {
         'default': '#ed8936'
       },
       yellow: {
-        'default': '#f8b20e'
+        'light': '#FDE68A',
+        'default': '#f8b20e',
+        'dark': '#D97706'
       },
       green: {
-        'default': '#38a169'
+        'light': '#D1FAE5',
+        'default': '#38a169',
+        'dark': '#065F46'
       },
       teal: {
         'default': '#38b2ac'

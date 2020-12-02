@@ -22,7 +22,7 @@
     </div>
 
     <div
-      class="container w-10/12 mx-auto p-2 py-4 shadow-lg rounded-lg border-solid border-1 -mt-8 bg-white"
+      class="container w-full mx-auto p-2 py-4 shadow-lg rounded-lg border-solid border-1 -mt-8 bg-white "
     >
       <router-view />
     </div>
