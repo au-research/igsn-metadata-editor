@@ -49,6 +49,16 @@ export default class RegistryService {
         return data;
     }
 
+    async getIGSNRecordByValue(value) {
+        const {data} = await this.http.get('/api/resources/igsn-records', {
+            params: {
+                igsn: value
+            }
+        })
+
+        return data;
+    }
+
     async getVersions(record, schema) {
         const {data} = await this.http.get(`/api/resources/records/${record}/versions/`, {
             params: {schema}

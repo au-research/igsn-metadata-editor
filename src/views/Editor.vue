@@ -14,7 +14,11 @@
 
     <hr class="my-8"/> -->
 
-    <ARDCv1Editor v-if="mode" :xml="xml" :mode="mode"></ARDCv1Editor>
+    <ARDCv1Editor v-if="mode && !error" :xml="xml" :mode="mode"></ARDCv1Editor>
+
+    <p v-if="error">
+      {{ error }}
+    </p>
   </div>
 </template>
 
@@ -33,7 +37,8 @@ export default {
       schema: null,
       versionID: null,
       xml: '',
-      mode: null
+      mode: null,
+      error: null
     };
   },
 
@@ -52,14 +57,43 @@ export default {
 
   mounted() {
     this.schema = this.$route.params.schema
-    this.versionID = this.$route.params.versionID
     this.mode = "create"
-    if (this.versionID) {
+    let that = this
+
+
+    // /edit/{schema}/{prefix}/{igsn}
+    if (this.$route.params.prefix && this.$route.params.igsn) {
       this.mode = "edit"
-      this.$registryService.getVersionContent(this.versionID)
-          .then((data) => {
-            this.loadXML(data)
-          })
+      let identifierValue = `${this.$route.params.prefix}/${this.$route.params.igsn}`
+      this.$registryService.getIGSNRecordByValue(identifierValue)
+      .then((data) => {
+
+        if (data.content.length === 0) {
+          that.error = `No valid record found for identifier ${identifierValue}`
+          return;
+        }
+
+        let record = data.content[0]
+        if (!record.currentVersions) {
+          that.error = `Record ${record.id} does not have any current versions`
+          return;
+        }
+
+        let version = record.currentVersions.find((version) => {
+          return version.schema === that.schema && version.current === true
+        })
+
+        if (!version) {
+          that.error = `No current version found for schema ${that.schema}`
+          return;
+        }
+
+        let versionID = version.id
+        this.$registryService.getVersionContent(versionID)
+            .then((data) => {
+              this.loadXML(data)
+            })
+      })
     }
 
   }

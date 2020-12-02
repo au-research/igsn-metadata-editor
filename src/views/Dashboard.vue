@@ -26,13 +26,11 @@
 
           <div class="pt-2">
             <router-link
-                :to="{ name: 'edit', params: { schema: 'ardc-igsn-desc-1.0' }}"
+                :to="{ name: 'CreateIGSN', params: { schema: 'ardc-igsn-desc-1.0' }}"
                 class="btn btn-blue"
             ><i class="fas fa-plus"></i> Create Resource</router-link>
           </div>
         </div>
-
-
       </div>
 
       <div v-if="result && result.totalElements === 0">
@@ -71,19 +69,18 @@
                     <a
                       class="hover:text-blue-500"
                       target="_blank"
-                      v-bind:href="record.portalUrl"
+                      v-bind:href="getPortalUrl(record)"
                     >{{ record.title }}</a>
                     <p></p>
                     <span class="text-gray-700 text-sm">{{ record.igsn.value }}</span>
-
                   </div>
                 </td>
-                <td class="px-2 py-1 border-b border-gray-200 whitespace-nowrap">
+                <td class="px-2 py-1 border-b border-gray-200 whitespace-nowrap text-sm">
                   <p>
                     {{ record.status }}
                   </p>
                 </td>
-                <td class="px-2 py-1 border-b border-gray-200">
+                <td class="px-2 py-1 border-b border-gray-200 whitespace-no-wrap text-sm">
                   {{ record.modifiedAt | formatDate }}
                 </td>
                 <td class="px-2 py-1 border-b border-gray-200">
@@ -101,7 +98,7 @@
                     class="tag tag-red"
                   >Private</span>
                 </td>
-                <td class="px-2 py-1 border-b border-gray-200">
+                <td class="px-2 py-1 border-b border-gray-200 text-sm">
                   <span v-if="record.ownerType === 'User'">Me</span>
                   <span v-if="record.ownerType === 'DataCenter'">DataCenter:{{ record.ownerID }}</span>
                 </td>
@@ -109,13 +106,16 @@
                   class="px-2 py-1 text-right border-b border-gray-200 text-sm leading-5 font-medium"
                 >
                   <router-link
-                      v-if="primaryVersion = getEditableVersion(record)"
-                    :to="{ name: 'edit', params: { schema: primaryVersion.schema, versionID:primaryVersion.id }}"
+                    :to="{
+                        name: 'EditByIGSN',
+                        params: {
+                          schema: 'ardc-igsn-desc-1.0',
+                          prefix: getIGSNStructure(record).prefix,
+                          igsn: getIGSNStructure(record).igsn
+                        }
+                      }"
                     class="btn btn-blue"
                   ><i class="fas fa-edit"></i> Edit</router-link>
-                  <span v-if="!getEditableVersion(record)">
-                    No editable version found.
-                  </span>
                 </td>
               </tr>
             </tbody>
@@ -234,10 +234,6 @@
         </div>
       </div>
     </div>
-
-    <hr class="my-6" />
-
-    <pre>{{ user | pretty }}</pre>
   </div>
 </template>
 
@@ -256,6 +252,9 @@ export default {
     isLoggedIn() {
       return this.$store.getters["auth/isLoggedIn"];
     },
+    portalUrl() {
+      return this.$registryService.getPortalUrl()
+    }
   },
   data() {
     return {
@@ -267,10 +266,14 @@ export default {
     };
   },
   methods: {
-    getEditableVersion(record) {
-        return record.currentVersions.filter((version) => {
-            return version.schema === "ardc-igsn-desc-1.0"
-        }).pop()
+    getPortalUrl(record) {
+        return `${this.portalUrl}view/${record.igsn.value}`
+    },
+    getIGSNStructure(record) {
+        return {
+          prefix: record.igsn.value.split('/')[0],
+          igsn: record.igsn.value.split('/')[1]
+        }
     },
     getRecords() {
       this.loading = true;
@@ -299,14 +302,6 @@ export default {
     this.getRecords();
   },
   filters: {
-    pretty(value) {
-      return JSON.stringify(value, null, 2);
-    },
-    igsn(identifiers) {
-      return identifiers.filter((identifier) => {
-        return identifier.type === "IGSN" && identifier.value !== ""
-      }).pop().value
-    },
     formatDate(date) {
       return dayjs(date).fromNow()
     }

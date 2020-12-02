@@ -1,23 +1,28 @@
 <template>
   <div id="app">
     <div class="w-full h-40 bg-black">
-      <div class="w-full h-32 bg-black flex items-center">
-        <router-link to="/">
-          <img
-            class="h-16 mx-6"
-            src="https://ardc.edu.au/wp-content/themes/ardc/img/ardc_logo.svg"
-            alt
-          />
-        </router-link>
-        <router-link to="/">
-          <h1 class="text-2xl text-white mx-4">ARDC Metadata Editor</h1>
-        </router-link>
-
-        <div class="flex-1 text-right p-6 mr-6" id="nav">
-          <router-link to="/" v-if="isLoggedIn">Dashboard</router-link>|
-          <router-link to="/about">About</router-link>|
-          <a href @click.prevent="logout()">Logout</a>|
+      <div class="w-full h-32 bg-black flex items-center justify-between">
+        <div class="flex items-center">
+          <router-link to="/">
+            <img
+                class="h-16 mx-6"
+                src="https://ardc.edu.au/wp-content/themes/ardc/img/ardc_logo.svg"
+                alt
+            />
+          </router-link>
+          <router-link to="/">
+            <h1 class="text-2xl text-white mx-4">ARDC Metadata Editor</h1>
+          </router-link>
         </div>
+
+        <div class="flex items-center mr-10 print:hidden">
+          <div class="text-white flex items-center">
+            <p class="mr-5 text-lg"> {{ user.name }}</p>
+            <a class="px-6 py-3 rounded-lg border-2 border-white text-white hover:text-white hover:bg-blue hover:border-blue-dark uppercase hover:no-underline" href @click.prevent="logout()"
+               >Log Out </a>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -35,6 +40,9 @@ import RegistryService from './services/registry'
 
 export default {
   computed: {
+    user() {
+      return this.$store.getters["auth/user"]
+    },
     isLoggedIn() {
       return this.$store.getters["auth/isLoggedIn"];
     },

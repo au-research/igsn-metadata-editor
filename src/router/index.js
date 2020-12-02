@@ -2,15 +2,15 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Editor from '../views/Editor.vue'
 import Dashboard from '../views/Dashboard.vue'
-import About from '../views/About.vue'
+import NotFound from '../views/NotFound'
 
 Vue.use(VueRouter)
 
 const routes = [
   { path: '/', name: 'Dashboard', component: Dashboard },
-  { path: '/editor/:schema?/:docID?', name: 'Editor', component: Editor },
-  { path: '/edit/:schema/:versionID?', name: 'edit', component: Editor },
-  { path: '/about*', name: 'About', component: About },
+  { path: '/edit/:schema', name: 'CreateIGSN', component: Editor },
+  { path: '/edit/:schema/:prefix/:igsn', name: 'EditByIGSN', component: Editor },
+  { path: '*', name: '404', component: NotFound}
 ]
 
 const router = new VueRouter({
