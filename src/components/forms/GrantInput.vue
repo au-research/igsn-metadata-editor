@@ -7,6 +7,7 @@ export default {
 
   props: {
     value: String,
+    index: Number,
     placeholder: String
   },
 
@@ -35,7 +36,16 @@ export default {
       search_class: 'btn btn-blue btn-sm my-2',
       lookup: false,
       post_lookup_success_handler(data, obj, settings) {
-        that.updateValue(obj.context.value)
+        let result = data.records[0]
+        let title = result.title
+        let purl = result.purl
+        that.grant = title
+        that.updateValue(that.grant)
+        that.$emit("update", {
+          index: that.index,
+          title: title,
+          purl: purl
+        })
       }
     });
   }

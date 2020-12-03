@@ -9,8 +9,10 @@
     <InputGroup
         label="Related Resource Title">
         <GrantInput
+            :index="index"
             placeholder="Related Resource Title"
-            v-model="related.relatedResourceTitle">
+            v-model="related.relatedResourceTitle"
+            v-on:update="updateRelatedResource">
         </GrantInput>
     </InputGroup>
 
@@ -84,7 +86,15 @@ import {ValidationProvider, ValidationObserver} from 'vee-validate';
 export default {
 name: "RelatedResource",
   components: {InputGroupText, InputGroupVocabSelect, InputGroup, GrantInput, ValidationProvider},
-  props: ['doc', 'vocab']
+  props: ['doc', 'vocab'],
+  methods: {
+    updateRelatedResource({ index, title, purl }) {
+      this.doc.relatedResources[index].relatedResourceTitle = title
+      this.doc.relatedResources[index].relatedResourceIdentifier = purl
+      this.doc.relatedResources[index].relatedResourceIdentifierType = 'http://pid.geoscience.gov.au/def/voc/ga/igsncode/PURL'
+      this.$forceUpdate()
+    }
+  }
 }
 </script>
 
