@@ -75,15 +75,15 @@
                     <span class="text-gray-700 text-sm">{{ record.igsn.value }}</span>
                   </div>
                 </td>
-                <td class="px-2 py-1 border-b border-gray-200 whitespace-nowrap text-sm">
+                <td class="px-2 py-1 border-b border-gray-200 whitespace-nowrap text-sm text-center">
                   <p>
                     {{ record.status }}
                   </p>
                 </td>
-                <td class="px-2 py-1 border-b border-gray-200 whitespace-no-wrap text-sm">
+                <td class="px-2 py-1 border-b border-gray-200 whitespace-no-wrap text-sm text-center">
                   {{ record.modifiedAt | formatDate }}
                 </td>
-                <td class="px-2 py-1 border-b border-gray-200">
+                <td class="px-2 py-1 border-b border-gray-200 text-center">
                   <p class="text-sm whitespace-no-wrap">
                     <span v-if="record.embargoDate" class="tag tag-yellow">
                       Under Embargo
@@ -98,12 +98,12 @@
                     class="tag tag-red"
                   >Private</span>
                 </td>
-                <td class="px-2 py-1 border-b border-gray-200 text-sm">
+                <td class="px-2 py-1 border-b border-gray-200 text-sm text-center">
                   <span v-if="record.ownerType === 'User'">Me</span>
-                  <span v-if="record.ownerType === 'DataCenter'">DataCenter:{{ record.ownerID }}</span>
+                  <span v-if="record.ownerType === 'DataCenter'">{{ record.ownerID | dataCenterName(user) }}</span>
                 </td>
                 <td
-                  class="px-2 py-1 text-right border-b border-gray-200 text-sm leading-5 font-medium"
+                  class="px-2 py-1 text-right border-b border-gray-200 text-sm leading-5 font-medium text-center"
                 >
                   <router-link
                     :to="{
@@ -304,6 +304,17 @@ export default {
   filters: {
     formatDate(date) {
       return dayjs(date).fromNow()
+    },
+    dataCenterName(dataCenterID, user) {
+      let dataCenter = user.dataCenters.find((dataCenter) => {
+        return dataCenter.id === dataCenterID
+      })
+
+      if (!dataCenter) {
+        return "DataCenter: " + dataCenterID
+      }
+
+      return dataCenter.name
     }
   },
 };

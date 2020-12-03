@@ -90,7 +90,8 @@ export default class RegistryService {
     async getUserIGSNRecords(page, size, title) {
         let params = {
             page: page,
-            size: size
+            size: size,
+            sort: 'modifiedAt,desc'
         }
         if (title) {
             params.title = title

@@ -24,7 +24,7 @@
           </div>
 
           <!-- Tabs -->
-          <div class="bg-white mb-8">
+          <div class="bg-white mb-8 mt-6">
             <nav class="flex flex-row">
               <a
                   :class="[tab === 'location' ? 'tab tab-active' : 'tab']"
