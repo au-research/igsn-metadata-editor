@@ -42,3 +42,10 @@
     @apply text-white cursor-wait
 }
 
+.btn-yellow {
+    @apply bg-yellow text-white
+}
+
+.btn-yellow:hover {
+    @apply bg-yellow-dark text-white
+}

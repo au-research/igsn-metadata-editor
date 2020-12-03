@@ -13,3 +13,7 @@
 .tag-yellow {
     @apply bg-yellow-light text-yellow-dark;
 }
+
+.tag-gray {
+    @apply bg-gray-500 text-gray-100
+}
