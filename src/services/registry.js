@@ -119,11 +119,12 @@ export default class RegistryService {
     async mint(xml, ownerType, ownerID) {
         const {data} = await this.http.post('/api/services/igsn/mint', xml, {
             headers: {
-                'Content-Type' : 'application/xml'
+                'Content-Type': 'application/xml'
             },
             params: {
                 'ownerID': ownerID,
-                'ownerType': ownerType
+                'ownerType': ownerType,
+                manual: 1
             }
         });
 
@@ -133,7 +134,10 @@ export default class RegistryService {
     async update(xml) {
         const {data} = await this.http.post('/api/services/igsn/update', xml, {
             headers: {
-                'Content-Type' : 'application/xml'
+                'Content-Type': 'application/xml'
+            },
+            params: {
+                manual: 1
             }
         });
 
