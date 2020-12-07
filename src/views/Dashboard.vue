@@ -13,7 +13,7 @@
                   @change="onQueryChange()"
                   type="search"
                   name="search"
-                  placeholder="Search"
+                  placeholder="Title Search"
               />
               <button type="submit" class="absolute left-0 top-0 mt-4 ml-4" @click.prevent="search()">
                 <i class="fas fa-search"></i>
