@@ -12,6 +12,10 @@ export default class RegistryService {
         return this.portalUrl
     }
 
+    getToken() {
+        return this.token
+    }
+
     setToken(token) {
         this.token = token;
         this.createHttpClient()

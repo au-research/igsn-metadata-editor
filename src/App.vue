@@ -88,8 +88,12 @@ export default {
     },
 
     obtainUserInfo() {
-      this.$registryService.getUserInfo().then((data) => {
-        this.$store.dispatch('auth/setUser', data)
+      this.$registryService.getUserInfo()
+          .then((data) => {
+          this.$store.dispatch('auth/setUser', data)
+        })
+      .catch((ex) => {
+        this.$router.push('/403')
       })
     }
 
