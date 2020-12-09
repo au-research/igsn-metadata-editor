@@ -72,6 +72,12 @@
         </div>
       </div>
     </div>
+
+    <div class="fixed flex bottom-0 right-0 mr-4 mb-2 print:hidden">
+      <a href="https://documentation.ardc.edu.au/display/DOC/IGSN+Service" target="_blank"
+         class="btn btn-yellow mr-2"><i class="fas fa-question-circle"></i> Help</a>
+      <a id="feedbackTrigger" href="" class="btn btn-yellow">Feedback</a>
+    </div>
   </div>
 </template>
 
