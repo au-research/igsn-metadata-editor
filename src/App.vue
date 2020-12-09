@@ -31,6 +31,47 @@
     >
       <router-view />
     </div>
+
+    <div class="w-full bg-black mt-8 flex px-8 py-10 pb-16 justify-between print:hidden">
+
+      <div class="flex flex-col space-x-6 space-y-6 md:flex-row md:space-y-0">
+        <div class="print:hidden">
+          <a href="https://ardc.edu.au/">
+            <img src="./images/ardc_logo_white.png" class="h-16 mx-6" alt="ARDC Logo"/>
+          </a>
+        </div>
+        <div id="footer-links">
+          <ul class="space-y-2">
+            <li>
+              <a :href="portalUrl" target="_blank">IGSN Portal</a></li>
+            <li>
+              <a href="https://documentation.ardc.edu.au/display/DOC/IGSN+Service"
+                 target="_blank">Documentation</a>
+            </li>
+            <li>
+              <a href="https://ardc.edu.au/privacy-policy/" target="_blank">ARDC Privacy Policy</a>
+            </li>
+            <li>
+              <a href="https://ardc.edu.au/" target="_blank">ARDC Website</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="flex flex-col md:space-x-6 space-y-6 md:flex-row md:space-y-0">
+        <div style="width:140px;">
+          <p class="text-white xl:text-xs">The Australian Research Data Commons (ARDC) is enabled by NCRIS.</p>
+          <a href="https://education.gov.au/national-collaborative-research-infrastructure-strategy-ncris">
+            <img src="https://researchdata.edu.au/assets/core/images/NCRIS_PROVIDER_rev.png" alt="">
+          </a>
+        </div>
+        <div style="width:140px">
+          <a href="https://www.igsn.org/">
+            <img src="./images/igsn-original.jpg" alt="IGSN Logo">
+          </a>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -48,6 +89,9 @@ export default {
     },
     token() {
       return this.$store.getters['auth/token'];
+    },
+    portalUrl() {
+      return this.$registryService.getPortalUrl()
     }
   },
   data() {
