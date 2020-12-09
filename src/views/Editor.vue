@@ -1,7 +1,10 @@
 <template>
-
-
   <div class="container mx-auto text-left">
+
+    <router-link to="/" class="ml-8">
+      <i class="fa fa-home"></i> Return to dashboard
+    </router-link>
+
     <!-- <a href class="btn btn-blue" @click.prevent="loadSampleXML">Load Sample XML</a>
     <a href class="btn btn-blue" @click.prevent="this.loadXML('')">PopulateBlank</a>
 
