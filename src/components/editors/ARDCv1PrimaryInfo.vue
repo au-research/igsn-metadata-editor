@@ -188,6 +188,10 @@ export default {
       return this.$store.getters["auth/user"];
     },
 
+    portalUrl() {
+      return this.$registryService.getPortalUrl()
+    },
+
     ownerValues() {
 
       // todo refactor to _.pluck with underscore.js
@@ -262,7 +266,7 @@ export default {
         }
 
         this.doc.resourceIdentifier = `${this.igsn.prefix}/${this.igsn.namespace}${this.igsn.value}`
-        this.doc.landingPage = `https://test.identifiers.ardc.edu.au/igsn-portal/view/${this.doc.resourceIdentifier}`
+        this.doc.landingPage = `${this.portalUrl}/view/${this.doc.resourceIdentifier}`
       }
     },
 
