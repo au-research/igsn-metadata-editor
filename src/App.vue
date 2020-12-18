@@ -17,12 +17,11 @@
 
         <div class="flex items-center mr-10 print:hidden">
           <div class="text-white flex items-center">
-            <p class="mr-5 text-lg"> {{ user.name }}</p>
+            <p class="mr-5 text-lg" v-if="user"> {{ user.name }}</p>
             <a class="px-6 py-3 rounded-lg border-2 border-white text-white hover:text-white hover:bg-blue hover:border-blue-dark uppercase hover:no-underline" href @click.prevent="logout()"
                >Log Out </a>
           </div>
         </div>
-
       </div>
     </div>
 
@@ -88,7 +87,7 @@ import RegistryService from './services/registry'
 export default {
   computed: {
     user() {
-      return this.$store.getters["auth/user"]
+      return this.$store.getters["auth/isLoggedIn"] ? this.$store.getters["auth/user"] : { name: 'Unknown'}
     },
     isLoggedIn() {
       return this.$store.getters["auth/isLoggedIn"];
@@ -146,7 +145,6 @@ export default {
         this.$router.push('/403')
       })
     }
-
   },
   mounted() {
     this.$store.dispatch("auth/storeToken", {
