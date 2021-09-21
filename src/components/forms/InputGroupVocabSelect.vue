@@ -1,15 +1,15 @@
 <template>
-  <InputGroup :label="label" :help="help" :error="errored">
+  <InputGroup :label="label" :help="help" :error="errors[0]">
     <div class="flex">
       <select
-        name
-        :value="value"
-        v-on:input="updateValue($event.target.value)"
-        :required="required"
+          name
+          :value="value"
+          v-on:input="updateValue($event.target.value)"
+          :required="required"
       >
-        <option v-for="item in vocab" :key="item.value" :value="item.value">{{ item.label}}</option>
+        <option v-for="item in vocab" :key="item.value" :value="item.value">{{ item.label }}</option>
       </select>
-      <button v-if="removable" class="btn btn-red ml-2 text-xs" @click.prevent="remove">Remove</button>
+      <a v-if="removable" class="btn btn-red ml-2 text-xs" @click.prevent="remove">Remove</a>
     </div>
   </InputGroup>
 </template>
@@ -19,7 +19,7 @@ import InputGroup from "@/components/forms/InputGroup";
 
 export default {
   name: "InputGroupVocabSelect",
-  components: { InputGroup },
+  components: {InputGroup},
   props: {
     label: String,
     value: String,
@@ -32,6 +32,12 @@ export default {
     removable: {
       type: Boolean,
       default: false
+    },
+    errors: {
+      type: Array,
+      default: () => {
+        return []
+      }
     }
   },
   methods: {
@@ -45,13 +51,6 @@ export default {
     },
     remove() {
       this.$emit("remove");
-    }
-  },
-  computed: {
-    errored() {
-      return (
-        this.required === true && (this.value == undefined || this.value == "")
-      );
     }
   }
 };

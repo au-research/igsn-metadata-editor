@@ -1,5 +1,10 @@
 <template>
   <div class="container mx-auto text-left">
+
+    <router-link to="/" class="ml-8">
+      <i class="fa fa-home"></i> Return to dashboard
+    </router-link>
+
     <!-- <a href class="btn btn-blue" @click.prevent="loadSampleXML">Load Sample XML</a>
     <a href class="btn btn-blue" @click.prevent="this.loadXML('')">PopulateBlank</a>
 
@@ -11,55 +16,89 @@
     <LocaleChanger></LocaleChanger>
 
     <hr class="my-8"/> -->
-    
-    <CSIROv3Editor :xml="xml" :vocabulary="vocabulary"></CSIROv3Editor>
+
+    <ARDCv1Editor v-if="mode && !error" :xml="xml" :mode="mode"></ARDCv1Editor>
+
+    <p v-if="error">
+      {{ error }}
+    </p>
   </div>
 </template>
 
 <script>
-import CSIROv3Editor from "@/components/editors/CSIROv3Editor.vue";
+import ARDCv1Editor from "@/components/editors/ARDCv1Editor.vue";
 //import LocaleChanger from "@/components/LocaleChanger.vue"
-import util from "@/services/util.js";
 
 export default {
   name: 'Editor',
   components: {
-    CSIROv3Editor
+    ARDCv1Editor
   },
+
   data() {
     return {
-      schema: '',
-      documentID: '',
-      vocabulary: 'csiro-igsn-codelist',
-      xml: ''
+      schema: null,
+      versionID: null,
+      xml: '',
+      mode: null,
+      error: null
     };
+  },
+
+  computed: {
+
+    user() {
+      return this.$store.getters["auth/user"];
+    }
   },
 
   methods: {
     loadXML(xml) {
       this.xml = xml
-    },
-    loadSampleXML() {
-      this.loadXML(util.getSampleXML())
     }
   },
 
   mounted() {
-    // debug
-    this.loadSampleXML()
-    console.log(this.$route.params)
     this.schema = this.$route.params.schema
-    this.documentID = this.$route.params.docID
+    this.mode = "create"
+    let that = this
 
-    // check schema
 
-    if (this.documentID == "CSTSTDOCO1"){
-      this.loadSampleXML()
-    } else {
-      this.loadXML("")
+    // /edit/{schema}/{prefix}/{igsn}
+    if (this.$route.params.prefix && this.$route.params.igsn) {
+      this.mode = "edit"
+      let identifierValue = `${this.$route.params.prefix}/${this.$route.params.igsn}`
+      this.$registryService.getIGSNRecordByValue(identifierValue)
+      .then((data) => {
+
+        if (data.content.length === 0) {
+          that.error = `No valid record found for identifier ${identifierValue}`
+          return;
+        }
+
+        let record = data.content[0]
+        if (!record.currentVersions) {
+          that.error = `Record ${record.id} does not have any current versions`
+          return;
+        }
+
+        let version = record.currentVersions.find((version) => {
+          return version.schema === that.schema && version.current === true
+        })
+
+        if (!version) {
+          that.error = `No current version found for schema ${that.schema}`
+          return;
+        }
+
+        let versionID = version.id
+        this.$registryService.getVersionContent(versionID)
+            .then((data) => {
+              this.loadXML(data)
+            })
+      })
     }
 
-    // check documentID based on schema
   }
 }
 </script>

@@ -2,18 +2,19 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Editor from '../views/Editor.vue'
 import Dashboard from '../views/Dashboard.vue'
-import About from '../views/About.vue'
-import Login from '../views/Login.vue'
-import Logout from '../views/Logout.vue'
+import NotFound from '../views/NotFound'
+import Forbidden from '../views/Forbidden'
+import StyleGuide from '../views/StyleGuide'
 
 Vue.use(VueRouter)
 
 const routes = [
   { path: '/', name: 'Dashboard', component: Dashboard },
-  { path: '/login*', name: 'Login', component: Login},
-  { path: '/editor*/:schema?/:docID?', name: 'Editor', component: Editor },
-  { path: '/about*', name: 'About', component: About },
-  { path: '/logout*', name: 'Logout', component: Logout}
+  { path: '/style-guide', name: 'StyleGuide', component: StyleGuide },
+  { path: '/edit/:schema', name: 'CreateIGSN', component: Editor },
+  { path: '/edit/:schema/:prefix/:igsn', name: 'EditByIGSN', component: Editor },
+  { path: '/403', name: 'Forbidden', component: Forbidden},
+  { path: '*', name: '404', component: NotFound}
 ]
 
 const router = new VueRouter({

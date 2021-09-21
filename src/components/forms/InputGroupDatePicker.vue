@@ -1,5 +1,5 @@
 <template>
-  <InputGroup :label="label" :class="[errored ? 'error' : '']">
+  <InputGroup :label="label" :class="[errored ? 'error' : '']" :help="help" :error="errors[0]">
     <date-pick v-model="date"></date-pick>
   </InputGroup>
 </template>
@@ -13,7 +13,15 @@ export default {
   components: { InputGroup, DatePick },
   props: {
     value: String,
-    label: String
+    label: String,
+    errors: {
+      type: Array,
+      default: () => {
+        return []
+      }
+    },
+    placeholder: String,
+    help: String
   },
   data() {
     return {
@@ -25,6 +33,16 @@ export default {
     date() {
        this.$emit("input", this.date);
     }
+  },
+  methods: {
+    parseDate(dateString) {
+        return Date.parse(dateString)
+    }
+  },
+  mounted() {
+    setTimeout(() => {
+      this.date = this.value
+    }, 100)
   }
 };
 </script>

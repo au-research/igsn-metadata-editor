@@ -1,125 +1,44 @@
-import Keycloak from 'keycloak-js'
-
-let keycloakOptions = {
-    url: process.env.VUE_APP_KEYCLOAK_URL || 'https://test.auth.ardc.edu.au/auth',
-    realm: process.env.VUE_APP_KEYCLOAK_REALM || 'ARDC',
-    clientId: process.env.VUE_APP_KEYCLOAK_CLIENT_ID || 'igsn-editor',
-    onLoad: 'login-required'
-}
-
-let keycloak = Keycloak(keycloakOptions);
-window.keycloak = keycloak;
-
 const user = {
     namespaced: true,
     state: {
-        status: '',
-        token: keycloak.token,
-        refreshToken: keycloak.refreshToken,
-        user: {}
+        token: null,
+        user: null,
+        refreshToken: null
     },
     mutations: {
-        auth_request(state) {
-            state.status = 'loading'
-        },
-        auth_success(state, { token, refreshToken }) {
-            state.status = 'success'
+        token(state, { token, refreshToken }) {
             state.token = token
             state.refreshToken = refreshToken
         },
-        auth_userInfo(state, info) {
-            state.user = info
+        destroy(state) {
+            state.token = ""
+            state.refreshToken = ""
+            state.user = {}
         },
-        auth(state, user) {
+        user(state, user) {
             state.user = user
-        },
-        auth_error(state) {
-            state.status = 'error'
-        },
-        logout(state) {
-            state.status = ''
-            state.token = ''
-            state.user = ''
-        },
+        }
     },
     actions: {
-        initSSO({ commit }) {
-            return new Promise((resolve, reject) => {
-                keycloak.init({ onLoad: keycloakOptions.onLoad }).success((auth) => {
-                    commit("auth_success", { token: keycloak.token, refreshToken: keycloak.refreshToken })
-                    keycloak.loadUserInfo()
-                        .success((user) => commit("auth_userInfo", user))
-                    resolve()
-                    window.keycloak = keycloak
-                }).error(() => {
-                    console.error("Authenticated Failed");
-                });
+        storeToken({ state, commit }, access) {
+            commit('token', {
+                token: access.token,
+                refreshToken: access.refreshToken
             })
         },
-        refresh({ commit }) {
-            return keycloak.updateToken(1)
-                .success((refreshed) => {
-                    if (refreshed) {
-                        console.log("Refreshed")
-                    } else {
-                        console.log("Token not refreshed");
-                    }
-                })
-                .error((err) => console.error(err))
 
-            // return new Promise((resolve, reject) => {
-            //     keycloak.updateToken(70)
-            //         .success((refreshed) => {
-            //             if (refreshed) {
-            //                 console.debug('Token refreshed' + refreshed);
-            //             } else {
-            //                 console.warn('Token not refreshed, valid for '
-            //                     + Math.round(keycloak.tokenParsed.exp + keycloak.timeSkew - new Date().getTime() / 1000) + ' seconds');
-            //             }
-            //             console.log('refreshed')
-            //             resolve()
-            //         })
-            //         .error(() => {
-            //             console.error('Failed to refresh token');
-            //             reject()
-            //         })
-            //         .then(() => {
-            //             console.log('here')
-            //         })
-            // })
+        destroyToken({ commit }) {
+            commit('destroy')
         },
-        login({ commit }, { username, password }) {
-            commit('auth_request')
-            return new Promise((resolve, reject) => {
-                // TODO axios http call
-                let token = "asdf"
-                commit('auth_success', token)
-                resolve()
-                // set axios default headers for all requests
-                // axios.defaults.headers.common['Authorization'] = token
+
+        setUser({ commit }, user) {
+            commit('user', {
+                id: user.id,
+                name: user.name ? user.name : user.email,
+                email: user.email,
+                allocations: user.allocations,
+                dataCenters: user.dataCenters
             })
-        },
-        logout({ commit }) {
-            // let keycloak = Keycloak(keycloakOptions);
-            // keycloak.init().then(() => {
-            if (keycloak && keycloak.logout == 'function') {
-                window.keycloak.logout()
-            }
-            commit('logout')
-            // })
-            
-            // console.log('here')
-            // Keycloak.logout()
-            // keycloak.logout().then((auth) => {
-            //     console.log(auth)
-            //     commit('logout')
-            // })
-            // return new Promise((resolve, reject) => {
-            //     commit('logout')
-            //     keycloak.logout().then(resolve())
-            //     // delete axios.defaults.headers.common['Authorization']
-            //     // resolve()
-            // })
         }
     },
     getters: {

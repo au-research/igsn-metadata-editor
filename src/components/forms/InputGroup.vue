@@ -5,7 +5,7 @@
       <label v-text="label"></label>
     </div>
     <slot></slot>
-    <span v-if="error">This field is required</span>
+    <span class="error-message" v-if="error">{{ error }}</span>
   </div>
 </template>
 
@@ -18,8 +18,7 @@ export default {
   components: { HelpIcon },
   computed: {
     helpText() {
-      let index = "igsn.help." + this.help;
-      return this.$t(index);
+      return this.help;
     },
     popOverOptions() {
       return {

@@ -5,7 +5,7 @@
         </div>
 
         <a slot="reference" class="focus:outline-none">
-          <i class="fas fa-question-circle text-blue-500 mr-2 cursor-pointer"></i>
+          <i class="fas fa-question-circle text-blue mr-2 cursor-pointer"></i>
         </a>
       </popper>
 </template>

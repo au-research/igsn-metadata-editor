@@ -1,13 +1,14 @@
 <template>
-  <InputGroup :label="label" :help="help" :error="error">
+  <InputGroup :label="label" :help="help" :error="errors[0]">
     <div class="flex">
       <input
-        :value="value"
-        :placeholder="placeholderValue"
-        v-on:input="updateValue($event.target.value)"
-        :required="required"
+          type="text"
+          :value="value"
+          :placeholder="placeholderValue"
+          v-on:input="updateValue($event.target.value)"
+          :disabled="disabled"
       />
-      <button v-if="removable" class="btn btn-red text-xs ml-2" @click.prevent="remove">Remove</button>
+      <a v-if="removable" class="btn btn-red text-xs ml-2" @click.prevent="remove">Remove</a>
     </div>
   </InputGroup>
 </template>
@@ -17,7 +18,7 @@ import InputGroup from "@/components/forms/InputGroup";
 
 export default {
   name: "InputGroupText",
-  components: { InputGroup },
+  components: {InputGroup},
   props: {
     label: String,
     value: String,
@@ -31,6 +32,16 @@ export default {
     removable: {
       type: Boolean,
       default: false
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    errors: {
+      type: Array,
+      default: () => {
+        return []
+      }
     }
   },
   methods: {
@@ -44,14 +55,6 @@ export default {
   computed: {
     placeholderValue() {
       return this.placeholder ? this.placeholder : this.label;
-    },
-    validationTextValue() {
-      return this.validationText
-        ? this.validationText
-        : "This field is required";
-    },
-    error() {
-      return this.required && (this.value == undefined || this.value == "");
     }
   }
 };

@@ -2,31 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
+@import './container.css';
+@import './table.css';
+@import './button.css';
+@import './form.css';
+@import './tag.css';
+
 body {
-    @apply text-gray-900;
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    @apply .text-gray-900 .font-sans;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
-form {
-    @apply bg-white px-8 pt-6 pb-8 mb-4;
+p {
+    @apply my-2;
 }
 
-label {
-    @apply block text-gray-700 text-sm font-bold mb-2;
+a {
+    @apply .text-blue;
 }
 
-input {
-    @apply w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight h-10;
-}
-
-select {
-    @apply w-full shadow border rounded py-2 px-3 text-gray-700 leading-tight h-10;
-}
-
-.input-group {
-    @apply mb-4
+a:hover {
+    @apply .text-blue-dark .underline;
 }
 
 .tab {
@@ -34,7 +31,7 @@ select {
 }
 
 .tab:hover {
-    @apply text-blue-500;
+    @apply text-blue;
 }
 
 .tab:focus {
@@ -42,44 +39,14 @@ select {
 }
 
 .tab-active {
-    @apply text-blue-500 border-b-2 font-medium border-blue-500;
+    @apply text-blue border-b-2 font-medium border-blue;
 }
 
 .tab-content {
     @apply flex-1 ml-8 mb-8;
 }
 
-.btn {
-    @apply font-bold py-2 px-4 rounded;
-}
 
-.btn-sm {
-    @apply text-sm;
-}
-
-.btn-blue {
-    @apply bg-blue-500 text-white;
-}
-
-.btn-red {
-    @apply bg-red-500 text-white;
-}
-
-.btn-blue:hover {
-    @apply bg-blue-700;
-}
-
-.error {
-    @apply text-red-500;
-}
-
-.input-group.error input, .input-group.error select{
-    @apply border-red-500;
-}
-
-.input-group.error label {
-    @apply text-red-500 font-bold;
-}
 
 pre {
     white-space: pre-wrap;       /* Since CSS 2.1 */
@@ -87,4 +54,28 @@ pre {
     white-space: -pre-wrap;      /* Opera 4-6 */
     white-space: -o-pre-wrap;    /* Opera 7 */
     word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+.popper {
+    max-width: 450px;
+}
+
+.popper a{
+    @apply .text-blue;
+}
+
+.popper ul {
+    @apply .list-disc .mb-2;
+}
+
+.popper ul > li {
+    @apply .ml-6;
+}
+
+#footer-links li a{
+    @apply .text-white .font-semibold .text-sm .uppercase;
+}
+
+#footer-links li a:hover {
+    @apply .text-gray-400;
 }
